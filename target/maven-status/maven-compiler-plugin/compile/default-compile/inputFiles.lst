@@ -1,3 +1,8 @@
+D:\CurseForge\MegaChat\src\main\java\com\megachat\controller\AuthController.java
 D:\CurseForge\MegaChat\src\main\java\com\megachat\websocket\ChatEndpoint.java
+D:\CurseForge\MegaChat\src\main\java\com\megachat\config\DatabaseInitializer.java
 D:\CurseForge\MegaChat\src\main\java\com\megachat\config\WebSocketConfig.java
 D:\CurseForge\MegaChat\src\main\java\com\megachat\MegaChatApplication.java
+D:\CurseForge\MegaChat\src\main\java\com\megachat\service\UserService.java
+D:\CurseForge\MegaChat\src\main\java\com\megachat\model\User.java
+D:\CurseForge\MegaChat\src\main\java\com\megachat\repository\UserRepository.java

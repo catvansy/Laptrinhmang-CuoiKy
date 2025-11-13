@@ -1,3 +1,8 @@
-com\megachat\config\WebSocketConfig.class
+com\megachat\service\UserService.class
 com\megachat\MegaChatApplication.class
+com\megachat\config\DatabaseInitializer.class
+com\megachat\config\WebSocketConfig.class
+com\megachat\model\User.class
+com\megachat\controller\AuthController.class
+com\megachat\repository\UserRepository.class
 com\megachat\websocket\ChatEndpoint.class
