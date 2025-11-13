@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Megachat - Group Chat & Games</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 25%, #1f0f3d 50%, #2d1b4e 75%, #1a0033 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Decorative background elements */
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 50px;
+            margin-bottom: 80px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .log-in-btn {
+            background: rgba(255, 255, 255, 0.9);
+            color: #1a0033;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .log-in-btn:hover {
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Main section */
+        .main-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            padding: 0 50px;
+            align-items: center;
+        }
+
+        .left-content h1 {
+            font-size: 72px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #ffffff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+        }
+
+        .left-content p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 50px;
+            max-width: 500px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 28px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .btn-download {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1a0033;
+        }
+
+        .btn-download:hover {
+            background: #ffffff;
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-browser {
+            background: rgba(100, 116, 255, 0.7);
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-browser:hover {
+            background: rgba(100, 116, 255, 0.9);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(100, 116, 255, 0.3);
+        }
+
+        /* Right side - Illustration area */
+        .right-content {
+            position: relative;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .illustration {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .device {
+            position: absolute;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .device:nth-child(1) {
+            width: 350px;
+            height: 280px;
+            background: linear-gradient(135deg, #2d1b4e, #1f0f3d);
+            border-radius: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 30px 60px rgba(168, 85, 247, 0.3);
+            animation-delay: 0s;
+        }
+
+        .device:nth-child(2) {
+            width: 180px;
+            height: 360px;
+            background: linear-gradient(135deg, #2d1b4e, #1f0f3d);
+            border-radius: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            top: 80px;
+            right: 60px;
+            box-shadow: 0 30px 60px rgba(168, 85, 247, 0.3);
+            animation-delay: 1s;
+        }
+
+        .device:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            border-radius: 20px;
+            bottom: 50px;
+            left: 100px;
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.5);
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Decorative shapes */
+        .shape {
+            position: absolute;
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #a855f7, transparent);
+            border-radius: 50%;
+            top: -150px;
+            right: -150px;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, #ec4899, transparent);
+            border-radius: 50%;
+            bottom: -100px;
+            left: -100px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 20px 30px;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .main-section {
+                grid-template-columns: 1fr;
+                padding: 0 30px;
+                gap: 40px;
+            }
+
+            .left-content h1 {
+                font-size: 48px;
+            }
+
+            .left-content p {
+                font-size: 16px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .right-content {
+                height: 300px;
+            }
+
+            .device:nth-child(1) {
+                width: 250px;
+                height: 200px;
+            }
+
+            .device:nth-child(2) {
+                width: 120px;
+                height: 240px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative elements -->
+    <div class="stars" id="starsContainer"></div>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+
+    <div class="content">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <div class="logo-icon">💬</div>
+                <span>Megachat</span>
+            </div>
+            <button class="log-in-btn">Log In</button>
+        </header>
+
+        <!-- Main Section -->
+        <section class="main-section">
+            <div class="left-content">
+                <h1>Group Chat That's All Fun & Games</h1>
+                <p>Megachat is great for playing games and chilling with friends, or even building a worldwide community. Customize your own space to talk, play, and hang out.</p>
+                <div class="button-group">
+                    <button class="btn btn-download">
+                        <span>⬇</span>
+                        Download for Windows
+                    </button>
+                    <button class="btn btn-browser">
+                        Open Megachat in your browser
+                    </button>
+                </div>
+            </div>
+
+            <div class="right-content">
+                <div class="illustration">
+                    <div class="device"></div>
+                    <div class="device"></div>
+                    <div class="device"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Create decorative stars
+        function createStars() {
+            const container = document.getElementById('starsContainer');
+            const starCount = 50;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild(star);
+            }
+        }
+
+        // Button interactions
+        document.querySelector('.log-in-btn').addEventListener('click', function() {
+            window.location.href = 'login.html';
+        });
+
+        document.querySelector('.btn-download').addEventListener('click', function() {
+            alert('Bắt đầu tải xuống Megachat cho Windows...');
+        });
+
+        document.querySelector('.btn-browser').addEventListener('click', function() {
+            alert('Mở Megachat trong trình duyệt...');
+        });
+
+        document.querySelector('.logo').addEventListener('click', function() {
+            location.reload();
+        });
+
+        // Initialize on load
+        window.addEventListener('load', createStars);
+    </script>
+</body>
+</html>

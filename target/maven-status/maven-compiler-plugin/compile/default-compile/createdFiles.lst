@@ -1,0 +1,3 @@
+com\megachat\config\WebSocketConfig.class
+com\megachat\MegaChatApplication.class
+com\megachat\websocket\ChatEndpoint.class
