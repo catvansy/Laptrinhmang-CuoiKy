@@ -390,9 +390,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Date of Birth <span class="required">*</span></label>
-                        <input type="date" id="registerBirthdate" required>
-                        <div class="error-message" id="registerBirthdateError"></div>
+                        <label>Phone Number <span class="required">*</span></label>
+                        <input type="text" id="registerPhone" placeholder="Enter your phone number" required>
+                        <div class="error-message" id="registerPhoneError"></div>
                     </div>
 
                     <div class="form-group">
@@ -465,7 +465,7 @@
         }
 
         // Handle login
-        function handleLogin(event) {
+        async function handleLogin(event) {
             event.preventDefault();
             clearErrors();
 
@@ -475,95 +475,177 @@
             let isValid = true;
 
             if (!email) {
-                showError('loginEmailError', 'Please enter your email or phone number');
-                document.getElementById('loginEmail').classList.add('error');
-                isValid = false;
-            } else if (!isValidEmail(email) && !isValidPhone(email)) {
-                showError('loginEmailError', 'Please enter a valid email or phone number');
+                showError('loginEmailError', 'Vui lòng nhập email hoặc số điện thoại');
                 document.getElementById('loginEmail').classList.add('error');
                 isValid = false;
             }
 
             if (!password) {
-                showError('loginPasswordError', 'Please enter your password');
-                document.getElementById('loginPassword').classList.add('error');
-                isValid = false;
-            } else if (password.length < 6) {
-                showError('loginPasswordError', 'Password must be at least 6 characters');
+                showError('loginPasswordError', 'Vui lòng nhập mật khẩu');
                 document.getElementById('loginPassword').classList.add('error');
                 isValid = false;
             }
 
-            if (isValid) {
-                alert('Login successful! (Demo)\n\nEmail: ' + email);
+            if (!isValid) return;
+
+            // Disable button and show loading
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Đang đăng nhập...';
+
+            try {
+                const response = await fetch('/megachat/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Lưu thông tin user vào localStorage
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('isLoggedIn', 'true');
+                    
+                    // Redirect đến trang chat
+                    window.location.href = '/megachat/chat.html';
+                } else {
+                    showError('loginPasswordError', data.message || 'Đăng nhập thất bại');
+                    document.getElementById('loginPassword').classList.add('error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showError('loginPasswordError', 'Lỗi kết nối. Vui lòng thử lại sau.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
             }
         }
 
         // Handle register
-        function handleRegister(event) {
+        async function handleRegister(event) {
             event.preventDefault();
             clearErrors();
 
             const email = document.getElementById('registerEmail').value.trim();
             const username = document.getElementById('registerUsername').value.trim();
-            const birthdate = document.getElementById('registerBirthdate').value;
+            const phone = document.getElementById('registerPhone').value.trim();
             const password = document.getElementById('registerPassword').value;
             const confirmPassword = document.getElementById('registerConfirmPassword').value;
 
             let isValid = true;
 
             if (!email) {
-                showError('registerEmailError', 'Please enter your email');
+                showError('registerEmailError', 'Vui lòng nhập email');
                 document.getElementById('registerEmail').classList.add('error');
                 isValid = false;
             } else if (!isValidEmail(email)) {
-                showError('registerEmailError', 'Please enter a valid email');
+                showError('registerEmailError', 'Vui lòng nhập email hợp lệ');
                 document.getElementById('registerEmail').classList.add('error');
                 isValid = false;
             }
 
             if (!username) {
-                showError('registerUsernameError', 'Please enter a username');
+                showError('registerUsernameError', 'Vui lòng nhập username');
                 document.getElementById('registerUsername').classList.add('error');
                 isValid = false;
             } else if (username.length < 3) {
-                showError('registerUsernameError', 'Username must be at least 3 characters');
+                showError('registerUsernameError', 'Username phải có ít nhất 3 ký tự');
                 document.getElementById('registerUsername').classList.add('error');
                 isValid = false;
             }
 
-            if (!birthdate) {
-                showError('registerBirthdateError', 'Please enter your date of birth');
-                document.getElementById('registerBirthdate').classList.add('error');
+            if (!phone) {
+                showError('registerPhoneError', 'Vui lòng nhập số điện thoại');
+                document.getElementById('registerPhone').classList.add('error');
                 isValid = false;
-            } else if (!isValidAge(birthdate)) {
-                showError('registerBirthdateError', 'You must be at least 13 years old');
-                document.getElementById('registerBirthdate').classList.add('error');
+            } else if (!isValidPhone(phone)) {
+                showError('registerPhoneError', 'Vui lòng nhập số điện thoại hợp lệ');
+                document.getElementById('registerPhone').classList.add('error');
                 isValid = false;
             }
 
             if (!password) {
-                showError('registerPasswordError', 'Please enter a password');
+                showError('registerPasswordError', 'Vui lòng nhập mật khẩu');
                 document.getElementById('registerPassword').classList.add('error');
                 isValid = false;
-            } else if (password.length < 8) {
-                showError('registerPasswordError', 'Password must be at least 8 characters');
+            } else if (password.length < 6) {
+                showError('registerPasswordError', 'Mật khẩu phải có ít nhất 6 ký tự');
                 document.getElementById('registerPassword').classList.add('error');
                 isValid = false;
             }
 
             if (!confirmPassword) {
-                showError('registerConfirmError', 'Please confirm your password');
+                showError('registerConfirmError', 'Vui lòng xác nhận mật khẩu');
                 document.getElementById('registerConfirmPassword').classList.add('error');
                 isValid = false;
             } else if (password !== confirmPassword) {
-                showError('registerConfirmError', 'Passwords do not match');
+                showError('registerConfirmError', 'Mật khẩu không khớp');
                 document.getElementById('registerConfirmPassword').classList.add('error');
                 isValid = false;
             }
 
-            if (isValid) {
-                alert('Registration successful! (Demo)\n\nUsername: ' + username + '\nEmail: ' + email);
+            if (!isValid) return;
+
+            // Disable button and show loading
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Đang đăng ký...';
+
+            try {
+                const response = await fetch('/megachat/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        email: email,
+                        phone: phone,
+                        password: password,
+                        confirm_password: confirmPassword
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Đăng ký thành công! Vui lòng đăng nhập.');
+                    // Chuyển sang form đăng nhập
+                    switchForm('login');
+                    // Điền email vào form đăng nhập
+                    document.getElementById('loginEmail').value = email;
+                } else {
+                    // Hiển thị lỗi từ server
+                    if (data.message.includes('Username')) {
+                        showError('registerUsernameError', data.message);
+                        document.getElementById('registerUsername').classList.add('error');
+                    } else if (data.message.includes('Email')) {
+                        showError('registerEmailError', data.message);
+                        document.getElementById('registerEmail').classList.add('error');
+                    } else if (data.message.includes('điện thoại') || data.message.includes('phone')) {
+                        showError('registerPhoneError', data.message);
+                        document.getElementById('registerPhone').classList.add('error');
+                    } else if (data.message.includes('Mật khẩu') || data.message.includes('password')) {
+                        showError('registerPasswordError', data.message);
+                        document.getElementById('registerPassword').classList.add('error');
+                    } else {
+                        showError('registerEmailError', data.message);
+                    }
+                }
+            } catch (error) {
+                console.error('Register error:', error);
+                showError('registerEmailError', 'Lỗi kết nối. Vui lòng thử lại sau.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
             }
         }
 
@@ -573,20 +655,9 @@
         }
 
         function isValidPhone(phone) {
-            return /^[0-9\-\+$$$$\s]+$/.test(phone) && phone.length >= 10;
-        }
-
-        function isValidAge(birthdate) {
-            const today = new Date();
-            const birth = new Date(birthdate);
-            let age = today.getFullYear() - birth.getFullYear();
-            const monthDiff = today.getMonth() - birth.getMonth();
-
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-                age--;
-            }
-
-            return age >= 13;
+            // Chấp nhận số điện thoại Việt Nam (10-11 số)
+            const cleaned = phone.replace(/[\s\-\(\)]/g, '');
+            return /^[0-9]{10,11}$/.test(cleaned);
         }
 
         // Error handling

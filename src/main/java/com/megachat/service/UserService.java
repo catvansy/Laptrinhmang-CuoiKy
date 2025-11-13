@@ -2,15 +2,18 @@ package com.megachat.service;
 
 import com.megachat.model.User;
 import com.megachat.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     public User register(String username, String email, String phone, String password) throws Exception {
@@ -44,7 +47,7 @@ public class UserService {
         user.setUsername(username);
         user.setEmail(email);
         user.setPhone(phone);
-        user.setPassword(encodePassword(password)); // In production, use BCrypt
+        user.setPassword(passwordEncoder.encode(password)); // Mã hóa password bằng BCrypt
 
         return userRepository.save(user);
     }
@@ -63,22 +66,11 @@ public class UserService {
         }
 
         User user = userOpt.get();
-        if (!verifyPassword(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new Exception("Mật khẩu không chính xác");
         }
 
         return user;
-    }
-
-    // Simple password encoding (in production use BCryptPasswordEncoder)
-    private String encodePassword(String password) {
-        // For now, just return as is. In production, use BCrypt or similar
-        return password;
-    }
-
-    private boolean verifyPassword(String rawPassword, String encodedPassword) {
-        // For now, direct comparison. In production, use BCrypt verification
-        return rawPassword.equals(encodedPassword);
     }
 
     public Optional<User> findByUsername(String username) {

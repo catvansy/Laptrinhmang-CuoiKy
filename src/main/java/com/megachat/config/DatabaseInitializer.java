@@ -17,9 +17,10 @@ public class DatabaseInitializer {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
             // Connect to MySQL server without specifying a database
+            // Lưu ý: Cập nhật password theo cấu hình MySQL của bạn
             String url = "jdbc:mysql://localhost:3307/?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
             String user = "root";
-            String password = "157953";
+            String password = ""; // Để trống nếu MySQL không có password, hoặc nhập password của bạn
             
             try (Connection conn = DriverManager.getConnection(url, user, password);
                 Statement stmt = conn.createStatement()) {

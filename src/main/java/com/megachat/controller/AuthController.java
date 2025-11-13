@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,12 +50,13 @@ public class AuthController {
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", "Đăng ký thành công");
-            response.put("user", Map.of(
-                "id", user.getId(),
-                "username", user.getUsername(),
-                "email", user.getEmail(),
-                "phone", user.getPhone()
-            ));
+            
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("id", user.getId());
+            userData.put("username", user.getUsername());
+            userData.put("email", user.getEmail());
+            userData.put("phone", user.getPhone());
+            response.put("user", userData);
 
             return ResponseEntity.ok(response);
 
@@ -67,7 +69,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
+    public ResponseEntity<?> login(@RequestBody Map<String, String> request, HttpSession session) {
         try {
             String emailOrPhone = request.get("email");
             String password = request.get("password");
@@ -89,15 +91,21 @@ public class AuthController {
             // Login user
             User user = userService.login(emailOrPhone, password);
 
+            // Lưu thông tin user vào session
+            session.setAttribute("userId", user.getId());
+            session.setAttribute("username", user.getUsername());
+            session.setAttribute("email", user.getEmail());
+
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", "Đăng nhập thành công");
-            response.put("user", Map.of(
-                "id", user.getId(),
-                "username", user.getUsername(),
-                "email", user.getEmail(),
-                "phone", user.getPhone()
-            ));
+            
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("id", user.getId());
+            userData.put("username", user.getUsername());
+            userData.put("email", user.getEmail());
+            userData.put("phone", user.getPhone());
+            response.put("user", userData);
 
             return ResponseEntity.ok(response);
 
@@ -107,6 +115,15 @@ public class AuthController {
                 "message", e.getMessage()
             ));
         }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        session.invalidate();
+        return ResponseEntity.ok(Map.of(
+            "success", true,
+            "message", "Đăng xuất thành công"
+        ));
     }
 
     @GetMapping("/profile/{userId}")
