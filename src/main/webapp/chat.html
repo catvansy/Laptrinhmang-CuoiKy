@@ -339,49 +339,40 @@
             padding: 16px 24px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 8px;
         }
 
         .message {
             display: flex;
-            gap: 12px;
-            margin-bottom: 8px;
+            flex-direction: column;
+            gap: 4px;
+            max-width: 65%;
         }
 
-        .message-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #7289da, #43b581);
-            flex-shrink: 0;
+        .message.mine {
+            align-self: flex-end;
+            text-align: right;
         }
 
-        .message-content {
-            flex: 1;
-        }
-
-        .message-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 4px;
-        }
-
-        .message-author {
-            font-weight: 600;
-            font-size: 14px;
+        .message .bubble {
+            display: inline-block;
+            padding: 10px 14px;
+            border-radius: 14px;
+            background: #2c2f33;
             color: #ffffff;
-        }
-
-        .message-time {
-            font-size: 12px;
-            color: #72767d;
-        }
-
-        .message-text {
             font-size: 14px;
-            color: #d1d5db;
-            line-height: 1.5;
+            line-height: 1.4;
+            word-break: break-word;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .message.mine .bubble {
+            background: #5865f2;
+        }
+
+        .message .time {
+            font-size: 11px;
+            color: #72767d;
         }
 
         /* Input Area */
@@ -656,6 +647,7 @@
             const chatHeaderTitle = document.getElementById('chatHeaderTitle');
             const messageInput = document.getElementById('messageInput');
             const sendButton = document.getElementById('sendButton');
+            const messagesContainer = document.getElementById('messagesContainer');
 
             const state = {
                 currentView: 'friends',
@@ -664,6 +656,9 @@
                 outgoing: [],
                 selectedFriend: null,
                 currentUser: currentUser,
+                messages: {},
+                lastMessageIds: {},
+                pollingInterval: null,
             };
 
             function setStatus(message, type = 'info') {
@@ -676,6 +671,34 @@
                 panelStatus.style.display = 'block';
                 panelStatus.textContent = message;
                 panelStatus.className = `panel-status ${type}`;
+            }
+
+            function escapeHtml(str) {
+                return str
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+
+            function formatTimestamp(dateStr) {
+                if (!dateStr) return '';
+                try {
+                    const date = new Date(dateStr);
+                    return date.toLocaleTimeString('vi-VN', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                } catch (error) {
+                    return '';
+                }
+            }
+
+            function scrollMessagesToBottom() {
+                requestAnimationFrame(() => {
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                });
             }
 
             async function apiRequest(path, options = {}) {
@@ -747,6 +770,35 @@
                 if (!state.selectedFriend) {
                     updateChatSelection(state.friends[0]);
                 }
+            }
+
+            function renderMessages(friendId) {
+                if (!friendId) {
+                    messagesContainer.innerHTML = '<div class="empty-state">Chọn một người bạn ở danh sách bên trái để bắt đầu trò chuyện.</div>';
+                    return;
+                }
+
+                const messages = state.messages[friendId] || [];
+                if (!messages.length) {
+                    messagesContainer.innerHTML = '<div class="empty-state">Hãy bắt đầu cuộc trò chuyện với người bạn này.</div>';
+                    return;
+                }
+
+                const fragment = document.createDocumentFragment();
+                messages.forEach(msg => {
+                    const isMine = Number(msg.senderId) === Number(state.currentUser.id);
+                    const wrapper = document.createElement('div');
+                    wrapper.className = `message ${isMine ? 'mine' : 'their'}`;
+                    wrapper.innerHTML = `
+                        <div class="bubble">${escapeHtml(msg.content)}</div>
+                        <div class="time">${formatTimestamp(msg.createdAt)}</div>
+                    `;
+                    fragment.appendChild(wrapper);
+                });
+
+                messagesContainer.innerHTML = '';
+                messagesContainer.appendChild(fragment);
+                scrollMessagesToBottom();
             }
 
             function renderPending() {
@@ -829,6 +881,7 @@
             }
 
             function updateChatSelection(friend) {
+                stopPolling();
                 state.selectedFriend = friend;
                 if (!friend) {
                     chatHeaderTitle.textContent = 'Chưa chọn bạn bè';
@@ -836,6 +889,7 @@
                     messageInput.placeholder = 'Hãy chọn một người bạn để nhắn tin';
                     messageInput.disabled = true;
                     sendButton.disabled = true;
+                    renderMessages(null);
                     return;
                 }
 
@@ -852,6 +906,9 @@
                         item.style.background = 'transparent';
                     }
                 });
+
+                loadConversation(friend.id, true);
+                startPolling(friend.id);
             }
 
             function renderCurrentView() {
@@ -898,6 +955,78 @@
                     if (state.currentView === 'pending') {
                         friendsList.innerHTML = `<div class="empty-state">${error.message}</div>`;
                     }
+                }
+            }
+
+            async function loadConversation(friendId, reset = false) {
+                if (!friendId) return;
+                const lastId = !reset ? state.lastMessageIds[friendId] : null;
+                const query = lastId ? `?afterId=${lastId}` : '';
+                try {
+                    const data = await apiRequest(`/messages/${friendId}${query}`);
+                    const newMessages = data.messages || [];
+                    if (reset) {
+                        state.messages[friendId] = [];
+                        state.lastMessageIds[friendId] = null;
+                    }
+                    if (newMessages.length) {
+                        const current = state.messages[friendId] || [];
+                        const merged = reset ? newMessages : current.concat(newMessages);
+                        state.messages[friendId] = merged;
+                        state.lastMessageIds[friendId] = newMessages[newMessages.length - 1].id;
+                    }
+                    if (state.selectedFriend && state.selectedFriend.id === friendId) {
+                        renderMessages(friendId);
+                    }
+                } catch (error) {
+                    if (reset) {
+                        setStatus(error.message, 'error');
+                        messagesContainer.innerHTML = `<div class="empty-state">${error.message}</div>`;
+                    }
+                }
+            }
+
+            function startPolling(friendId) {
+                stopPolling();
+                if (!friendId) {
+                    return;
+                }
+                state.pollingInterval = setInterval(() => {
+                    loadConversation(friendId, false);
+                }, 3000);
+            }
+
+            function stopPolling() {
+                if (state.pollingInterval) {
+                    clearInterval(state.pollingInterval);
+                    state.pollingInterval = null;
+                }
+            }
+
+            async function sendChatMessage() {
+                if (!state.selectedFriend) return;
+                const text = messageInput.value.trim();
+                if (!text) {
+                    setStatus('Nội dung tin nhắn không được để trống', 'error');
+                    return;
+                }
+
+                try {
+                    const data = await apiRequest(`/messages/${state.selectedFriend.id}`, {
+                        method: 'POST',
+                        body: { content: text }
+                    });
+                    messageInput.value = '';
+                    setStatus('');
+                    const msg = data.message;
+                    if (!state.messages[state.selectedFriend.id]) {
+                        state.messages[state.selectedFriend.id] = [];
+                    }
+                    state.messages[state.selectedFriend.id].push(msg);
+                    state.lastMessageIds[state.selectedFriend.id] = msg.id;
+                    renderMessages(state.selectedFriend.id);
+                } catch (error) {
+                    setStatus(error.message, 'error');
                 }
             }
 
@@ -970,23 +1099,16 @@
                 }
             });
 
-            sendButton.addEventListener('click', () => {
-                if (!state.selectedFriend) return;
-                const text = messageInput.value.trim();
-                if (!text) {
-                    setStatus('Nội dung tin nhắn không được để trống', 'error');
-                    return;
-                }
-                setStatus('Chức năng chat realtime sẽ được cập nhật sau', 'info');
-                messageInput.value = '';
-            });
+            sendButton.addEventListener('click', sendChatMessage);
 
             messageInput.addEventListener('keypress', (event) => {
                 if (event.key === 'Enter') {
                     event.preventDefault();
-                    sendButton.click();
+                    sendChatMessage();
                 }
             });
+
+            window.addEventListener('beforeunload', stopPolling);
 
             loadFriends();
             loadRequests();

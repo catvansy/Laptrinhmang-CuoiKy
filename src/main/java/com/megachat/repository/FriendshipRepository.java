@@ -33,6 +33,15 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
            "WHERE (f.requester = :user OR f.receiver = :user) " +
            "AND f.status = com.megachat.model.FriendshipStatus.ACCEPTED")
     List<Friendship> findAcceptedFriendships(@Param("user") User user);
+
+    @Query("SELECT COUNT(f) > 0 FROM Friendship f " +
+           "WHERE ((f.requester = :user1 AND f.receiver = :user2) " +
+           "OR (f.requester = :user2 AND f.receiver = :user1)) " +
+           "AND f.status = com.megachat.model.FriendshipStatus.ACCEPTED")
+    boolean existsAcceptedFriendship(
+        @Param("user1") User user1,
+        @Param("user2") User user2
+    );
 }
 
 
