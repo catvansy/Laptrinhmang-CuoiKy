@@ -147,6 +147,22 @@
             color: #ffffff;
         }
 
+        .panel-status {
+            padding: 8px 16px;
+            font-size: 12px;
+            color: #b9bbbe;
+            border-bottom: 1px solid #2c2f33;
+            display: none;
+        }
+        
+        .panel-status.success {
+            color: #43b581;
+        }
+        
+        .panel-status.error {
+            color: #f04747;
+        }
+
         .friends-list {
             flex: 1;
             overflow-y: auto;
@@ -203,6 +219,56 @@
             font-size: 12px;
             color: #72767d;
             margin-top: 2px;
+        }
+
+        .empty-state {
+            padding: 24px;
+            text-align: center;
+            color: #72767d;
+            font-size: 14px;
+        }
+
+        .pending-section-title {
+            padding: 8px 16px;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #b9bbbe;
+            letter-spacing: 0.5px;
+        }
+
+        .pending-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .pending-btn {
+            flex: 1;
+            padding: 6px 8px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .pending-btn.accept {
+            background: #2fba85;
+            color: #0f0f0f;
+        }
+
+        .pending-btn.accept:hover {
+            background: #28a173;
+        }
+
+        .pending-btn.decline {
+            background: #2c2f33;
+            color: #f04747;
+        }
+
+        .pending-btn.decline:hover {
+            background: #3a3d42;
         }
 
         .add-friend-btn {
@@ -353,7 +419,12 @@
             transition: all 0.2s ease;
         }
 
-        .send-btn:hover {
+        .send-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .send-btn:not(:disabled):hover {
             background: #4752c4;
         }
 
@@ -506,62 +577,14 @@
             </div>
 
             <div class="tabs">
-                <button class="tab active">All</button>
-                <button class="tab">Online</button>
-                <button class="tab">Pending</button>
+                <button class="tab active" data-view="friends">Friends</button>
+                <button class="tab" data-view="pending">Pending</button>
             </div>
 
-            <div class="friends-list">
-                <div class="friend-item">
-                    <div class="friend-avatar">
-                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px;">😊</div>
-                        <div class="status-dot"></div>
-                    </div>
-                    <div class="friend-info">
-                        <div class="friend-name">John Developer</div>
-                        <div class="friend-status">Online</div>
-                    </div>
-                </div>
+            <div class="panel-status" id="panelStatus"></div>
 
-                <div class="friend-item">
-                    <div class="friend-avatar">
-                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px;">🎮</div>
-                    </div>
-                    <div class="friend-info">
-                        <div class="friend-name">Sarah Designer</div>
-                        <div class="friend-status">Playing Game</div>
-                    </div>
-                </div>
-
-                <div class="friend-item">
-                    <div class="friend-avatar">
-                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px;">💻</div>
-                    </div>
-                    <div class="friend-info">
-                        <div class="friend-name">Mike Coder</div>
-                        <div class="friend-status">Away</div>
-                    </div>
-                </div>
-
-                <div class="friend-item">
-                    <div class="friend-avatar">
-                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px;">🎨</div>
-                    </div>
-                    <div class="friend-info">
-                        <div class="friend-name">Emily Artist</div>
-                        <div class="friend-status">Idle</div>
-                    </div>
-                </div>
-
-                <div class="friend-item">
-                    <div class="friend-avatar">
-                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px;">🚀</div>
-                    </div>
-                    <div class="friend-info">
-                        <div class="friend-name">Alex Startup</div>
-                        <div class="friend-status">Do not disturb</div>
-                    </div>
-                </div>
+            <div class="friends-list" id="friendsList">
+                <div class="empty-state">Đang tải danh sách bạn bè...</div>
             </div>
 
             <button class="add-friend-btn">+ Add Friend</button>
@@ -570,18 +593,19 @@
         <!-- Chat Area -->
         <div class="chat-area">
             <div class="chat-header">
-                <div class="chat-header-title">John Developer</div>
+                <div class="chat-header-title" id="chatHeaderTitle">Chưa chọn bạn bè</div>
                 <div class="chat-header-icons">
-                    <button class="icon-btn">📞</button>
-                    <button class="icon-btn">📹</button>
-                    <button class="icon-btn">ℹ️</button>
+                    <button class="icon-btn" title="Thông tin cuộc trò chuyện">ℹ️</button>
                 </div>
             </div>
 
+            <div class="messages" id="messagesContainer">
+                <div class="empty-state">Chọn một người bạn ở danh sách bên trái để bắt đầu trò chuyện.</div>
+            </div>
 
             <div class="input-area">
-                <input type="text" class="input-box" placeholder="Message @John Developer...">
-                <button class="send-btn">➤</button>
+                <input type="text" class="input-box" id="messageInput" placeholder="Hãy chọn một người bạn để nhắn tin" disabled>
+                <button class="send-btn" id="sendButton" disabled>➤</button>
             </div>
         </div>
     </div>
@@ -593,11 +617,11 @@
             <form class="modal-form">
                 <div class="form-group">
                     <label class="form-label">Username</label>
-                    <input type="text" class="form-input" placeholder="Enter username">
+                    <input type="text" class="form-input" id="friendUsername" placeholder="Nhập username người bạn muốn kết nối">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Message</label>
-                    <textarea class="form-input" rows="4" placeholder="Say something nice!"></textarea>
+                    <textarea class="form-input" id="friendMessage" rows="4" placeholder="Lời nhắn (tuỳ chọn)"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary">Cancel</button>
@@ -608,27 +632,365 @@
     </div>
 
     <script>
-        // Add Friend modal functionality
-        const modal = document.getElementById('addFriendModal');
-        const addFriendBtns = document.querySelectorAll('.add-friend-btn');
-        const cancelBtn = document.querySelector('.btn-secondary');
+        (function () {
+            const CONTEXT_PATH = window.location.pathname.startsWith('/megachat') ? '/megachat' : '';
+            const API_BASE = `${CONTEXT_PATH}/api`;
 
-        addFriendBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                modal.classList.add('active');
-            });
-        });
-
-        cancelBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            modal.classList.remove('active');
-        });
-
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
+            const savedUser = localStorage.getItem('user');
+            if (!savedUser) {
+                window.location.href = `${CONTEXT_PATH}/login.html`;
+                return;
             }
-        });
+            const currentUser = JSON.parse(savedUser);
+
+            const modal = document.getElementById('addFriendModal');
+            const addFriendBtns = document.querySelectorAll('.add-friend-btn');
+            const cancelBtn = document.querySelector('.btn-secondary');
+            const modalForm = document.querySelector('.modal-form');
+            const usernameInput = document.getElementById('friendUsername');
+            const messageInputModal = document.getElementById('friendMessage');
+
+            const tabs = document.querySelectorAll('.tab');
+            const friendsList = document.getElementById('friendsList');
+            const panelStatus = document.getElementById('panelStatus');
+            const chatHeaderTitle = document.getElementById('chatHeaderTitle');
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+
+            const state = {
+                currentView: 'friends',
+                friends: [],
+                incoming: [],
+                outgoing: [],
+                selectedFriend: null,
+                currentUser: currentUser,
+            };
+
+            function setStatus(message, type = 'info') {
+                if (!message) {
+                    panelStatus.style.display = 'none';
+                    panelStatus.textContent = '';
+                    panelStatus.className = 'panel-status';
+                    return;
+                }
+                panelStatus.style.display = 'block';
+                panelStatus.textContent = message;
+                panelStatus.className = `panel-status ${type}`;
+            }
+
+            async function apiRequest(path, options = {}) {
+                const opts = {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {},
+                    ...options,
+                };
+
+                if (opts.body && typeof opts.body !== 'string') {
+                    opts.headers['Content-Type'] = 'application/json';
+                    opts.body = JSON.stringify(opts.body);
+                }
+
+                const response = await fetch(`${API_BASE}${path}`, opts);
+                let data = {};
+                try {
+                    data = await response.json();
+                } catch (error) {
+                    // ignore
+                }
+
+                if (!response.ok || data.success === false) {
+                    const message = data && data.message ? data.message : 'Có lỗi xảy ra';
+                    throw new Error(message);
+                }
+
+                return data;
+            }
+
+            function renderFriends() {
+                friendsList.innerHTML = '';
+                if (!state.friends.length) {
+                    friendsList.innerHTML = '<div class="empty-state">Bạn chưa có bạn bè nào. Hãy gửi lời mời kết bạn để bắt đầu trò chuyện!</div>';
+                    updateChatSelection(null);
+                    return;
+                }
+
+                state.friends.forEach(friend => {
+                    const item = document.createElement('div');
+                    item.className = 'friend-item';
+                    item.dataset.friendId = friend.id;
+
+                    item.innerHTML = `
+                        <div class="friend-avatar">
+                            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                                ${friend.username.charAt(0).toUpperCase()}
+                            </div>
+                            <div class="status-dot"></div>
+                        </div>
+                        <div class="friend-info">
+                            <div class="friend-name">${friend.username}</div>
+                            <div class="friend-status">${friend.email || 'Bạn bè'}</div>
+                        </div>
+                    `;
+
+                    item.addEventListener('click', () => {
+                        updateChatSelection(friend);
+                    });
+
+                    if (state.selectedFriend && state.selectedFriend.id === friend.id) {
+                        item.style.background = '#2c2f33';
+                    }
+
+                    friendsList.appendChild(item);
+                });
+
+                if (!state.selectedFriend) {
+                    updateChatSelection(state.friends[0]);
+                }
+            }
+
+            function renderPending() {
+                friendsList.innerHTML = '';
+
+                if (!state.incoming.length && !state.outgoing.length) {
+                    friendsList.innerHTML = '<div class="empty-state">Chưa có lời mời kết bạn nào.</div>';
+                    return;
+                }
+
+                if (state.incoming.length) {
+                    const incomingTitle = document.createElement('div');
+                    incomingTitle.className = 'pending-section-title';
+                    incomingTitle.textContent = 'Lời mời đến';
+                    friendsList.appendChild(incomingTitle);
+
+                    state.incoming.forEach(request => {
+                        friendsList.appendChild(createPendingItem(request));
+                    });
+                }
+
+                if (state.outgoing.length) {
+                    const outgoingTitle = document.createElement('div');
+                    outgoingTitle.className = 'pending-section-title';
+                    outgoingTitle.textContent = 'Lời mời đã gửi';
+                    friendsList.appendChild(outgoingTitle);
+
+                    state.outgoing.forEach(request => {
+                        friendsList.appendChild(createPendingItem(request));
+                    });
+                }
+            }
+
+            function createPendingItem(request) {
+                const item = document.createElement('div');
+                item.className = 'friend-item';
+
+                const currentId = state.currentUser ? Number(state.currentUser.id) : null;
+                const receiverId = request.receiver ? Number(request.receiver.id) : null;
+                const requesterId = request.requester ? Number(request.requester.id) : null;
+
+                const isCurrentUserReceiver = currentId !== null && receiverId === currentId;
+                const isCurrentUserRequester = currentId !== null && requesterId === currentId;
+
+                const otherUser = isCurrentUserReceiver ? request.requester : request.receiver;
+                const otherName = otherUser && otherUser.username ? otherUser.username : 'Người dùng';
+                const otherInitial = otherName.charAt(0).toUpperCase();
+
+                const statusText = isCurrentUserReceiver
+                    ? 'Đang chờ bạn phản hồi'
+                    : 'Đang chờ đối phương';
+
+                item.innerHTML = `
+                    <div class="friend-avatar">
+                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                            ${otherInitial}
+                        </div>
+                    </div>
+                    <div class="friend-info">
+                        <div class="friend-name">${otherName}</div>
+                        <div class="friend-status">${request.message || statusText}</div>
+                        ${isCurrentUserReceiver ? `
+                            <div class="pending-actions">
+                                <button class="pending-btn accept" data-action="accept" data-id="${request.id}">Đồng ý</button>
+                                <button class="pending-btn decline" data-action="decline" data-id="${request.id}">Từ chối</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+
+                if (isCurrentUserReceiver) {
+                    item.querySelectorAll('.pending-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            respondRequest(btn.dataset.id, btn.dataset.action);
+                        });
+                    });
+                }
+
+                return item;
+            }
+
+            function updateChatSelection(friend) {
+                state.selectedFriend = friend;
+                if (!friend) {
+                    chatHeaderTitle.textContent = 'Chưa chọn bạn bè';
+                    messageInput.value = '';
+                    messageInput.placeholder = 'Hãy chọn một người bạn để nhắn tin';
+                    messageInput.disabled = true;
+                    sendButton.disabled = true;
+                    return;
+                }
+
+                chatHeaderTitle.textContent = friend.username;
+                messageInput.placeholder = `Nhắn tin cho @${friend.username}`;
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+
+                // Highlight selected friend
+                document.querySelectorAll('.friend-item').forEach(item => {
+                    if (item.dataset.friendId && Number(item.dataset.friendId) === friend.id) {
+                        item.style.background = '#2c2f33';
+                    } else {
+                        item.style.background = 'transparent';
+                    }
+                });
+            }
+
+            function renderCurrentView() {
+                if (state.currentView === 'friends') {
+                    renderFriends();
+                } else {
+                    renderPending();
+                }
+            }
+
+            async function loadFriends() {
+                const showStatus = state.currentView === 'friends';
+                try {
+                    if (showStatus) {
+                        setStatus('Đang tải danh sách bạn bè...');
+                    }
+                    const data = await apiRequest('/friends');
+                    state.friends = data.friends || [];
+                    if (showStatus) {
+                        setStatus('');
+                    }
+                    if (state.currentView === 'friends') {
+                        renderFriends();
+                    }
+                } catch (error) {
+                    if (showStatus) {
+                        setStatus(error.message, 'error');
+                    }
+                    if (state.currentView === 'friends') {
+                        friendsList.innerHTML = `<div class="empty-state">${error.message}</div>`;
+                    }
+                }
+            }
+
+            async function loadRequests() {
+                try {
+                    const data = await apiRequest('/friends/requests');
+                    state.incoming = data.incoming || [];
+                    state.outgoing = data.outgoing || [];
+                    if (state.currentView === 'pending') {
+                        renderPending();
+                    }
+                } catch (error) {
+                    if (state.currentView === 'pending') {
+                        friendsList.innerHTML = `<div class="empty-state">${error.message}</div>`;
+                    }
+                }
+            }
+
+            async function respondRequest(id, action) {
+                const endpoint = `/friends/requests/${id}/${action}`;
+                try {
+                    setStatus('Đang cập nhật lời mời...');
+                    await apiRequest(endpoint, { method: 'POST' });
+                    await Promise.all([loadFriends(), loadRequests()]);
+                    setStatus('Đã cập nhật lời mời', 'success');
+                } catch (error) {
+                    setStatus(error.message, 'error');
+                }
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    state.currentView = tab.dataset.view;
+                    renderCurrentView();
+                });
+            });
+
+            addFriendBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    modal.classList.add('active');
+                    usernameInput.focus();
+                });
+            });
+
+            cancelBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                modal.classList.remove('active');
+                modalForm.reset();
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    modalForm.reset();
+                }
+            });
+
+            modalForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const username = usernameInput.value.trim();
+                const note = messageInputModal.value.trim();
+
+                if (!username) {
+                    setStatus('Vui lòng nhập username cần kết bạn', 'error');
+                    return;
+                }
+
+                try {
+                    setStatus('Đang gửi lời mời kết bạn...');
+                    await apiRequest('/friends/requests', {
+                        method: 'POST',
+                        body: {
+                            targetUsername: username,
+                            message: note || null,
+                        },
+                    });
+                    setStatus('Đã gửi lời mời kết bạn', 'success');
+                    modal.classList.remove('active');
+                    modalForm.reset();
+                    await Promise.all([loadFriends(), loadRequests()]);
+                } catch (error) {
+                    setStatus(error.message, 'error');
+                }
+            });
+
+            sendButton.addEventListener('click', () => {
+                if (!state.selectedFriend) return;
+                const text = messageInput.value.trim();
+                if (!text) {
+                    setStatus('Nội dung tin nhắn không được để trống', 'error');
+                    return;
+                }
+                setStatus('Chức năng chat realtime sẽ được cập nhật sau', 'info');
+                messageInput.value = '';
+            });
+
+            messageInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    sendButton.click();
+                }
+            });
+
+            loadFriends();
+            loadRequests();
+        })();
     </script>
 </body>
 </html>
