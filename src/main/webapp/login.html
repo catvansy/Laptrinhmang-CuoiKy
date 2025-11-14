@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord - Login & Register</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 25%, #1f0d5e 50%, #0a2e6f 75%, #001a4d 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animated particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 10s infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        /* Main container */
+        .container {
+            display: flex;
+            gap: 40px;
+            z-index: 10;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Form card */
+        .form-card {
+            background: rgba(45, 27, 78, 0.95);
+            border-radius: 12px;
+            padding: 40px;
+            width: 360px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            margin: 0 auto;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .discord-logo {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .form-header h2 {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .form-header p {
+            color: #b5bac1;
+            font-size: 14px;
+        }
+
+        /* Form groups */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #dbdee1;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        label .required {
+            color: #ed4245;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"] {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="date"]:focus {
+            outline: none;
+            background: rgba(0, 0, 0, 0.5);
+            border-color: #5865f2;
+            box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
+        }
+
+        input::placeholder {
+            color: #72767d;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #5865f2 0%, #4752c4 100%);
+            color: #fff;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #6c77ff 0%, #5a63d8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary.active {
+            background: #5865f2;
+            border-color: #5865f2;
+        }
+
+        /* Links */
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        a {
+            color: #5865f2;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: #6c77ff;
+            text-decoration: underline;
+        }
+
+        .form-footer p {
+            color: #b5bac1;
+        }
+
+        .form-footer p a {
+            margin-left: 4px;
+        }
+
+        /* QR Code Section */
+        .qr-section {
+            width: 300px;
+            background: rgba(45, 27, 78, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            display: none;
+        }
+
+        .qr-box {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .qr-code {
+            font-size: 80px;
+        }
+
+        .qr-section h3 {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .qr-section p {
+            color: #b5bac1;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .qr-section .passkey-link {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #5865f2;
+            text-decoration: none;
+        }
+
+        /* Hidden form */
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        /* Error message */
+        .error-message {
+            color: #ed4245;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        input.error {
+            border-color: #ed4245 !important;
+            background: rgba(237, 66, 69, 0.1) !important;
+        }
+
+        /* Forgot password link */
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .form-card, .qr-section {
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .qr-section {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles background -->
+    <div class="particles" id="particlesContainer"></div>
+
+    <!-- Main container -->
+    <div class="container">
+        <!-- Form card -->
+        <div class="form-card">
+            <!-- LOGIN FORM -->
+            <div class="form-section active" id="loginForm">
+                <div class="form-header">
+                    <h2>Welcome back!</h2>
+                    <p>We're so excited to see you again!</p>
+                </div>
+
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>Email or Phone Number <span class="required">*</span></label>
+                        <input type="text" id="loginEmail" placeholder="Enter your email or phone" required>
+                        <div class="error-message" id="loginEmailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password <span class="required">*</span></label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                        <div class="error-message" id="loginPasswordError"></div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Log In</button>
+                </form>
+
+                <div class="forgot-password">
+                    <a href="javascript:void(0)" id="forgotPasswordLink">Forgot your password?</a>
+                </div>
+
+                <div class="form-footer">
+                    <p>Need an account? <a href="#" onclick="switchForm('register')">Register</a></p>
+                </div>
+            </div>
+
+            <!-- REGISTER FORM -->
+            <div class="form-section" id="registerForm">
+                <div class="form-header">
+                    <h2>Create an account</h2>
+                    <p>Join our community today!</p>
+                </div>
+
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label>Email <span class="required">*</span></label>
+                        <input type="email" id="registerEmail" placeholder="Enter your email" required>
+                        <div class="error-message" id="registerEmailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Username <span class="required">*</span></label>
+                        <input type="text" id="registerUsername" placeholder="Choose a username" required>
+                        <div class="error-message" id="registerUsernameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone Number <span class="required">*</span></label>
+                        <input type="text" id="registerPhone" placeholder="Enter your phone number" required>
+                        <div class="error-message" id="registerPhoneError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password <span class="required">*</span></label>
+                        <input type="password" id="registerPassword" placeholder="Create a password" required>
+                        <div class="error-message" id="registerPasswordError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Confirm Password <span class="required">*</span></label>
+                        <input type="password" id="registerConfirmPassword" placeholder="Confirm your password" required>
+                        <div class="error-message" id="registerConfirmError"></div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Register</button>
+                </form>
+
+                <div class="form-footer">
+                    <p>Already have an account? <a href="#" onclick="switchForm('login')">Log In</a></p>
+                </div>
+            </div>
+        </div>
+
+    <script>
+        // Generate random particles
+        function createParticles() {
+            const container = document.getElementById('particlesContainer');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+
+                const tx = (Math.random() - 0.5) * 200;
+                const ty = (Math.random() - 0.5) * 200;
+
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.animationDuration = (Math.random() * 8 + 12) + 's';
+
+                container.appendChild(particle);
+            }
+        }
+
+        // Switch between forms
+        function switchForm(formType) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const buttons = document.querySelectorAll('.btn-group .btn-secondary');
+
+            if (formType === 'login') {
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+                buttons[0].classList.add('active');
+                buttons[1].classList.remove('active');
+            } else {
+                registerForm.classList.add('active');
+                loginForm.classList.remove('active');
+                buttons[1].classList.add('active');
+                buttons[0].classList.remove('active');
+            }
+
+            clearErrors();
+        }
+
+        // Handle login
+        async function handleLogin(event) {
+            event.preventDefault();
+            clearErrors();
+
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            let isValid = true;
+
+            if (!email) {
+                showError('loginEmailError', 'Vui lòng nhập email hoặc số điện thoại');
+                document.getElementById('loginEmail').classList.add('error');
+                isValid = false;
+            }
+
+            if (!password) {
+                showError('loginPasswordError', 'Vui lòng nhập mật khẩu');
+                document.getElementById('loginPassword').classList.add('error');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Disable button and show loading
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Đang đăng nhập...';
+
+            try {
+                const response = await fetch('/megachat/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Lưu thông tin user vào localStorage
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem('isLoggedIn', 'true');
+                    
+                    // Redirect đến trang chat
+                    window.location.href = '/megachat/chat.html';
+                } else {
+                    showError('loginPasswordError', data.message || 'Đăng nhập thất bại');
+                    document.getElementById('loginPassword').classList.add('error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showError('loginPasswordError', 'Lỗi kết nối. Vui lòng thử lại sau.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        }
+
+        // Handle register
+        async function handleRegister(event) {
+            event.preventDefault();
+            clearErrors();
+
+            const email = document.getElementById('registerEmail').value.trim();
+            const username = document.getElementById('registerUsername').value.trim();
+            const phone = document.getElementById('registerPhone').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+
+            let isValid = true;
+
+            if (!email) {
+                showError('registerEmailError', 'Vui lòng nhập email');
+                document.getElementById('registerEmail').classList.add('error');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                showError('registerEmailError', 'Vui lòng nhập email hợp lệ');
+                document.getElementById('registerEmail').classList.add('error');
+                isValid = false;
+            }
+
+            if (!username) {
+                showError('registerUsernameError', 'Vui lòng nhập username');
+                document.getElementById('registerUsername').classList.add('error');
+                isValid = false;
+            } else if (username.length < 3) {
+                showError('registerUsernameError', 'Username phải có ít nhất 3 ký tự');
+                document.getElementById('registerUsername').classList.add('error');
+                isValid = false;
+            }
+
+            if (!phone) {
+                showError('registerPhoneError', 'Vui lòng nhập số điện thoại');
+                document.getElementById('registerPhone').classList.add('error');
+                isValid = false;
+            } else if (!isValidPhone(phone)) {
+                showError('registerPhoneError', 'Vui lòng nhập số điện thoại hợp lệ');
+                document.getElementById('registerPhone').classList.add('error');
+                isValid = false;
+            }
+
+            if (!password) {
+                showError('registerPasswordError', 'Vui lòng nhập mật khẩu');
+                document.getElementById('registerPassword').classList.add('error');
+                isValid = false;
+            } else if (password.length < 6) {
+                showError('registerPasswordError', 'Mật khẩu phải có ít nhất 6 ký tự');
+                document.getElementById('registerPassword').classList.add('error');
+                isValid = false;
+            }
+
+            if (!confirmPassword) {
+                showError('registerConfirmError', 'Vui lòng xác nhận mật khẩu');
+                document.getElementById('registerConfirmPassword').classList.add('error');
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                showError('registerConfirmError', 'Mật khẩu không khớp');
+                document.getElementById('registerConfirmPassword').classList.add('error');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Disable button and show loading
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Đang đăng ký...';
+
+            try {
+                const response = await fetch('/megachat/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        email: email,
+                        phone: phone,
+                        password: password,
+                        confirm_password: confirmPassword
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Đăng ký thành công! Vui lòng đăng nhập.');
+                    // Chuyển sang form đăng nhập
+                    switchForm('login');
+                    // Điền email vào form đăng nhập
+                    document.getElementById('loginEmail').value = email;
+                } else {
+                    // Hiển thị lỗi từ server
+                    if (data.message.includes('Username')) {
+                        showError('registerUsernameError', data.message);
+                        document.getElementById('registerUsername').classList.add('error');
+                    } else if (data.message.includes('Email')) {
+                        showError('registerEmailError', data.message);
+                        document.getElementById('registerEmail').classList.add('error');
+                    } else if (data.message.includes('điện thoại') || data.message.includes('phone')) {
+                        showError('registerPhoneError', data.message);
+                        document.getElementById('registerPhone').classList.add('error');
+                    } else if (data.message.includes('Mật khẩu') || data.message.includes('password')) {
+                        showError('registerPasswordError', data.message);
+                        document.getElementById('registerPassword').classList.add('error');
+                    } else {
+                        showError('registerEmailError', data.message);
+                    }
+                }
+            } catch (error) {
+                console.error('Register error:', error);
+                showError('registerEmailError', 'Lỗi kết nối. Vui lòng thử lại sau.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        }
+
+        // Validation helpers
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function isValidPhone(phone) {
+            // Chấp nhận số điện thoại Việt Nam (10-11 số)
+            const cleaned = phone.replace(/[\s\-\(\)]/g, '');
+            return /^[0-9]{10,11}$/.test(cleaned);
+        }
+
+        // Error handling
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.classList.remove('show');
+                el.textContent = '';
+            });
+            document.querySelectorAll('input').forEach(el => {
+                el.classList.remove('error');
+            });
+        }
+
+        // Initialize
+        window.addEventListener('load', createParticles);
+
+        // Đảm bảo link forgot password hoạt động
+        document.addEventListener('DOMContentLoaded', () => {
+            const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+            if (forgotPasswordLink) {
+                forgotPasswordLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const CONTEXT_PATH = window.location.pathname.startsWith('/megachat') ? '/megachat' : '';
+                    window.location.href = `${CONTEXT_PATH}/forgot-password.html`;
+                    return false;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
