@@ -46,14 +46,19 @@ public class FriendshipController {
     public ResponseEntity<?> listFriends(HttpSession session) {
         try {
             Long userId = getUserId(session);
-            List<User> friends = friendshipService.getAcceptedFriends(userId);
+            List<com.megachat.service.FriendshipService.UserWithOnlineStatus> friends = 
+                friendshipService.getAcceptedFriendsWithOnlineStatus(userId);
             List<Map<String, Object>> friendDtos = friends.stream()
-                .map(friend -> Map.<String, Object>of(
-                    "id", friend.getId(),
-                    "username", friend.getUsername(),
-                    "email", friend.getEmail(),
-                    "phone", friend.getPhone()
-                ))
+                .map(friendStatus -> {
+                    User friend = friendStatus.getUser();
+                    return Map.<String, Object>of(
+                        "id", friend.getId(),
+                        "username", friend.getUsername(),
+                        "email", friend.getEmail(),
+                        "phone", friend.getPhone(),
+                        "online", friendStatus.isOnline()
+                    );
+                })
                 .collect(Collectors.toList());
 
             return ResponseEntity.ok(Map.of(
@@ -154,6 +159,58 @@ public class FriendshipController {
             throw new Exception("Bạn cần đăng nhập để thực hiện thao tác này");
         }
         return userId;
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchUsers(@RequestParam String keyword, HttpSession session) {
+        try {
+            Long userId = getUserId(session);
+            
+            if (keyword == null || keyword.trim().isEmpty()) {
+                return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "users", List.of()
+                ));
+            }
+
+            List<User> users = friendshipService.searchUsers(keyword.trim(), userId);
+            
+            List<Map<String, Object>> userDtos = users.stream()
+                .map(user -> Map.<String, Object>of(
+                    "id", user.getId(),
+                    "username", user.getUsername(),
+                    "email", user.getEmail(),
+                    "phone", user.getPhone()
+                ))
+                .collect(Collectors.toList());
+
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "users", userDtos
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
+        }
+    }
+
+    @DeleteMapping("/{friendId}")
+    public ResponseEntity<?> unfriend(@PathVariable Long friendId, HttpSession session) {
+        try {
+            Long userId = getUserId(session);
+            friendshipService.unfriend(userId, friendId);
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Đã xóa bạn bè thành công"
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
+        }
     }
 }
 

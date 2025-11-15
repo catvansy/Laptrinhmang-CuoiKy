@@ -42,6 +42,15 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
         @Param("user1") User user1,
         @Param("user2") User user2
     );
+
+    @Query("SELECT f FROM Friendship f " +
+           "WHERE ((f.requester = :user1 AND f.receiver = :user2) " +
+           "OR (f.requester = :user2 AND f.receiver = :user1)) " +
+           "AND f.status = com.megachat.model.FriendshipStatus.ACCEPTED")
+    Optional<Friendship> findAcceptedFriendship(
+        @Param("user1") User user1,
+        @Param("user2") User user2
+    );
 }
 
 

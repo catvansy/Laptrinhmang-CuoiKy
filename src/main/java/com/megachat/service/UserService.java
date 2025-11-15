@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -157,5 +158,93 @@ public class UserService {
         
         // Xóa token sau khi sử dụng
         resetTokens.remove(token);
+    }
+
+    /**
+     * Cập nhật thông tin profile
+     */
+    public User updateProfile(Long userId, String username, String email, String phone) throws Exception {
+        User user = getUserOrThrow(userId);
+        
+        // Validate username
+        if (username != null && !username.trim().isEmpty()) {
+            if (username.trim().length() < 3) {
+                throw new Exception("Username phải có ít nhất 3 ký tự");
+            }
+            // Kiểm tra username đã tồn tại chưa (trừ user hiện tại)
+            Optional<User> existingUser = userRepository.findByUsername(username.trim());
+            if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
+                throw new Exception("Username đã tồn tại");
+            }
+            user.setUsername(username.trim());
+        }
+        
+        // Validate email
+        if (email != null && !email.trim().isEmpty()) {
+            if (!isValidEmail(email.trim())) {
+                throw new Exception("Email không hợp lệ");
+            }
+            // Kiểm tra email đã tồn tại chưa (trừ user hiện tại)
+            Optional<User> existingUser = userRepository.findByEmail(email.trim());
+            if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
+                throw new Exception("Email đã tồn tại");
+            }
+            user.setEmail(email.trim());
+        }
+        
+        // Validate phone
+        if (phone != null && !phone.trim().isEmpty()) {
+            if (!isValidPhone(phone.trim())) {
+                throw new Exception("Số điện thoại không hợp lệ");
+            }
+            // Kiểm tra phone đã tồn tại chưa (trừ user hiện tại)
+            Optional<User> existingUser = userRepository.findByPhone(phone.trim());
+            if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
+                throw new Exception("Số điện thoại đã tồn tại");
+            }
+            user.setPhone(phone.trim());
+        }
+        
+        return userRepository.save(user);
+    }
+    
+    private boolean isValidEmail(String email) {
+        return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    }
+    
+    private boolean isValidPhone(String phone) {
+        // Chấp nhận số điện thoại 10-11 chữ số (Việt Nam)
+        String cleaned = phone.replaceAll("[\\s\\-\\(\\)]", "");
+        return cleaned.matches("^[0-9]{10,11}$");
+    }
+    
+    private User getUserOrThrow(Long userId) throws Exception {
+        if (userId == null) {
+            throw new Exception("User ID không được để trống");
+        }
+        return userRepository.findById(userId)
+            .orElseThrow(() -> new Exception("Người dùng không tồn tại"));
+    }
+
+    /**
+     * Tìm kiếm user theo username hoặc email
+     */
+    public List<User> searchUsers(String keyword, Long excludeUserId) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return List.of();
+        }
+        
+        List<User> users = userRepository.findByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(
+            keyword.trim(), keyword.trim()
+        );
+        
+        // Loại bỏ user hiện tại nếu có excludeUserId
+        if (excludeUserId != null) {
+            users = users.stream()
+                .filter(user -> !user.getId().equals(excludeUserId))
+                .collect(java.util.stream.Collectors.toList());
+        }
+        
+        return users;
     }
 }

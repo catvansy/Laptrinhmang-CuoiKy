@@ -224,4 +224,46 @@ public class AuthController {
             ));
         }
     }
+
+    @PutMapping("/profile")
+    public ResponseEntity<?> updateProfile(@RequestBody Map<String, String> request, HttpSession session) {
+        try {
+            Long userId = (Long) session.getAttribute("userId");
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                    "success", false,
+                    "message", "Bạn cần đăng nhập để thực hiện thao tác này"
+                ));
+            }
+
+            String username = request.get("username");
+            String email = request.get("email");
+            String phone = request.get("phone");
+
+            User user = userService.updateProfile(userId, username, email, phone);
+
+            // Cập nhật session
+            session.setAttribute("username", user.getUsername());
+            session.setAttribute("email", user.getEmail());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Cập nhật thông tin thành công");
+            
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("id", user.getId());
+            userData.put("username", user.getUsername());
+            userData.put("email", user.getEmail());
+            userData.put("phone", user.getPhone());
+            response.put("user", userData);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
+        }
+    }
 }

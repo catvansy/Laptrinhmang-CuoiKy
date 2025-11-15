@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,10 +19,14 @@ public class FriendshipService {
 
     private final FriendshipRepository friendshipRepository;
     private final UserRepository userRepository;
+    private final com.megachat.service.UserService userService;
 
-    public FriendshipService(FriendshipRepository friendshipRepository, UserRepository userRepository) {
+    public FriendshipService(FriendshipRepository friendshipRepository, 
+                             UserRepository userRepository,
+                             com.megachat.service.UserService userService) {
         this.friendshipRepository = friendshipRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public List<User> getAcceptedFriends(Long userId) throws Exception {
@@ -32,6 +37,46 @@ public class FriendshipService {
                 ? friendship.getReceiver()
                 : friendship.getRequester())
             .collect(Collectors.toList());
+    }
+    
+    /**
+     * Lấy danh sách bạn bè với trạng thái online/offline
+     */
+    public List<UserWithOnlineStatus> getAcceptedFriendsWithOnlineStatus(Long userId) throws Exception {
+        User user = getUserOrThrow(userId);
+        Set<Long> onlineUserIds = com.megachat.websocket.ChatEndpoint.getOnlineUserIds();
+        
+        return friendshipRepository.findAcceptedFriendships(user)
+            .stream()
+            .map(friendship -> {
+                User friend = friendship.getRequester().equals(user)
+                    ? friendship.getReceiver()
+                    : friendship.getRequester();
+                boolean isOnline = onlineUserIds.contains(friend.getId());
+                return new UserWithOnlineStatus(friend, isOnline);
+            })
+            .collect(Collectors.toList());
+    }
+    
+    /**
+     * Inner class để chứa user và trạng thái online
+     */
+    public static class UserWithOnlineStatus {
+        private final User user;
+        private final boolean online;
+        
+        public UserWithOnlineStatus(User user, boolean online) {
+            this.user = user;
+            this.online = online;
+        }
+        
+        public User getUser() {
+            return user;
+        }
+        
+        public boolean isOnline() {
+            return online;
+        }
     }
 
     public List<Friendship> getIncomingRequests(Long userId) throws Exception {
@@ -113,6 +158,33 @@ public class FriendshipService {
         }
         return userRepository.findById(userId)
             .orElseThrow(() -> new Exception("Không tìm thấy người dùng"));
+    }
+
+    /**
+     * Tìm kiếm user theo username hoặc email
+     */
+    public List<User> searchUsers(String keyword, Long excludeUserId) {
+        return userService.searchUsers(keyword, excludeUserId);
+    }
+
+    /**
+     * Xóa bạn bè (unfriend)
+     */
+    @Transactional
+    public void unfriend(Long userId, Long friendId) throws Exception {
+        User user = getUserOrThrow(userId);
+        User friend = userRepository.findById(friendId)
+            .orElseThrow(() -> new Exception("Không tìm thấy người bạn"));
+
+        if (user.getId().equals(friendId)) {
+            throw new Exception("Không thể tự xóa chính mình");
+        }
+
+        Friendship friendship = friendshipRepository.findAcceptedFriendship(user, friend)
+            .orElseThrow(() -> new Exception("Hai người chưa là bạn bè"));
+
+        // Xóa friendship (có thể xóa trực tiếp hoặc set status = DECLINED)
+        friendshipRepository.delete(friendship);
     }
 }
 
