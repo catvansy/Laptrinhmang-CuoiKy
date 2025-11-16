@@ -562,6 +562,7 @@
             border-radius: 8px;
             text-align: center;
             transition: all 0.2s ease;
+            -webkit-user-select: none;
             user-select: none;
         }
 
@@ -906,6 +907,7 @@
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.7);
+            -webkit-backdrop-filter: blur(4px);
             backdrop-filter: blur(4px);
             z-index: 1000;
             align-items: center;
@@ -2176,6 +2178,31 @@
                     return;
                 }
 
+                // Ưu tiên gửi qua WebSocket nếu đã kết nối
+                if (state.websocket && state.websocket.readyState === WebSocket.OPEN) {
+                    try {
+                        const message = {
+                            type: 'message',
+                            receiverId: state.selectedFriend.id,
+                            content: text
+                        };
+                        state.websocket.send(JSON.stringify(message));
+                        messageInput.value = '';
+                        setStatus('');
+                        // Tin nhắn sẽ được thêm vào state khi nhận response từ server
+                    } catch (error) {
+                        console.error('✗ WebSocket send error:', error);
+                        // Fallback: gửi qua REST API
+                        sendChatMessageViaREST(text);
+                    }
+                } else {
+                    // Fallback: gửi qua REST API nếu WebSocket chưa sẵn sàng
+                    sendChatMessageViaREST(text);
+                }
+            }
+
+            // Gửi tin nhắn qua REST API (fallback)
+            async function sendChatMessageViaREST(text) {
                 try {
                     const data = await apiRequest(`/messages/${state.selectedFriend.id}`, {
                         method: 'POST',
@@ -2190,8 +2217,7 @@
                     state.messages[state.selectedFriend.id].push(msg);
                     state.lastMessageIds[state.selectedFriend.id] = msg.id;
                     renderMessages(state.selectedFriend.id);
-                    // Scroll to bottom
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    scrollMessagesToBottom();
                 } catch (error) {
                     setStatus(error.message, 'error');
                     showToast('Lỗi', error.message, 'error');
@@ -2368,7 +2394,7 @@
                 });
             }
 
-            // WebSocket connection để cập nhật trạng thái online/offline
+            // WebSocket connection để chat real-time
             function connectWebSocket() {
                 try {
                     const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -2376,7 +2402,7 @@
                     const ws = new WebSocket(wsUrl);
 
                     ws.onopen = () => {
-                        console.log('WebSocket connected');
+                        console.log('✓ WebSocket connected');
                         // Gửi userId để đăng ký online
                         if (currentUser && currentUser.id) {
                             ws.send(`USER:${currentUser.id}`);
@@ -2385,16 +2411,20 @@
                     };
 
                     ws.onmessage = (event) => {
-                        // Có thể nhận thông báo từ server nếu cần
-                        console.log('WebSocket message:', event.data);
+                        try {
+                            const data = JSON.parse(event.data);
+                            handleWebSocketMessage(data);
+                        } catch (e) {
+                            console.warn('⚠ Không parse được WebSocket message:', event.data);
+                        }
                     };
 
                     ws.onerror = (error) => {
-                        console.error('WebSocket error:', error);
+                        console.error('✗ WebSocket error:', error);
                     };
 
                     ws.onclose = () => {
-                        console.log('WebSocket disconnected');
+                        console.log('✗ WebSocket disconnected');
                         state.websocket = null;
                         // Thử kết nối lại sau 3 giây
                         setTimeout(() => {
@@ -2405,7 +2435,57 @@
                     };
 
                 } catch (error) {
-                    console.error('Failed to connect WebSocket:', error);
+                    console.error('✗ Failed to connect WebSocket:', error);
+                }
+            }
+
+            // Xử lý tin nhắn từ WebSocket
+            function handleWebSocketMessage(data) {
+                if (data.type === 'connected') {
+                    console.log('✓ WebSocket đã đăng ký:', data.message);
+                    return;
+                }
+
+                if (data.type === 'message') {
+                    // Nhận tin nhắn real-time
+                    const message = {
+                        id: data.id,
+                        senderId: data.senderId,
+                        receiverId: data.receiverId,
+                        content: data.content,
+                        createdAt: data.createdAt
+                    };
+
+                    // Xác định friendId (người gửi hoặc người nhận)
+                    const friendId = Number(message.senderId) === Number(currentUser.id) 
+                        ? message.receiverId 
+                        : message.senderId;
+
+                    // Thêm tin nhắn vào state
+                    if (!state.messages[friendId]) {
+                        state.messages[friendId] = [];
+                    }
+                    
+                    // Kiểm tra xem tin nhắn đã tồn tại chưa (tránh duplicate)
+                    const exists = state.messages[friendId].some(m => m.id === message.id);
+                    if (!exists) {
+                        state.messages[friendId].push(message);
+                        state.lastMessageIds[friendId] = message.id;
+                    }
+
+                    // Nếu đang chat với friend này, render lại
+                    if (state.selectedFriend && state.selectedFriend.id === friendId) {
+                        renderMessages(friendId);
+                        scrollMessagesToBottom();
+                    }
+
+                    // Hiển thị thông báo nếu không phải tin nhắn của mình
+                    if (Number(message.senderId) !== Number(currentUser.id)) {
+                        showToast('Tin nhắn mới', `Từ ${state.selectedFriend && state.selectedFriend.id === friendId ? state.selectedFriend.username : 'bạn bè'}`, 'info');
+                    }
+                } else if (data.type === 'error') {
+                    console.error('✗ WebSocket error:', data.message);
+                    showToast('Lỗi', data.message, 'error');
                 }
             }
 
@@ -2436,7 +2516,137 @@
             connectWebSocket();
             startOnlineStatusPolling();
 
+            // Toast notification function
+            function showToast(title, message, type = 'info') {
+                const toastContainer = document.getElementById('toastContainer');
+                if (!toastContainer) return;
+
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                
+                const icons = {
+                    success: '✅',
+                    error: '❌',
+                    warning: '⚠️',
+                    info: 'ℹ️'
+                };
+
+                toast.innerHTML = `
+                    <div class="toast-icon">${icons[type] || icons.info}</div>
+                    <div class="toast-content">
+                        <div class="toast-title">${escapeHtml(title)}</div>
+                        <div class="toast-message">${escapeHtml(message)}</div>
+                    </div>
+                    <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+                `;
+
+                toastContainer.appendChild(toast);
+
+                // Auto remove after 3 seconds
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.remove();
+                    }
+                }, 3000);
+            }
+
             // Initialize new features
+            function initThemeToggle() {
+                const themeToggle = document.getElementById('themeToggle');
+                if (!themeToggle) return;
+
+                const savedTheme = localStorage.getItem('theme') || 'dark';
+                if (savedTheme === 'light') {
+                    document.body.classList.add('light-mode');
+                    themeToggle.textContent = '☀️';
+                }
+
+                themeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('light-mode');
+                    const isLight = document.body.classList.contains('light-mode');
+                    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                    themeToggle.textContent = isLight ? '☀️' : '🌙';
+                });
+            }
+
+            function initMessageSearch() {
+                const searchBtn = document.getElementById('searchMessagesBtn');
+                const searchContainer = document.getElementById('messageSearchContainer');
+                const searchInput = document.getElementById('messageSearchInput');
+                const searchResults = document.getElementById('messageSearchResults');
+
+                if (!searchBtn || !searchContainer || !searchInput || !searchResults) return;
+
+                let searchTimeout = null;
+
+                searchBtn.addEventListener('click', () => {
+                    const isVisible = searchContainer.style.display !== 'none';
+                    searchContainer.style.display = isVisible ? 'none' : 'block';
+                    if (!isVisible) {
+                        searchInput.focus();
+                    }
+                });
+
+                searchInput.addEventListener('input', (e) => {
+                    const keyword = e.target.value.trim().toLowerCase();
+                    
+                    if (searchTimeout) clearTimeout(searchTimeout);
+                    
+                    if (!keyword) {
+                        searchResults.innerHTML = '';
+                        searchResults.classList.remove('active');
+                        return;
+                    }
+
+                    searchTimeout = setTimeout(() => {
+                        if (!state.selectedFriend) return;
+                        const friendId = state.selectedFriend.id;
+                        const messages = state.messages[friendId] || [];
+                        const matches = messages.filter(msg => 
+                            msg.content.toLowerCase().includes(keyword)
+                        );
+
+                        if (matches.length === 0) {
+                            searchResults.innerHTML = '<div class="search-result-item">Không tìm thấy kết quả</div>';
+                        } else {
+                            searchResults.innerHTML = matches.map(msg => {
+                                const highlighted = msg.content.replace(
+                                    new RegExp(`(${keyword})`, 'gi'),
+                                    '<span class="highlight">$1</span>'
+                                );
+                                return `
+                                    <div class="search-result-item" onclick="scrollToMessage(${msg.id})">
+                                        <div class="search-result-content">${highlighted}</div>
+                                        <div class="search-result-time">${formatTimestamp(msg.createdAt)}</div>
+                                    </div>
+                                `;
+                            }).join('');
+                        }
+                        searchResults.classList.add('active');
+                    }, 300);
+                });
+
+                // Close on outside click
+                document.addEventListener('click', (e) => {
+                    if (!searchContainer.contains(e.target) && e.target !== searchBtn) {
+                        searchContainer.style.display = 'none';
+                    }
+                });
+            }
+
+            // Scroll to message function
+            window.scrollToMessage = function(messageId) {
+                const messageEl = document.querySelector(`[data-message-id="${messageId}"]`);
+                if (messageEl) {
+                    messageEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    messageEl.style.background = 'rgba(88, 101, 242, 0.3)';
+                    setTimeout(() => {
+                        messageEl.style.background = '';
+                    }, 2000);
+                }
+            };
+
+            // Initialize
             initThemeToggle();
             initMessageSearch();
 
