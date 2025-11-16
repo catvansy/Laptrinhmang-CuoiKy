@@ -20,7 +20,7 @@ public class DatabaseInitializer {
             // Lưu ý: Cập nhật password theo cấu hình MySQL của bạn
             String url = "jdbc:mysql://localhost:3307/?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
             String user = "root";
-            String password = "157953"; // Để trống nếu MySQL không có password, hoặc nhập password của bạn
+            String password = ""; // Để trống nếu MySQL không có password, hoặc nhập password của bạn
             
             try (Connection conn = DriverManager.getConnection(url, user, password);
                 Statement stmt = conn.createStatement()) {
