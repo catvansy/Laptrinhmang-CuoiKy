@@ -29,7 +29,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
     private static final Set<String> STATIC_EXTENSIONS = Set.of(
         ".js", ".css", ".png", ".jpg", ".jpeg", ".gif", ".svg",
-        ".ico", ".woff", ".woff2", ".ttf", ".map"
+        ".ico", ".woff", ".woff2", ".ttf", ".map", ".html"
     );
 
     @Override

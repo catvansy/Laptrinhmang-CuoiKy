@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MegaChat - Ứng dụng Chat Trực Tuyến Hiện Đại</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated gradient background với nhiều layers */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(88, 101, 242, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(114, 137, 218, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 70%),
+                linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 50%, #0a0a0f 100%);
+            z-index: 0;
+            animation: gradientMove 15s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { 
+                background-position: 0% 50%, 100% 50%, 50% 50%, 0% 0%;
+            }
+            50% { 
+                background-position: 100% 50%, 0% 50%, 50% 50%, 100% 100%;
+            }
+        }
+
+        /* Animated grid pattern */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(88, 101, 242, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(88, 101, 242, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 1;
+            animation: gridMove 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating animated shapes - nhiều hơn và đẹp hơn */
+        .floating-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: floatShape 25s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 600px;
+            height: 600px;
+            background: #5865f2;
+            top: -300px;
+            left: -300px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 500px;
+            height: 500px;
+            background: #7289da;
+            bottom: -250px;
+            right: -250px;
+            animation-delay: 5s;
+        }
+
+        .shape-3 {
+            width: 400px;
+            height: 400px;
+            background: #a855f7;
+            top: 30%;
+            right: 5%;
+            animation-delay: 10s;
+        }
+
+        .shape-4 {
+            width: 450px;
+            height: 450px;
+            background: #ec4899;
+            bottom: 15%;
+            left: 3%;
+            animation-delay: 15s;
+        }
+
+        .shape-5 {
+            width: 350px;
+            height: 350px;
+            background: #f59e0b;
+            top: 60%;
+            left: 50%;
+            animation-delay: 20s;
+        }
+
+        @keyframes floatShape {
+            0%, 100% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+            25% {
+                transform: translate(80px, -80px) scale(1.2) rotate(90deg);
+            }
+            50% {
+                transform: translate(-60px, 60px) scale(0.8) rotate(180deg);
+            }
+            75% {
+                transform: translate(60px, 80px) scale(1.1) rotate(270deg);
+            }
+        }
+
+        /* Enhanced particles với nhiều loại */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: floatParticle 25s infinite;
+        }
+
+        .particle.small {
+            width: 2px;
+            height: 2px;
+            background: rgba(88, 101, 242, 0.6);
+        }
+
+        .particle.medium {
+            width: 4px;
+            height: 4px;
+            background: rgba(114, 137, 218, 0.5);
+        }
+
+        .particle.large {
+            width: 6px;
+            height: 6px;
+            background: rgba(168, 85, 247, 0.4);
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Content wrapper */
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navigation - Premium style */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 24px 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(30px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav.scrolled {
+            padding: 16px 80px;
+            background: rgba(10, 10, 15, 0.95);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 26px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #ffffff;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #5865f2, #7289da, #a855f7);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 8px 24px rgba(88, 101, 242, 0.5);
+            animation: logoGlow 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 14px;
+            padding: 2px;
+            background: linear-gradient(135deg, #5865f2, #7289da, #a855f7);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            animation: logoBorder 3s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 8px 24px rgba(88, 101, 242, 0.5);
+            }
+            50% { 
+                transform: scale(1.08);
+                box-shadow: 0 12px 32px rgba(88, 101, 242, 0.7);
+            }
+        }
+
+        @keyframes logoBorder {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 24px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .nav-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .nav-btn-secondary {
+            background: transparent;
+            color: #ffffff;
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn-secondary:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn-primary {
+            background: linear-gradient(135deg, #5865f2, #7289da);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(88, 101, 242, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-btn-primary:hover {
+            background: linear-gradient(135deg, #4752c4, #5b6eae);
+            box-shadow: 0 8px 30px rgba(88, 101, 242, 0.6);
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        /* Hero Section - Spectacular */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 160px 80px 120px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(88, 101, 242, 0.15) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            animation: heroPulse 4s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes heroPulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            animation: fadeInUp 1.2s ease;
+            position: relative;
+            z-index: 3;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(64px, 10vw, 140px);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 32px;
+            color: #ffffff;
+            letter-spacing: -3px;
+            text-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+            animation: titleReveal 1.5s ease;
+            position: relative;
+        }
+
+        @keyframes titleReveal {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .hero .highlight {
+            background: linear-gradient(135deg, #5865f2, #7289da, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 300% 300%;
+            animation: gradientShift 5s ease infinite;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(135deg, #5865f2, #7289da, #a855f7, #ec4899);
+            background-size: 300% 300%;
+            animation: gradientShift 5s ease infinite;
+            border-radius: 2px;
+            opacity: 0.6;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero p {
+            font-size: clamp(22px, 3vw, 32px);
+            line-height: 1.7;
+            color: #d1d5db;
+            margin-bottom: 48px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+            animation: fadeInUp 1.5s ease 0.3s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 100px;
+            animation: fadeInUp 1.5s ease 0.6s both;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            border: none;
+            border-radius: 32px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #5865f2, #7289da);
+            color: #ffffff;
+            box-shadow: 0 8px 32px rgba(88, 101, 242, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #4752c4, #5b6eae);
+            box-shadow: 0 12px 48px rgba(88, 101, 242, 0.7);
+            transform: translateY(-4px) scale(1.03);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 12px 48px rgba(255, 255, 255, 0.1);
+        }
+
+        /* App Preview - Clean and Stable */
+        .app-preview {
+            position: relative;
+            margin-top: 80px;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1.8s ease 0.9s both;
+        }
+
+        .chat-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 32px;
+            flex-wrap: nowrap;
+            padding: 40px 20px;
+        }
+
+        .chat-window {
+            position: relative;
+            width: 380px;
+            background: linear-gradient(135deg, #36393f, #2c2f33);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: floatChat 6s ease-in-out infinite;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .chat-window:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .chat-window:nth-child(2) {
+            animation-delay: 2s;
+        }
+
+        .chat-window:nth-child(3) {
+            animation-delay: 4s;
+        }
+
+        @keyframes floatChat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        .chat-window:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 
+                0 30px 80px rgba(88, 101, 242, 0.3),
+                0 0 0 1px rgba(88, 101, 242, 0.2);
+        }
+
+        /* Chat Window Header */
+        .chat-header {
+            padding: 16px 20px;
+            background: linear-gradient(180deg, #2c2f33, #36393f);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5865f2, #7289da);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .chat-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+
+        .chat-status {
+            font-size: 12px;
+            color: #b9bbbe;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #43b581;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Chat Messages Container */
+        .chat-messages {
+            padding: 20px;
+            height: 420px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+
+        .chat-message {
+            display: flex;
+            gap: 12px;
+            animation: messageSlide 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .chat-message.own {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5865f2, #7289da);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message-author {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .message-bubble {
+            background: #2c2f33;
+            padding: 12px 16px;
+            border-radius: 16px;
+            color: #dcddde;
+            font-size: 15px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-message.own .message-bubble {
+            background: linear-gradient(135deg, #5865f2, #7289da);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-30px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        /* Stats Section - Enhanced */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            padding: 120px 80px;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 50px 40px;
+            background: linear-gradient(135deg, rgba(44, 47, 51, 0.8), rgba(35, 39, 42, 0.8));
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px) saturate(180%);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(88, 101, 242, 0.2) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.6s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: scale(1);
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .stat-card:hover::after {
+            left: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            border-color: rgba(88, 101, 242, 0.5);
+            box-shadow: 0 20px 60px rgba(88, 101, 242, 0.3);
+        }
+
+        .stat-number {
+            font-size: 72px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #5865f2, #7289da, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            font-family: 'Inter', sans-serif;
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: #b9bbbe;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Features Section - Premium */
+        .features {
+            padding: 160px 80px;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(48px, 7vw, 80px);
+            font-weight: 900;
+            margin-bottom: 24px;
+            color: #ffffff;
+            letter-spacing: -2px;
+            position: relative;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 24px;
+            color: #b9bbbe;
+            margin-bottom: 100px;
+            font-weight: 400;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            padding: 48px;
+            background: linear-gradient(135deg, rgba(44, 47, 51, 0.8), rgba(35, 39, 42, 0.8));
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px) saturate(180%);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(88, 101, 242, 0.15), rgba(114, 137, 218, 0.15));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #5865f2, #7289da, #a855f7);
+            border-radius: 24px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.5s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(88, 101, 242, 0.4);
+            box-shadow: 0 24px 64px rgba(88, 101, 242, 0.3);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover::after {
+            opacity: 0.3;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #5865f2, #7289da);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 8px 24px rgba(88, 101, 242, 0.4);
+            transition: all 0.5s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 32px rgba(88, 101, 242, 0.6);
+        }
+
+        .feature-card h3 {
+            font-size: 28px;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: #b9bbbe;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+            font-size: 17px;
+        }
+
+        /* Testimonials - Enhanced */
+        .testimonials {
+            padding: 160px 80px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 32px;
+            margin-top: 80px;
+        }
+
+        .testimonial-card {
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(44, 47, 51, 0.8), rgba(35, 39, 42, 0.8));
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px) saturate(180%);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #5865f2, #7289da);
+            transform: scaleY(0);
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(88, 101, 242, 0.4);
+            box-shadow: 0 24px 64px rgba(88, 101, 242, 0.3);
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+                gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-avatar {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #5865f2, #7289da);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 16px rgba(88, 101, 242, 0.4);
+        }
+
+        .testimonial-info h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .testimonial-info p {
+            font-size: 15px;
+            color: #b9bbbe;
+        }
+
+        .testimonial-text {
+            color: #d1d5db;
+            line-height: 1.8;
+            font-style: italic;
+                font-size: 16px;
+            }
+
+        /* CTA Section - Spectacular */
+        .cta {
+            padding: 160px 80px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(88, 101, 242, 0.15), rgba(114, 137, 218, 0.15));
+            margin: 120px auto;
+            border-radius: 32px;
+            max-width: 1200px;
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(88, 101, 242, 0.2) 0%, transparent 70%);
+            animation: ctaPulse 6s ease infinite;
+        }
+
+        .cta::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(88, 101, 242, 0.1), transparent);
+            animation: ctaShine 4s ease infinite;
+        }
+
+        @keyframes ctaPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.6; }
+        }
+
+        @keyframes ctaShine {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .cta h2 {
+            font-size: clamp(48px, 7vw, 80px);
+            margin-bottom: 24px;
+            color: #ffffff;
+            font-weight: 900;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -2px;
+        }
+
+        .cta p {
+            font-size: 24px;
+            color: #b9bbbe;
+            margin-bottom: 48px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
+        footer {
+            padding: 100px 80px 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .footer-link {
+            color: #b9bbbe;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .footer-link:hover {
+            color: #5865f2;
+            transform: translateY(-2px);
+        }
+
+        .footer-copyright {
+            color: #72767d;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 24px;
+            }
+
+            nav.scrolled {
+                padding: 14px 24px;
+            }
+
+            .hero {
+                padding: 140px 24px 80px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .stats,
+            .features,
+            .testimonials,
+            .cta {
+                padding: 80px 24px;
+            }
+
+            .features-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chat-container {
+                flex-direction: column;
+                gap: 40px;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .chat-window {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .chat-messages {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="grid-pattern"></div>
+    <div class="floating-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+        <div class="shape shape-5"></div>
+    </div>
+    <div class="particles" id="particlesContainer"></div>
+
+    <nav id="navbar">
+        <div class="logo" onclick="window.location.href='landing.html'">
+                <div class="logo-icon">💬</div>
+            <span>MegaChat</span>
+            </div>
+        <div class="nav-buttons">
+            <button class="nav-btn nav-btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Tính năng</button>
+            <button class="nav-btn nav-btn-primary" onclick="window.location.href='login.html'">Mở MegaChat</button>
+        </div>
+    </nav>
+
+    <div class="content-wrapper">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Nơi bạn <span class="highlight">trò chuyện</span><br>và <span class="highlight">kết nối</span></h1>
+                <p>MegaChat là ứng dụng web chat hiện đại, nơi bạn có thể trò chuyện với bạn bè, xây dựng cộng đồng và tạo ra những khoảnh khắc đáng nhớ. Truy cập trực tiếp từ trình duyệt, không cần cài đặt.</p>
+                <div class="hero-buttons">
+                    <a href="login.html" class="btn btn-primary">
+                        <span>🚀</span>
+                        Bắt đầu trò chuyện ngay
+                    </a>
+                    <a href="login.html" class="btn btn-secondary">
+                        Đăng nhập vào MegaChat
+                    </a>
+                </div>
+                
+                <!-- Chat Preview - 3 Conversation Windows -->
+                <div class="app-preview">
+                    <div class="chat-container">
+                        <!-- Chat Window 1 -->
+                        <div class="chat-window">
+                            <div class="chat-header">
+                                <div class="chat-avatar">👤</div>
+                                <div class="chat-info">
+                                    <div class="chat-name">Nguyễn Văn A</div>
+                                    <div class="chat-status">
+                                        <span class="status-dot"></span>
+                                        <span>Đang hoạt động</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-messages">
+                                <div class="chat-message">
+                                    <div class="message-avatar">👤</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Nguyễn Văn A</div>
+                                        <div class="message-bubble">Xin chào! 👋</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message own">
+                                    <div class="message-avatar">👨</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Bạn</div>
+                                        <div class="message-bubble">Chào bạn! Bạn khỏe không?</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message">
+                                    <div class="message-avatar">👤</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Nguyễn Văn A</div>
+                                        <div class="message-bubble">Tôi khỏe, cảm ơn bạn!</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message own">
+                                    <div class="message-avatar">👨</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Bạn</div>
+                                        <div class="message-bubble">Tuyệt vời! 🎉</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message">
+                                    <div class="message-avatar">👤</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Nguyễn Văn A</div>
+                                        <div class="message-bubble">Bạn có kế hoạch gì cuối tuần không?</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message own">
+                                    <div class="message-avatar">👨</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Bạn</div>
+                                        <div class="message-bubble">Có thể đi xem phim! 🎬</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat Window 2 -->
+                        <div class="chat-window">
+                            <div class="chat-header">
+                                <div class="chat-avatar">👩</div>
+                                <div class="chat-info">
+                                    <div class="chat-name">Trần Thị B</div>
+                                    <div class="chat-status">
+                                        <span class="status-dot"></span>
+                                        <span>Đang hoạt động</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-messages">
+                                <div class="chat-message own">
+                                    <div class="message-avatar">👨</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Bạn</div>
+                                        <div class="message-bubble">Hôm nay thời tiết đẹp quá! ☀️</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message">
+                                    <div class="message-avatar">👩</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Trần Thị B</div>
+                                        <div class="message-bubble">Đúng rồi, thích hợp để đi chơi</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message own">
+                                    <div class="message-avatar">👨</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Bạn</div>
+                                        <div class="message-bubble">Bạn có muốn đi không?</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message">
+                                    <div class="message-avatar">👩</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Trần Thị B</div>
+                                        <div class="message-bubble">Có chứ! Đi đâu vậy? 😊</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message own">
+                                    <div class="message-avatar">👨</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Bạn</div>
+                                        <div class="message-bubble">Có thể đi công viên! 🌳</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message">
+                                    <div class="message-avatar">👩</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Trần Thị B</div>
+                                        <div class="message-bubble">Ý tưởng hay đấy! 👍</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat Window 3 -->
+                        <div class="chat-window">
+                            <div class="chat-header">
+                                <div class="chat-avatar">👥</div>
+                                <div class="chat-info">
+                                    <div class="chat-name">Nhóm bạn bè</div>
+                                    <div class="chat-status">
+                                        <span class="status-dot"></span>
+                                        <span>5 thành viên</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-messages">
+                                <div class="chat-message">
+                                    <div class="message-avatar">👤</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Lê Văn C</div>
+                                        <div class="message-bubble">Bạn đã làm xong bài tập chưa? 📚</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message own">
+                                    <div class="message-avatar">👨</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Bạn</div>
+                                        <div class="message-bubble">Rồi, vừa làm xong xong</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message">
+                                    <div class="message-avatar">👤</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Lê Văn C</div>
+                                        <div class="message-bubble">Tốt lắm! 👍</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message own">
+                                    <div class="message-avatar">👨</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Bạn</div>
+                                        <div class="message-bubble">Cảm ơn bạn! 💪</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message">
+                                    <div class="message-avatar">👤</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Lê Văn C</div>
+                                        <div class="message-bubble">Không có gì! 😄</div>
+                                    </div>
+                                </div>
+                                <div class="chat-message">
+                                    <div class="message-avatar">👤</div>
+                                    <div class="message-content">
+                                        <div class="message-author">Nguyễn Thị D</div>
+                                        <div class="message-bubble">Mọi người có muốn đi ăn không? 🍕</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats">
+            <div class="stat-card fade-in">
+                <div class="stat-number" data-target="10000">0</div>
+                <div class="stat-label">Người dùng hoạt động</div>
+                </div>
+            <div class="stat-card fade-in">
+                <div class="stat-number" data-target="50000">0</div>
+                <div class="stat-label">Tin nhắn mỗi ngày</div>
+            </div>
+            <div class="stat-card fade-in">
+                <div class="stat-number" data-target="99">0</div>
+                <div class="stat-label">% Uptime</div>
+            </div>
+            <div class="stat-card fade-in">
+                <div class="stat-number" data-target="24">0</div>
+                <div class="stat-label">Hỗ trợ 24/7</div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <h2 class="section-title">Tại sao chọn MegaChat?</h2>
+            <p class="section-subtitle">Mọi thứ bạn cần để trò chuyện và kết nối với bạn bè trong một nền tảng hiện đại</p>
+            
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">💬</div>
+                    <h3>Trò chuyện tức thời</h3>
+                    <p>Nhắn tin với bạn bè ngay lập tức, không có độ trễ. Giao diện đẹp mắt và trải nghiệm mượt mà như Discord với tốc độ ánh sáng.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">👥</div>
+                    <h3>Quản lý bạn bè dễ dàng</h3>
+                    <p>Tìm kiếm, thêm bạn bè và quản lý danh sách một cách đơn giản. Xem trạng thái online/offline của bạn bè trong thời gian thực.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Bảo mật hàng đầu</h3>
+                    <p>Dữ liệu được mã hóa và bảo vệ an toàn. Quyền riêng tư của bạn là ưu tiên hàng đầu của chúng tôi với công nghệ mã hóa tiên tiến.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Web App hiện đại</h3>
+                    <p>Truy cập trực tiếp từ trình duyệt, không cần cài đặt. Hoạt động mượt mà trên mọi trình duyệt hiện đại với công nghệ web tiên tiến.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Siêu nhanh</h3>
+                    <p>Tốc độ xử lý nhanh chóng, giao diện phản hồi tức thì. Trải nghiệm mượt mà trên mọi kết nối internet với công nghệ tối ưu.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Giao diện đẹp mắt</h3>
+                    <p>Thiết kế hiện đại theo phong cách Discord, tối ưu cho trải nghiệm người dùng. Tùy chỉnh theo sở thích của bạn với nhiều theme.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials">
+            <h2 class="section-title">Người dùng nói gì về chúng tôi</h2>
+            <p class="section-subtitle">Những phản hồi chân thật từ cộng đồng MegaChat</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">👤</div>
+                        <div class="testimonial-info">
+                            <h4>Nguyễn Văn A</h4>
+                            <p>Sinh viên</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"MegaChat thực sự tuyệt vời! Giao diện đẹp, tốc độ nhanh, và dễ sử dụng. Tôi đã giới thiệu cho tất cả bạn bè của mình và họ đều rất thích."</p>
+                </div>
+                
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">👩</div>
+                        <div class="testimonial-info">
+                            <h4>Trần Thị B</h4>
+                            <p>Nhân viên văn phòng</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Tính năng chat real-time rất mượt mà. Tôi có thể làm việc và trò chuyện với đồng nghiệp mà không gặp vấn đề gì. Rất hài lòng!"</p>
+                </div>
+                
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">👨</div>
+                        <div class="testimonial-info">
+                            <h4>Lê Văn C</h4>
+                            <p>Freelancer</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Bảo mật tốt, giao diện đẹp, và hoàn toàn miễn phí. Đây là ứng dụng chat tốt nhất mà tôi từng sử dụng! Không thể tin được nó miễn phí."</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta fade-in">
+            <h2>Sẵn sàng bắt đầu hành trình của bạn?</h2>
+            <p>Tham gia cùng hàng nghìn người dùng đang sử dụng MegaChat mỗi ngày</p>
+            <a href="login.html" class="btn btn-primary">
+                <span>🚀</span>
+                Đăng ký miễn phí ngay
+            </a>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#features" class="footer-link">Tính năng</a>
+                    <a href="login.html" class="footer-link">Đăng nhập</a>
+                    <a href="forgot-password.html" class="footer-link">Quên mật khẩu</a>
+                </div>
+                <div class="footer-copyright">
+                    © 2024 MegaChat. Tất cả quyền được bảo lưu.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Create enhanced particles với nhiều kích thước
+        function createParticles() {
+            const container = document.getElementById('particlesContainer');
+            const particleCount = 150;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                const sizeType = ['small', 'medium', 'large'][Math.floor(Math.random() * 3)];
+                particle.className = `particle ${sizeType}`;
+                
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                const tx = (Math.random() - 0.5) * 600;
+                const ty = (Math.random() - 0.5) * 600;
+                
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.animationDuration = (Math.random() * 20 + 25) + 's';
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Enhanced scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -80px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Animated numbers với easing
+        function animateNumber(element, target) {
+            let current = 0;
+            const duration = 2000;
+            const startTime = Date.now();
+            const startValue = 0;
+            const endValue = target;
+            
+            function update() {
+                const now = Date.now();
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing function (ease-out)
+                const eased = 1 - Math.pow(1 - progress, 3);
+                current = Math.floor(startValue + (endValue - startValue) * eased);
+                
+                element.textContent = current + (target === 99 ? '%' : target === 24 ? '/7' : '+');
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    element.textContent = target + (target === 99 ? '%' : target === 24 ? '/7' : '+');
+                }
+            }
+            
+            update();
+        }
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                    entry.target.classList.add('counted');
+                    const numberEl = entry.target.querySelector('.stat-number');
+                    const target = parseInt(numberEl.getAttribute('data-target'));
+                    animateNumber(numberEl, target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-card').forEach(card => {
+            statsObserver.observe(card);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animate chat messages với stagger
+        function animateChatMessages() {
+            const chatWindows = document.querySelectorAll('.chat-messages');
+            chatWindows.forEach((chatWindow, windowIndex) => {
+                const messages = chatWindow.querySelectorAll('.chat-message');
+                messages.forEach((msg, msgIndex) => {
+                    setTimeout(() => {
+                        msg.style.animation = `messageSlide 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${msgIndex * 0.1}s both`;
+                    }, windowIndex * 1000 + msgIndex * 200);
+                });
+            });
+        }
+
+
+        // Initialize
+        window.addEventListener('load', () => {
+            createParticles();
+            setTimeout(animateChatMessages, 1500);
+        });
+    </script>
+</body>
+</html>

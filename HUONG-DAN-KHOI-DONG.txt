@@ -1,0 +1,77 @@
+═══════════════════════════════════════════════════════════════
+    HƯỚNG DẪN KHỞI ĐỘNG MEGACHAT - FIX LỖI 404
+═══════════════════════════════════════════════════════════════
+
+VẤN ĐỀ: Mỗi khi tắt máy và bật lại, bạn gặp lỗi 404 Not Found
+
+GIẢI PHÁP: Chạy script khởi động trước khi truy cập web
+
+═══════════════════════════════════════════════════════════════
+CÁCH 1: SỬ DỤNG SCRIPT TỰ ĐỘNG (KHUYẾN NGHỊ)
+═══════════════════════════════════════════════════════════════
+
+1. Double-click vào file: start-megachat.bat
+   
+   Script sẽ tự động:
+   ✓ Kiểm tra và dừng process cũ trên port 8080
+   ✓ Khởi động ứng dụng Spring Boot
+   ✓ Hiển thị log trong cửa sổ console
+
+2. Đợi ứng dụng khởi động (30-60 giây)
+
+3. Khi thấy dòng: "Started MegaChatApplication"
+   → Ứng dụng đã sẵn sàng!
+
+4. Truy cập: http://localhost:8080/megachat
+
+═══════════════════════════════════════════════════════════════
+CÁCH 2: KHỞI ĐỘNG THỦ CÔNG
+═══════════════════════════════════════════════════════════════
+
+1. Mở Command Prompt tại thư mục dự án
+
+2. Kiểm tra port 8080:
+   netstat -ano | findstr :8080
+
+3. Nếu có process, dừng nó:
+   taskkill /PID <PID> /F
+
+4. Khởi động ứng dụng:
+   mvn spring-boot:run
+
+5. Đợi khởi động xong, truy cập:
+   http://localhost:8080/megachat
+
+═══════════════════════════════════════════════════════════════
+LƯU Ý QUAN TRỌNG
+═══════════════════════════════════════════════════════════════
+
+✓ MySQL PHẢI được khởi động trước (port 3307)
+✓ Mỗi lần tắt máy và bật lại, bạn CẦN chạy script lại
+✓ URL đúng: http://localhost:8080/megachat (có /megachat)
+
+═══════════════════════════════════════════════════════════════
+KIỂM TRA ỨNG DỤNG ĐÃ CHẠY
+═══════════════════════════════════════════════════════════════
+
+✓ Xem log trong console có dòng "Started MegaChatApplication"
+✓ Kiểm tra port: netstat -ano | findstr :8080
+✓ Truy cập: http://localhost:8080/megachat
+
+═══════════════════════════════════════════════════════════════
+TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+Lỗi 404:
+→ Ứng dụng chưa khởi động, chạy start-megachat.bat
+
+Port đã được sử dụng:
+→ Script sẽ tự động dừng process cũ
+→ Hoặc dừng thủ công: taskkill /PID <PID> /F
+
+Lỗi database:
+→ Kiểm tra MySQL đang chạy
+→ Kiểm tra port MySQL (3307)
+
+═══════════════════════════════════════════════════════════════
+

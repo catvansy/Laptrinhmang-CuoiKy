@@ -1,0 +1,90 @@
+═══════════════════════════════════════════════════════════════
+    HƯỚNG DẪN FIX LỖI 404 - MEGACHAT
+═══════════════════════════════════════════════════════════════
+
+VẤN ĐỀ: Không vào được trang web, gặp lỗi 404 Not Found
+
+═══════════════════════════════════════════════════════════════
+BƯỚC 1: KIỂM TRA ỨNG DỤNG ĐÃ CHẠY CHƯA
+═══════════════════════════════════════════════════════════════
+
+1. Chạy file: test-connection.bat
+   → Sẽ kiểm tra xem ứng dụng có đang chạy không
+
+HOẶC
+
+2. Mở Command Prompt và chạy:
+   netstat -ano | findstr :8080
+   
+   Nếu KHÔNG có kết quả → Ứng dụng chưa chạy
+   Nếu CÓ kết quả → Ứng dụng đang chạy
+
+═══════════════════════════════════════════════════════════════
+BƯỚC 2: KHỞI ĐỘNG ỨNG DỤNG
+═══════════════════════════════════════════════════════════════
+
+Nếu ứng dụng CHƯA chạy:
+
+1. Double-click: start-megachat.bat
+2. Đợi 30-60 giây
+3. Tìm dòng: "Started MegaChatApplication"
+4. Khi thấy dòng đó → Ứng dụng đã sẵn sàng!
+
+═══════════════════════════════════════════════════════════════
+BƯỚC 3: TRUY CẬP TRANG WEB
+═══════════════════════════════════════════════════════════════
+
+Sau khi ứng dụng đã khởi động:
+
+1. Mở trình duyệt
+2. Truy cập: http://localhost:8080/megachat
+   (QUAN TRỌNG: Phải có /megachat ở cuối!)
+
+3. Các URL hợp lệ:
+   ✓ http://localhost:8080/megachat
+   ✓ http://localhost:8080/megachat/
+   ✓ http://localhost:8080/megachat/landing.html
+   ✓ http://localhost:8080/megachat/login.html
+
+═══════════════════════════════════════════════════════════════
+LƯU Ý QUAN TRỌNG
+═══════════════════════════════════════════════════════════════
+
+✓ MySQL PHẢI chạy trước (port 3307)
+✓ Đợi đủ thời gian để ứng dụng khởi động (30-60 giây)
+✓ URL PHẢI có /megachat (không phải chỉ localhost:8080)
+✓ Kiểm tra console có lỗi gì không
+
+═══════════════════════════════════════════════════════════════
+NẾU VẪN GẶP LỖI
+═══════════════════════════════════════════════════════════════
+
+1. Kiểm tra MySQL đang chạy:
+   - Mở MySQL Workbench hoặc phpMyAdmin
+   - Kiểm tra kết nối đến port 3307
+
+2. Kiểm tra log trong console:
+   - Tìm dòng có chữ "ERROR" hoặc "Exception"
+   - Gửi lỗi đó để được hỗ trợ
+
+3. Thử khởi động lại:
+   - Dừng ứng dụng (Ctrl+C trong console)
+   - Chạy lại start-megachat.bat
+
+4. Kiểm tra port 8080:
+   - Có thể port bị chiếm bởi ứng dụng khác
+   - Script sẽ tự động xử lý, nhưng nếu không được:
+     netstat -ano | findstr :8080
+     taskkill /PID <PID> /F
+
+═══════════════════════════════════════════════════════════════
+KIỂM TRA NHANH
+═══════════════════════════════════════════════════════════════
+
+Chạy lệnh này để kiểm tra nhanh:
+
+1. test-connection.bat → Kiểm tra và mở browser
+2. start-megachat.bat → Khởi động ứng dụng
+
+═══════════════════════════════════════════════════════════════
+
