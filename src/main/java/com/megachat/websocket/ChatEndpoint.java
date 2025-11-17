@@ -138,6 +138,10 @@ public class ChatEndpoint extends TextWebSocketHandler {
         
         Long receiverId = getLongValue(messageData.get("receiverId"));
         String content = (String) messageData.get("content");
+        String fileUrl = (String) messageData.get("fileUrl");
+        String fileName = (String) messageData.get("fileName");
+        String fileType = (String) messageData.get("fileType");
+        Long fileSize = getLongValue(messageData.get("fileSize"));
         
         if (receiverId == null || content == null || content.trim().isEmpty()) {
             sendError(session, "Thiếu thông tin receiverId hoặc content");
@@ -160,18 +164,27 @@ public class ChatEndpoint extends TextWebSocketHandler {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setSender(sender);
         chatMessage.setReceiver(receiver);
-        chatMessage.setContent(content.trim());
+        chatMessage.setContent(content != null ? content.trim() : "");
+        chatMessage.setFileUrl(fileUrl);
+        chatMessage.setFileName(fileName);
+        chatMessage.setFileType(fileType);
+        chatMessage.setFileSize(fileSize);
         chatMessage = messageRepository.save(chatMessage);
         
         // Tạo response message
-        Map<String, Object> responseMessage = Map.of(
-            "type", "message",
-            "id", chatMessage.getId(),
-            "senderId", senderId,
-            "receiverId", receiverId,
-            "content", chatMessage.getContent(),
-            "createdAt", chatMessage.getCreatedAt().toString()
-        );
+        Map<String, Object> responseMessage = new HashMap<>();
+        responseMessage.put("type", "message");
+        responseMessage.put("id", chatMessage.getId());
+        responseMessage.put("senderId", senderId);
+        responseMessage.put("receiverId", receiverId);
+        responseMessage.put("content", chatMessage.getContent());
+        if (chatMessage.getFileUrl() != null) {
+            responseMessage.put("fileUrl", chatMessage.getFileUrl());
+            responseMessage.put("fileName", chatMessage.getFileName());
+            responseMessage.put("fileType", chatMessage.getFileType());
+            responseMessage.put("fileSize", chatMessage.getFileSize());
+        }
+        responseMessage.put("createdAt", chatMessage.getCreatedAt().toString());
         
         // Gửi tin nhắn cho người gửi (xác nhận)
         sendMessage(session, responseMessage);

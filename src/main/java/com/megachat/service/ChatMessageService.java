@@ -46,6 +46,29 @@ public class ChatMessageService {
         return messageRepository.save(message);
     }
 
+    @Transactional
+    public ChatMessage sendMessageWithFile(Long senderId, Long receiverId, 
+                                      String content, String fileUrl,
+                                      String fileName, String fileType, Long fileSize) throws Exception {
+        User sender = getUserOrThrow(senderId);
+        User receiver = getUserOrThrow(receiverId);
+
+        if (!friendshipRepository.existsAcceptedFriendship(sender, receiver)) {
+            throw new Exception("Bạn chỉ có thể nhắn tin với người đã là bạn bè");
+        }
+
+        ChatMessage message = new ChatMessage();
+        message.setSender(sender);
+        message.setReceiver(receiver);
+        message.setContent(content != null ? content.trim() : "");
+        message.setFileUrl(fileUrl);
+        message.setFileName(fileName);
+        message.setFileType(fileType);
+        message.setFileSize(fileSize);
+
+        return messageRepository.save(message);
+    }
+
     @Transactional(readOnly = true)
     public List<ChatMessage> getConversation(Long userId, Long friendId, Long afterId) throws Exception {
         User user = getUserOrThrow(userId);
