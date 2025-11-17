@@ -1236,40 +1236,54 @@
             cursor: not-allowed;
         }
 
-        /* Image Preview Area */
-        .image-preview-area {
+        /* File Preview Area */
+        .file-preview-area {
             padding: 12px 24px;
             border-top: 1px solid #2c2f33;
             background: #1a1a1a;
             display: none;
         }
 
-        .image-preview-area.show {
+        .file-preview-area.show {
             display: block;
         }
 
-        .image-preview-container {
+        .file-preview-container {
             display: flex;
             align-items: center;
             gap: 12px;
             position: relative;
         }
 
-        .image-preview {
+        .file-preview-image {
             width: 120px;
             height: 120px;
             border-radius: 8px;
             object-fit: cover;
             border: 2px solid #2c2f33;
             background: #2c2f33;
+            display: block;
         }
 
-        .image-preview-info {
+        .file-preview-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            border: 2px solid #2c2f33;
+            background: #2c2f33;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            flex-shrink: 0;
+        }
+
+        .file-preview-info {
             flex: 1;
             min-width: 0;
         }
 
-        .image-preview-name {
+        .file-preview-name {
             font-size: 14px;
             font-weight: 500;
             color: #ffffff;
@@ -1279,12 +1293,12 @@
             text-overflow: ellipsis;
         }
 
-        .image-preview-size {
+        .file-preview-size {
             font-size: 12px;
             color: #72767d;
         }
 
-        .image-preview-remove {
+        .file-preview-remove {
             width: 32px;
             height: 32px;
             border-radius: 50%;
@@ -1300,22 +1314,23 @@
             flex-shrink: 0;
         }
 
-        .image-preview-remove:hover {
+        .file-preview-remove:hover {
             background: #d84040;
             transform: scale(1.1);
         }
 
-        body.light-mode .image-preview-area {
+        body.light-mode .file-preview-area {
             background: #f5f5f5;
             border-top-color: #e0e0e0;
         }
 
-        body.light-mode .image-preview {
+        body.light-mode .file-preview-image,
+        body.light-mode .file-preview-icon {
             border-color: #e0e0e0;
             background: #e0e0e0;
         }
 
-        body.light-mode .image-preview-name {
+        body.light-mode .file-preview-name {
             color: #2c2f33;
         }
     </style>
@@ -1382,22 +1397,23 @@
                 <div class="empty-state">Chọn một người bạn ở danh sách bên trái để bắt đầu trò chuyện.</div>
             </div>
 
-            <!-- Image Preview Area -->
-            <div class="image-preview-area" id="imagePreviewArea">
-                <div class="image-preview-container">
-                    <img class="image-preview" id="imagePreview" src="" alt="Preview">
-                    <div class="image-preview-info">
-                        <div class="image-preview-name" id="imagePreviewName"></div>
-                        <div class="image-preview-size" id="imagePreviewSize"></div>
+            <!-- File Preview Area -->
+            <div class="file-preview-area" id="filePreviewArea">
+                <div class="file-preview-container">
+                    <img class="file-preview-image" id="filePreviewImage" src="" alt="Preview" style="display: none;">
+                    <div class="file-preview-icon" id="filePreviewIcon" style="display: none;"></div>
+                    <div class="file-preview-info">
+                        <div class="file-preview-name" id="filePreviewName"></div>
+                        <div class="file-preview-size" id="filePreviewSize"></div>
                     </div>
-                    <button class="image-preview-remove" id="imagePreviewRemove" title="Xóa ảnh">×</button>
+                    <button class="file-preview-remove" id="filePreviewRemove" title="Xóa file">×</button>
                 </div>
             </div>
 
             <div class="input-area">
                 <button class="emoji-btn" id="emojiBtn" title="Emoji" disabled>😊</button>
-                <input type="file" id="fileInput" style="display: none;" accept="image/*,*/*">
-                <button class="file-btn" id="fileBtn" title="Gửi file/ảnh" disabled>📎</button>
+                <input type="file" id="fileInput" style="display: none;" accept="image/*,.rar,.zip,.7z,application/zip,application/x-rar-compressed,application/x-zip-compressed,*/*">
+                <button class="file-btn" id="fileBtn" title="Gửi file/ảnh (hỗ trợ .rar, .zip dưới 100MB)" disabled>📎</button>
                 <input type="text" class="input-box" id="messageInput" placeholder="Hãy chọn một người bạn để nhắn tin" disabled>
                 <button class="send-btn" id="sendButton" disabled>➤</button>
             </div>
@@ -1778,7 +1794,7 @@
                 onlineStatusInterval: null,
                 searchTimeout: null,
                 searchResults: [],
-                pendingImage: null, // File object cho ảnh đang chờ gửi
+                pendingFile: null, // File object cho file đang chờ gửi
             };
 
             function setStatus(message, type = 'info') {
@@ -1929,12 +1945,33 @@
                             `;
                         } else {
                             const fileSizeMB = msg.fileSize ? (msg.fileSize / (1024 * 1024)).toFixed(2) : '0';
+                            const fileName = msg.fileName || 'File';
+                            const fileExt = fileName.split('.').pop()?.toLowerCase() || '';
+                            
+                            // Chọn icon phù hợp với loại file
+                            let fileIcon = '📎'; // Default icon
+                            if (fileExt === 'rar' || fileExt === 'zip' || fileExt === '7z') {
+                                fileIcon = '📦'; // Archive icon
+                            } else if (fileExt === 'pdf') {
+                                fileIcon = '📄';
+                            } else if (fileExt === 'doc' || fileExt === 'docx') {
+                                fileIcon = '📝';
+                            } else if (fileExt === 'xls' || fileExt === 'xlsx') {
+                                fileIcon = '📊';
+                            } else if (fileExt === 'ppt' || fileExt === 'pptx') {
+                                fileIcon = '📽️';
+                            } else if (fileExt === 'mp4' || fileExt === 'avi' || fileExt === 'mov') {
+                                fileIcon = '🎬';
+                            } else if (fileExt === 'mp3' || fileExt === 'wav' || fileExt === 'ogg') {
+                                fileIcon = '🎵';
+                            }
+                            
                             contentHtml = `
                                 <div class="bubble">
                                     <div style="display: flex; align-items: center; gap: 8px;">
-                                        <span style="font-size: 24px;">📎</span>
+                                        <span style="font-size: 24px;">${fileIcon}</span>
                                         <div style="flex: 1;">
-                                            <div style="font-weight: 600;">${escapeHtml(msg.fileName || 'File')}</div>
+                                            <div style="font-weight: 600;">${escapeHtml(fileName)}</div>
                                             <div style="font-size: 12px; opacity: 0.7;">${fileSizeMB} MB</div>
                                         </div>
                                         <a href="${CONTEXT_PATH}${msg.fileUrl}" download 
@@ -2059,8 +2096,8 @@
                     if (fileBtn) fileBtn.disabled = true;
                     if (unfriendBtn) unfriendBtn.style.display = 'none';
                     
-                    // Clear image preview
-                    clearImagePreview();
+                    // Clear file preview
+                    clearFilePreview();
                     
                     // Hide search button
                     const searchBtn = document.getElementById('searchMessagesBtn');
@@ -2072,8 +2109,8 @@
                     return;
                 }
                 
-                // Clear image preview khi đổi bạn
-                clearImagePreview();
+                // Clear file preview khi đổi bạn
+                clearFilePreview();
 
                 chatHeaderTitle.textContent = friend.username;
                 messageInput.placeholder = `Nhắn tin cho @${friend.username}`;
@@ -2351,16 +2388,16 @@
                 if (!state.selectedFriend) return;
                 const text = messageInput.value.trim();
                 
-                // Nếu không có text và không có ảnh preview thì không gửi
-                if (!text && !state.pendingImage) {
-                    setStatus('Vui lòng nhập tin nhắn hoặc chọn ảnh', 'error');
+                // Nếu không có text và không có file preview thì không gửi
+                if (!text && !state.pendingFile) {
+                    setStatus('Vui lòng nhập tin nhắn hoặc chọn file', 'error');
                     return;
                 }
 
-                // Nếu có ảnh preview, upload ảnh trước
-                if (state.pendingImage) {
-                    await uploadFileWithText(state.pendingImage, text);
-                    clearImagePreview();
+                // Nếu có file preview, upload file trước
+                if (state.pendingFile) {
+                    await uploadFileWithText(state.pendingFile, text);
+                    clearFilePreview();
                     messageInput.value = '';
                     return;
                 }
@@ -2869,54 +2906,89 @@
                         return;
                     }
                     
-                    // Chỉ hiển thị preview cho ảnh, file khác upload ngay
-                    if (file.type && file.type.startsWith('image/')) {
-                        showImagePreview(file);
-                    } else {
-                        await uploadFile(file);
-                    }
+                    // Hiển thị preview cho tất cả file (không upload ngay)
+                    showFilePreview(file);
                     fileInput.value = '';
                 });
             }
 
-            // Image Preview Functions
-            function showImagePreview(file) {
-                const previewArea = document.getElementById('imagePreviewArea');
-                const previewImg = document.getElementById('imagePreview');
-                const previewName = document.getElementById('imagePreviewName');
-                const previewSize = document.getElementById('imagePreviewSize');
+            // File Preview Functions
+            function showFilePreview(file) {
+                const previewArea = document.getElementById('filePreviewArea');
+                const previewImg = document.getElementById('filePreviewImage');
+                const previewIcon = document.getElementById('filePreviewIcon');
+                const previewName = document.getElementById('filePreviewName');
+                const previewSize = document.getElementById('filePreviewSize');
                 
-                if (!previewArea || !previewImg || !previewName || !previewSize) return;
+                if (!previewArea || !previewImg || !previewIcon || !previewName || !previewSize) return;
                 
                 // Lưu file vào state
-                state.pendingImage = file;
+                state.pendingFile = file;
+                
+                const fileName = file.name || 'File';
+                const fileExt = fileName.split('.').pop()?.toLowerCase() || '';
+                const isImage = file.type && file.type.startsWith('image/');
+                
+                // Chọn icon phù hợp
+                let fileIcon = '📎';
+                if (fileExt === 'rar' || fileExt === 'zip' || fileExt === '7z') {
+                    fileIcon = '📦';
+                } else if (fileExt === 'pdf') {
+                    fileIcon = '📄';
+                } else if (fileExt === 'doc' || fileExt === 'docx') {
+                    fileIcon = '📝';
+                } else if (fileExt === 'xls' || fileExt === 'xlsx') {
+                    fileIcon = '📊';
+                } else if (fileExt === 'ppt' || fileExt === 'pptx') {
+                    fileIcon = '📽️';
+                } else if (fileExt === 'mp4' || fileExt === 'avi' || fileExt === 'mov') {
+                    fileIcon = '🎬';
+                } else if (fileExt === 'mp3' || fileExt === 'wav' || fileExt === 'ogg') {
+                    fileIcon = '🎵';
+                } else if (isImage) {
+                    fileIcon = '🖼️';
+                }
                 
                 // Hiển thị preview
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    previewImg.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
+                if (isImage) {
+                    previewImg.style.display = 'block';
+                    previewIcon.style.display = 'none';
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        previewImg.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewImg.style.display = 'none';
+                    previewIcon.style.display = 'flex';
+                    previewIcon.textContent = fileIcon;
+                }
                 
-                previewName.textContent = file.name || 'Hình ảnh';
+                previewName.textContent = fileName;
                 const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
                 previewSize.textContent = `${sizeMB} MB`;
                 
                 previewArea.classList.add('show');
             }
             
-            function clearImagePreview() {
-                const previewArea = document.getElementById('imagePreviewArea');
-                const previewImg = document.getElementById('imagePreview');
+            function clearFilePreview() {
+                const previewArea = document.getElementById('filePreviewArea');
+                const previewImg = document.getElementById('filePreviewImage');
+                const previewIcon = document.getElementById('filePreviewIcon');
                 
                 if (previewArea) {
                     previewArea.classList.remove('show');
                 }
                 if (previewImg) {
                     previewImg.src = '';
+                    previewImg.style.display = 'none';
+                }
+                if (previewIcon) {
+                    previewIcon.textContent = '';
+                    previewIcon.style.display = 'none';
                 }
                 
-                state.pendingImage = null;
+                state.pendingFile = null;
             }
             
             // Upload file với text kèm theo
@@ -3007,8 +3079,8 @@
                 }
             }
 
-            // Paste image functionality (Ctrl+V)
-            function handlePasteImage(event) {
+            // Paste file functionality (Ctrl+V) - hỗ trợ cả ảnh và file
+            function handlePasteFile(event) {
                 // Chỉ xử lý khi đã chọn bạn bè
                 if (!state.selectedFriend || messageInput.disabled) {
                     return;
@@ -3024,14 +3096,12 @@
                 const items = event.clipboardData?.items;
                 if (!items || items.length === 0) return;
 
-                // Tìm image trong clipboard
-                let foundImage = false;
+                // Tìm file trong clipboard (ảnh hoặc file)
                 for (let i = 0; i < items.length; i++) {
                     const item = items[i];
                     
-                    // Kiểm tra nếu là image
-                    if (item.type.indexOf('image') !== -1) {
-                        foundImage = true;
+                    // Kiểm tra nếu là file (image hoặc file khác)
+                    if (item.kind === 'file') {
                         event.preventDefault(); // Ngăn paste text vào input
                         event.stopPropagation();
                         
@@ -3041,35 +3111,83 @@
                         // Validate file size (100MB)
                         const maxSize = 100 * 1024 * 1024;
                         if (blob.size > maxSize) {
-                            showToast('Lỗi', 'Hình ảnh không được vượt quá 100MB', 'error');
+                            showToast('Lỗi', 'File không được vượt quá 100MB', 'error');
                             return;
                         }
 
-                        // Tạo File object từ blob với tên file
-                        const extension = blob.type.split('/')[1] || 'png';
-                        const fileName = `pasted-image-${Date.now()}.${extension}`;
+                        // Tạo File object từ blob
+                        let fileName = blob.name;
+                        if (!fileName) {
+                            // Nếu không có tên, tạo tên dựa trên type
+                            const extension = blob.type ? blob.type.split('/')[1] : 'file';
+                            const prefix = blob.type && blob.type.startsWith('image/') ? 'pasted-image' : 'pasted-file';
+                            fileName = `${prefix}-${Date.now()}.${extension}`;
+                        }
                         const file = new File([blob], fileName, { type: blob.type });
 
                         // Hiển thị preview thay vì upload ngay
-                        showImagePreview(file);
+                        showFilePreview(file);
                         return;
                     }
                 }
             }
 
             // Thêm event listener cho paste trên document và input
-            document.addEventListener('paste', handlePasteImage, true);
+            document.addEventListener('paste', handlePasteFile, true);
             
             // Cũng thêm vào input để đảm bảo hoạt động
             if (messageInput) {
-                messageInput.addEventListener('paste', handlePasteImage, true);
+                messageInput.addEventListener('paste', handlePasteFile, true);
             }
 
             // Event listener cho nút xóa preview
-            const previewRemoveBtn = document.getElementById('imagePreviewRemove');
+            const previewRemoveBtn = document.getElementById('filePreviewRemove');
             if (previewRemoveBtn) {
                 previewRemoveBtn.addEventListener('click', () => {
-                    clearImagePreview();
+                    clearFilePreview();
+                });
+            }
+
+            // Drag & Drop file vào input area
+            const inputArea = document.querySelector('.input-area');
+            if (inputArea) {
+                inputArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (state.selectedFriend && !messageInput.disabled) {
+                        inputArea.style.background = '#2c2f33';
+                    }
+                });
+
+                inputArea.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    inputArea.style.background = '';
+                });
+
+                inputArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    inputArea.style.background = '';
+
+                    if (!state.selectedFriend || messageInput.disabled) {
+                        return;
+                    }
+
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        const file = files[0];
+                        
+                        // Validate file size (100MB)
+                        const maxSize = 100 * 1024 * 1024;
+                        if (file.size > maxSize) {
+                            showToast('Lỗi', 'File không được vượt quá 100MB', 'error');
+                            return;
+                        }
+
+                        // Hiển thị preview
+                        showFilePreview(file);
+                    }
                 });
             }
 
