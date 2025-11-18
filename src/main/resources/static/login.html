@@ -448,17 +448,22 @@
             const loginForm = document.getElementById('loginForm');
             const registerForm = document.getElementById('registerForm');
             const buttons = document.querySelectorAll('.btn-group .btn-secondary');
+            const hasToggleButtons = buttons.length >= 2;
 
             if (formType === 'login') {
                 loginForm.classList.add('active');
                 registerForm.classList.remove('active');
-                buttons[0].classList.add('active');
-                buttons[1].classList.remove('active');
+                if (hasToggleButtons) {
+                    buttons[0].classList.add('active');
+                    buttons[1].classList.remove('active');
+                }
             } else {
                 registerForm.classList.add('active');
                 loginForm.classList.remove('active');
-                buttons[1].classList.add('active');
-                buttons[0].classList.remove('active');
+                if (hasToggleButtons) {
+                    buttons[1].classList.add('active');
+                    buttons[0].classList.remove('active');
+                }
             }
 
             clearErrors();
@@ -677,8 +682,21 @@
             });
         }
 
+        function syncFormWithHash() {
+            if (window.location.hash === '#register') {
+                switchForm('register');
+            } else {
+                switchForm('login');
+            }
+        }
+
         // Initialize
-        window.addEventListener('load', createParticles);
+        window.addEventListener('load', () => {
+            createParticles();
+            syncFormWithHash();
+        });
+
+        window.addEventListener('hashchange', syncFormWithHash);
 
         // Đảm bảo link forgot password hoạt động
         document.addEventListener('DOMContentLoaded', () => {
