@@ -912,6 +912,61 @@
             margin-bottom: 12px;
         }
 
+        /* Skeleton Loaders */
+        .skeleton-friend {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin-bottom: 4px;
+        }
+
+        .skeleton-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .skeleton-text {
+            flex: 1;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .skeleton-text.short {
+            width: 60%;
+        }
+
+        .skeleton-message-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 20px;
+            margin-bottom: 8px;
+        }
+
+        .skeleton-message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .skeleton-message-content {
+            flex: 1;
+        }
+
+        .skeleton-message-line {
+            height: 12px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+        }
+
+        .skeleton-message-line:last-child {
+            width: 70%;
+            margin-bottom: 0;
+        }
+
         /* Add Friend Modal */
         .modal-overlay {
             display: none;
@@ -1407,7 +1462,7 @@
             <!-- File Preview Area -->
             <div class="file-preview-area" id="filePreviewArea">
                 <div class="file-preview-container">
-                    <img class="file-preview-image" id="filePreviewImage" src="" alt="Preview" style="display: none;">
+                    <img class="file-preview-image" id="filePreviewImage" src="" alt="Preview" loading="lazy" decoding="async" style="display: none;">
                     <div class="file-preview-icon" id="filePreviewIcon" style="display: none;"></div>
                     <div class="file-preview-info">
                         <div class="file-preview-name" id="filePreviewName"></div>
@@ -1853,6 +1908,27 @@
                 }
             }
 
+            // Throttle function for performance
+            function throttle(func, limit) {
+                let inThrottle;
+                return function() {
+                    const args = arguments;
+                    const context = this;
+                    if (!inThrottle) {
+                        func.apply(context, args);
+                        inThrottle = true;
+                        setTimeout(() => inThrottle = false, limit);
+                    }
+                };
+            }
+
+            // Optimized scroll with throttling
+            const scrollMessagesToBottomThrottled = throttle(() => {
+                if (messagesContainer) {
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
+            }, 100);
+
             function scrollMessagesToBottom() {
                 requestAnimationFrame(() => {
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -1886,6 +1962,43 @@
                 }
 
                 return data;
+            }
+
+            // Render skeleton loaders
+            function renderFriendsSkeleton() {
+                friendsList.innerHTML = '';
+                for (let i = 0; i < 5; i++) {
+                    const skeleton = document.createElement('div');
+                    skeleton.className = 'skeleton-friend';
+                    skeleton.innerHTML = `
+                        <div class="skeleton skeleton-avatar"></div>
+                        <div style="flex: 1;">
+                            <div class="skeleton skeleton-text" style="margin-bottom: 8px;"></div>
+                            <div class="skeleton skeleton-text short"></div>
+                        </div>
+                    `;
+                    friendsList.appendChild(skeleton);
+                }
+            }
+
+            function renderMessagesSkeleton() {
+                const messagesContainer = document.getElementById('messagesContainer');
+                if (!messagesContainer) return;
+                
+                messagesContainer.innerHTML = '';
+                for (let i = 0; i < 6; i++) {
+                    const skeleton = document.createElement('div');
+                    skeleton.className = 'skeleton-message-item';
+                    skeleton.innerHTML = `
+                        <div class="skeleton skeleton-message-avatar"></div>
+                        <div class="skeleton-message-content">
+                            <div class="skeleton skeleton-message-line"></div>
+                            <div class="skeleton skeleton-message-line"></div>
+                            <div class="skeleton skeleton-message-line"></div>
+                        </div>
+                    `;
+                    messagesContainer.appendChild(skeleton);
+                }
             }
 
             function renderFriends() {
@@ -1957,8 +2070,9 @@
                     return;
                 }
 
+                // Use requestAnimationFrame for smooth rendering
                 const fragment = document.createDocumentFragment();
-                messages.forEach(msg => {
+                messages.forEach((msg, index) => {
                     const isMine = Number(msg.senderId) === Number(state.currentUser.id);
                     const wrapper = document.createElement('div');
                     wrapper.className = `message ${isMine ? 'mine' : 'their'}`;
@@ -1968,11 +2082,18 @@
                     if (msg.fileUrl) {
                         const isImage = msg.fileType && msg.fileType.startsWith('image/');
                         if (isImage) {
+                            // Image optimization: lazy loading, WebP support, responsive
+                            const imageUrl = `${CONTEXT_PATH}${msg.fileUrl}`;
+                            const imageName = escapeHtml(msg.fileName || '');
                             contentHtml = `
                                 <div class="bubble">
-                                    <img src="${CONTEXT_PATH}${msg.fileUrl}" alt="${escapeHtml(msg.fileName || '')}" 
-                                         style="max-width: 300px; max-height: 300px; border-radius: 8px; cursor: pointer; display: block;"
-                                         onclick="window.open('${CONTEXT_PATH}${msg.fileUrl}', '_blank')">
+                                    <img src="${imageUrl}" 
+                                         alt="${imageName}"
+                                         loading="lazy"
+                                         decoding="async"
+                                         style="max-width: 300px; max-height: 300px; border-radius: 8px; cursor: pointer; display: block; width: 100%; height: auto; object-fit: contain;"
+                                         onclick="window.open('${imageUrl}', '_blank')"
+                                         onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'300\\' height=\\'300\\'%3E%3Crect fill=\\'%232c2f33\\' width=\\'300\\' height=\\'300\\'/%3E%3Ctext fill=\\'%23fff\\' x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' dy=\\'.3em\\'%3ELỗi tải ảnh%3C/text%3E%3C/svg%3E';">
                                     ${msg.content ? `<div style="margin-top: 8px;">${escapeHtml(msg.content)}</div>` : ''}
                                 </div>
                             `;
@@ -2028,9 +2149,15 @@
                     fragment.appendChild(wrapper);
                 });
 
-                messagesContainer.innerHTML = '';
-                messagesContainer.appendChild(fragment);
-                scrollMessagesToBottom();
+                // Batch DOM updates for better performance
+                requestAnimationFrame(() => {
+                    messagesContainer.innerHTML = '';
+                    messagesContainer.appendChild(fragment);
+                    scrollMessagesToBottom();
+                    
+                    // Initialize Intersection Observer for lazy loading images
+                    initImageLazyLoading();
+                });
             }
 
             function renderPending() {
@@ -2284,10 +2411,10 @@
                         return;
                     }
 
-                    // Debounce search (wait 300ms after user stops typing)
+                    // Debounce search (wait 500ms after user stops typing for better performance)
                     state.searchTimeout = setTimeout(() => {
                         searchUsers(keyword);
-                    }, 300);
+                    }, 500);
                 });
 
                 // Hide search results when clicking outside
@@ -2309,7 +2436,7 @@
                 const showStatus = state.currentView === 'friends';
                 try {
                     if (showStatus) {
-                        setStatus('Đang tải danh sách bạn bè...');
+                        renderFriendsSkeleton();
                     }
                     const data = await apiRequest('/friends');
                     state.friends = data.friends || [];
@@ -2351,7 +2478,7 @@
                 
                 // Show skeleton loader when resetting
                 if (reset) {
-                    showSkeletonLoader();
+                    renderMessagesSkeleton();
                 }
                 
                 try {
@@ -2575,7 +2702,8 @@
             sendButton.addEventListener('click', sendChatMessage);
 
             messageInput.addEventListener('keypress', (event) => {
-                if (event.key === 'Enter') {
+                // Ctrl+Enter hoặc Enter để gửi (Enter mặc định, Ctrl+Enter cho new line)
+                if (event.key === 'Enter' && !event.ctrlKey && !event.shiftKey) {
                     event.preventDefault();
                     sendChatMessage();
                 }
@@ -2986,7 +3114,10 @@
                     previewIcon.style.display = 'none';
                     const reader = new FileReader();
                     reader.onload = (e) => {
-                        previewImg.src = e.target.result;
+                        // Use requestAnimationFrame for smooth image loading
+                        requestAnimationFrame(() => {
+                            previewImg.src = e.target.result;
+                        });
                     };
                     reader.readAsDataURL(file);
                 } else {
@@ -3222,9 +3353,159 @@
                 });
             }
 
+            // Keyboard Shortcuts
+            function initKeyboardShortcuts() {
+                document.addEventListener('keydown', (event) => {
+                    // Ctrl+K hoặc / để focus search (chỉ khi không đang nhập)
+                    if ((event.ctrlKey && event.key === 'k') || 
+                        (event.key === '/' && !event.ctrlKey && !event.shiftKey && 
+                         document.activeElement.tagName !== 'INPUT' && 
+                         document.activeElement.tagName !== 'TEXTAREA')) {
+                        event.preventDefault();
+                        const searchBar = document.getElementById('searchBar');
+                        if (searchBar) {
+                            searchBar.focus();
+                            searchBar.select();
+                        }
+                    }
+
+                    // Esc để đóng modals/dropdowns
+                    if (event.key === 'Escape') {
+                        // Đóng emoji picker
+                        const emojiPicker = document.getElementById('emojiPicker');
+                        if (emojiPicker && emojiPicker.style.display !== 'none') {
+                            emojiPicker.style.display = 'none';
+                        }
+                        
+                        // Đóng add friend modal
+                        const addFriendModal = document.getElementById('addFriendModal');
+                        if (addFriendModal && addFriendModal.classList.contains('active')) {
+                            addFriendModal.classList.remove('active');
+                        }
+                        
+                        // Đóng profile modal
+                        const profileModal = document.getElementById('profileModal');
+                        if (profileModal && profileModal.classList.contains('active')) {
+                            profileModal.classList.remove('active');
+                        }
+                        
+                        // Đóng search results
+                        const searchResults = document.getElementById('searchResults');
+                        if (searchResults && searchResults.classList.contains('show')) {
+                            searchResults.classList.remove('show');
+                            const searchBar = document.getElementById('searchBar');
+                            if (searchBar) searchBar.value = '';
+                        }
+                    }
+
+                    // Ctrl+/ để hiển thị keyboard shortcuts help
+                    if (event.ctrlKey && event.key === '/') {
+                        event.preventDefault();
+                        showKeyboardShortcutsHelp();
+                    }
+                });
+            }
+
+            // Hiển thị bảng keyboard shortcuts
+            function showKeyboardShortcutsHelp() {
+                const shortcuts = [
+                    { key: 'Ctrl+K hoặc /', desc: 'Tìm kiếm bạn bè' },
+                    { key: 'Enter', desc: 'Gửi tin nhắn' },
+                    { key: 'Ctrl+Enter', desc: 'Xuống dòng mới' },
+                    { key: 'Esc', desc: 'Đóng modal/dropdown' },
+                    { key: 'Ctrl+/', desc: 'Hiển thị bảng phím tắt này' }
+                ];
+
+                const helpHtml = `
+                    <div class="modal active" id="keyboardShortcutsModal">
+                        <div class="modal-content" style="max-width: 500px;">
+                            <div class="modal-header">
+                                <h2>⌨️ Phím Tắt</h2>
+                                <button class="modal-close" onclick="document.getElementById('keyboardShortcutsModal').classList.remove('active')">×</button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="display: flex; flex-direction: column; gap: 12px;">
+                                    ${shortcuts.map(s => `
+                                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                                            <span style="color: #b9bbbe;">${s.desc}</span>
+                                            <kbd style="background: #2c2f33; padding: 4px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; color: #fff;">${s.key}</kbd>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Remove existing modal if any
+                const existing = document.getElementById('keyboardShortcutsModal');
+                if (existing) existing.remove();
+                
+                document.body.insertAdjacentHTML('beforeend', helpHtml);
+                
+                // Auto close on click outside
+                setTimeout(() => {
+                    const modal = document.getElementById('keyboardShortcutsModal');
+                    if (modal) {
+                        modal.addEventListener('click', (e) => {
+                            if (e.target === modal) {
+                                modal.classList.remove('active');
+                            }
+                        });
+                    }
+                }, 100);
+            }
+
+            // Intersection Observer for lazy loading images
+            function initImageLazyLoading() {
+                // Check if Intersection Observer is supported
+                if (!('IntersectionObserver' in window)) {
+                    return; // Fallback to native lazy loading
+                }
+
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            // Only load if src is not set or is a placeholder
+                            if (img.dataset.src && !img.src) {
+                                img.src = img.dataset.src;
+                                img.removeAttribute('data-src');
+                            }
+                            observer.unobserve(img);
+                        }
+                    });
+                }, {
+                    rootMargin: '50px' // Start loading 50px before image enters viewport
+                });
+
+                // Observe all images in messages container
+                const images = messagesContainer.querySelectorAll('img[data-src]');
+                images.forEach(img => imageObserver.observe(img));
+            }
+
+            // Performance monitoring (optional, for development)
+            function measurePerformance(name, fn) {
+                if (window.performance && window.performance.mark) {
+                    const startMark = `${name}-start`;
+                    const endMark = `${name}-end`;
+                    window.performance.mark(startMark);
+                    const result = fn();
+                    window.performance.mark(endMark);
+                    window.performance.measure(name, startMark, endMark);
+                    const measure = window.performance.getEntriesByName(name)[0];
+                    if (measure && measure.duration > 100) {
+                        console.warn(`⚠️ ${name} took ${measure.duration.toFixed(2)}ms`);
+                    }
+                    return result;
+                }
+                return fn();
+            }
+
             // Initialize
             initThemeToggle();
             initMessageSearch();
+            initKeyboardShortcuts();
 
             loadFriends();
             loadRequests();

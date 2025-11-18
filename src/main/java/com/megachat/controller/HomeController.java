@@ -18,10 +18,15 @@ import java.io.IOException;
 @Controller
 public class HomeController {
 
-    @GetMapping("/")
+    @GetMapping({"/", ""})
     public void home(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String contextPath = request.getContextPath();
-        response.sendRedirect(contextPath + "/index.html");
+        if (contextPath == null || contextPath.isEmpty()) {
+            contextPath = "";
+        }
+        // Ensure we redirect to index.html with proper context path
+        String redirectUrl = contextPath + "/index.html";
+        response.sendRedirect(redirectUrl);
     }
 
     @GetMapping("/index.html")
