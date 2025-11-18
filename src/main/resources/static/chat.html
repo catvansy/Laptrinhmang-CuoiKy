@@ -267,10 +267,32 @@
         }
 
         .empty-state {
-            padding: 24px;
+            padding: 48px 24px;
             text-align: center;
             color: #72767d;
             font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            opacity: 0.5;
+            margin-bottom: 8px;
+        }
+
+        .empty-state-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #b9bbbe;
+            margin-bottom: 8px;
+        }
+
+        .empty-state-message {
+            color: #72767d;
+            line-height: 1.5;
         }
 
         /* Search Results */
@@ -474,6 +496,197 @@
         .message .time {
             font-size: 11px;
             color: #72767d;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 2px;
+        }
+
+        .message.mine .time {
+            justify-content: flex-end;
+        }
+
+        /* Message Status Indicators */
+        .message-status {
+            font-size: 10px;
+            display: inline-flex;
+            align-items: center;
+            margin-left: 4px;
+        }
+
+        .message-status.sending {
+            color: #72767d;
+        }
+
+        .message-status.sent {
+            color: #72767d;
+        }
+
+        .message-status.delivered {
+            color: #72767d;
+        }
+
+        .message-status.read {
+            color: #43b581;
+        }
+
+        /* Message Context Menu */
+        .message-context-menu {
+            position: fixed;
+            background: #1a1a1a;
+            border: 1px solid #2c2f33;
+            border-radius: 8px;
+            padding: 4px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            display: none;
+            min-width: 150px;
+        }
+
+        .message-context-menu.show {
+            display: block;
+        }
+
+        .context-menu-item {
+            padding: 8px 12px;
+            color: #ffffff;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .context-menu-item:hover {
+            background: #2c2f33;
+        }
+
+        .context-menu-item:active {
+            background: #36393f;
+        }
+
+        /* Reply Message */
+        .message-reply {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #5865f2;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .message-reply-author {
+            font-weight: 600;
+            color: #5865f2;
+            margin-bottom: 4px;
+        }
+
+        .message-reply-content {
+            color: #b9bbbe;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .reply-preview {
+            background: rgba(88, 101, 242, 0.1);
+            border-left: 3px solid #5865f2;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reply-preview-content {
+            flex: 1;
+        }
+
+        .reply-preview-author {
+            font-weight: 600;
+            color: #5865f2;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .reply-preview-text {
+            color: #b9bbbe;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .reply-preview-close {
+            background: none;
+            border: none;
+            color: #72767d;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
+        }
+
+        .reply-preview-close:hover {
+            color: #ffffff;
+        }
+
+        /* Message hover effect */
+        .message {
+            position: relative;
+        }
+
+        .message:hover .message-actions {
+            opacity: 1;
+        }
+
+        .message-actions {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #1a1a1a;
+            border: 1px solid #2c2f33;
+            border-radius: 6px;
+            padding: 4px;
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            z-index: 10;
+        }
+
+        .message.mine .message-actions {
+            left: -8px;
+            right: auto;
+        }
+
+        .message-action-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            background: transparent;
+            border: none;
+            color: #b9bbbe;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .message-action-btn:hover {
+            background: #2c2f33;
+            color: #ffffff;
         }
 
         /* Input Area */
@@ -723,6 +936,23 @@
 
         body.light-mode .toast-message {
             color: rgba(44, 47, 51, 0.7);
+        }
+
+        .toast-retry {
+            background: rgba(88, 101, 242, 0.2);
+            border: 1px solid rgba(88, 101, 242, 0.5);
+            color: #5865f2;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .toast-retry:hover {
+            background: rgba(88, 101, 242, 0.3);
+            border-color: #5865f2;
         }
 
         .toast-close {
@@ -1306,6 +1536,13 @@
         }
 
         /* File Preview Area */
+        .reply-preview-area {
+            padding: 12px 24px;
+            border-top: 1px solid #2c2f33;
+            background: #1a1a1a;
+            display: none;
+        }
+
         .file-preview-area {
             padding: 12px 24px;
             border-top: 1px solid #2c2f33;
@@ -1402,16 +1639,144 @@
         body.light-mode .file-preview-name {
             color: #2c2f33;
         }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                padding: 8px;
+                border-right: none;
+                border-bottom: 1px solid #2c2f33;
+            }
+
+            .friends-panel {
+                width: 100%;
+                height: 50vh;
+                border-right: none;
+                border-bottom: 1px solid #2c2f33;
+            }
+
+            .chat-panel {
+                width: 100%;
+                height: calc(50vh - 72px);
+            }
+
+            .message {
+                max-width: 85%;
+            }
+
+            .message-actions {
+                opacity: 1 !important;
+                position: static;
+                margin-top: 4px;
+            }
+
+            .input-area {
+                padding: 12px;
+            }
+
+            .input-box {
+                font-size: 16px; /* Prevent zoom on iOS */
+            }
+
+            .chat-header {
+                padding: 12px 16px;
+            }
+
+            .messages {
+                padding: 12px 16px;
+            }
+
+            .empty-state {
+                padding: 32px 16px;
+            }
+
+            .empty-state-icon {
+                font-size: 48px;
+            }
+
+            .modal-content {
+                width: 95%;
+                max-width: 95%;
+                margin: 20px auto;
+            }
+
+            .friends-header h2 {
+                font-size: 18px;
+            }
+
+            .search-bar {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                padding: 6px;
+            }
+
+            .sidebar-item {
+                width: 40px;
+                height: 40px;
+            }
+
+            .friends-panel {
+                height: 40vh;
+            }
+
+            .chat-panel {
+                height: calc(60vh - 72px);
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .empty-state-icon {
+                font-size: 40px;
+            }
+
+            .empty-state-title {
+                font-size: 16px;
+            }
+
+            .empty-state-message {
+                font-size: 13px;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .message-actions {
+                opacity: 1;
+            }
+
+            .friend-item,
+            .message-action-btn,
+            .icon-btn {
+                min-height: 44px; /* iOS touch target size */
+            }
+
+            .input-box {
+                font-size: 16px; /* Prevent zoom on focus */
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-item" data-action="reset" title="Làm mới trang chat">
+            <div class="sidebar" role="navigation" aria-label="Sidebar navigation">
+            <div class="sidebar-item" data-action="reset" title="Làm mới trang chat" aria-label="Làm mới trang chat" role="button" tabindex="0">
                 <span>💬</span>
             </div>
-            <div class="sidebar-item" data-action="settings" title="Cài đặt tài khoản">
+            <div class="sidebar-item" data-action="settings" title="Cài đặt tài khoản" aria-label="Cài đặt tài khoản" role="button" tabindex="0">
                 <span>⚙️</span>
             </div>
         </div>
@@ -1420,16 +1785,16 @@
         <div class="friends-panel">
             <div class="friends-header">
                 <h2> Friends</h2>
-                <input type="text" class="search-bar" id="searchBar" placeholder="Search...">
+                <input type="text" class="search-bar" id="searchBar" placeholder="Search..." aria-label="Tìm kiếm bạn bè" role="searchbox">
             </div>
 
             <div class="search-results" id="searchResults">
                 <div class="empty-state">Không tìm thấy kết quả</div>
             </div>
 
-            <div class="tabs">
-                <button class="tab active" data-view="friends">Friends</button>
-                <button class="tab" data-view="pending">Pending</button>
+            <div class="tabs" role="tablist" aria-label="Danh sách bạn bè">
+                <button class="tab active" data-view="friends" role="tab" aria-selected="true" aria-controls="friendsList">Friends</button>
+                <button class="tab" data-view="pending" role="tab" aria-selected="false" aria-controls="friendsList">Pending</button>
             </div>
 
             <div class="panel-status" id="panelStatus"></div>
@@ -1455,8 +1820,23 @@
                 </div>
             </div>
 
-            <div class="messages" id="messagesContainer">
-                <div class="empty-state">Chọn một người bạn ở danh sách bên trái để bắt đầu trò chuyện.</div>
+            <div class="messages" id="messagesContainer" role="log" aria-label="Tin nhắn" aria-live="polite" aria-atomic="false">
+                <div class="empty-state">
+                    <div class="empty-state-icon">💬</div>
+                    <div class="empty-state-title">Chưa chọn cuộc trò chuyện</div>
+                    <div class="empty-state-message">Chọn một người bạn ở danh sách bên trái để bắt đầu trò chuyện.</div>
+                </div>
+            </div>
+
+            <!-- Reply Preview Area -->
+            <div class="reply-preview-area" id="replyPreviewArea" style="display: none;">
+                <div class="reply-preview">
+                    <div class="reply-preview-content">
+                        <div class="reply-preview-author" id="replyPreviewAuthor"></div>
+                        <div class="reply-preview-text" id="replyPreviewText"></div>
+                    </div>
+                    <button class="reply-preview-close" id="replyPreviewClose" aria-label="Hủy reply">×</button>
+                </div>
             </div>
 
             <!-- File Preview Area -->
@@ -1472,12 +1852,12 @@
                 </div>
             </div>
 
-            <div class="input-area">
-                <button class="emoji-btn" id="emojiBtn" title="Emoji" disabled>😊</button>
-                <input type="file" id="fileInput" style="display: none;" accept="image/*,.rar,.zip,.7z,application/zip,application/x-rar-compressed,application/x-zip-compressed,*/*">
-                <button class="file-btn" id="fileBtn" title="Gửi file/ảnh (hỗ trợ .rar, .zip dưới 100MB)" disabled>📎</button>
-                <input type="text" class="input-box" id="messageInput" placeholder="Hãy chọn một người bạn để nhắn tin" disabled>
-                <button class="send-btn" id="sendButton" disabled>➤</button>
+            <div class="input-area" role="region" aria-label="Nhập tin nhắn">
+                <button class="emoji-btn" id="emojiBtn" title="Emoji" aria-label="Chọn emoji" disabled>😊</button>
+                <input type="file" id="fileInput" style="display: none;" accept="image/*,.rar,.zip,.7z,application/zip,application/x-rar-compressed,application/x-zip-compressed,*/*" aria-label="Chọn file">
+                <button class="file-btn" id="fileBtn" title="Gửi file/ảnh (hỗ trợ .rar, .zip dưới 100MB)" aria-label="Gửi file hoặc ảnh" disabled>📎</button>
+                <input type="text" class="input-box" id="messageInput" placeholder="Hãy chọn một người bạn để nhắn tin" aria-label="Nhập tin nhắn" disabled>
+                <button class="send-btn" id="sendButton" aria-label="Gửi tin nhắn" disabled>➤</button>
             </div>
             
             <!-- Emoji Picker -->
@@ -1860,6 +2240,8 @@
                 searchTimeout: null,
                 searchResults: [],
                 pendingFile: null, // File object cho file đang chờ gửi
+                replyTo: null, // Message đang reply
+                pendingMessages: new Map(), // Messages đang gửi (temporary IDs)
             };
 
             function setStatus(message, type = 'info') {
@@ -1895,13 +2277,72 @@
                     .replace(/'/g, '&#039;');
             }
 
-            function formatTimestamp(dateStr) {
+            // Improved timestamp formatting with relative time
+            function formatTimestamp(dateStr, showRelative = true) {
                 if (!dateStr) return '';
                 try {
                     const date = new Date(dateStr);
-                    return date.toLocaleTimeString('vi-VN', {
+                    const now = new Date();
+                    const diff = now - date;
+                    const minutes = Math.floor(diff / 60000);
+                    const hours = Math.floor(diff / 3600000);
+                    const days = Math.floor(diff / 86400000);
+                    
+                    // Relative time for recent messages
+                    if (showRelative) {
+                        if (minutes < 1) return 'Vừa xong';
+                        if (minutes < 60) return `${minutes} phút trước`;
+                        if (hours < 24) return `${hours} giờ trước`;
+                        if (days === 1) return 'Hôm qua';
+                        if (days < 7) return `${days} ngày trước`;
+                    }
+                    
+                    // Absolute time for older messages
+                    const isToday = date.toDateString() === now.toDateString();
+                    const isYesterday = new Date(now - 86400000).toDateString() === date.toDateString();
+                    
+                    if (isToday) {
+                        return date.toLocaleTimeString('vi-VN', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    } else if (isYesterday) {
+                        return `Hôm qua ${date.toLocaleTimeString('vi-VN', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}`;
+                    } else if (days < 7) {
+                        return date.toLocaleDateString('vi-VN', {
+                            weekday: 'short',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    } else {
+                        return date.toLocaleDateString('vi-VN', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined,
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
+                } catch (error) {
+                    return '';
+                }
+            }
+
+            // Get full timestamp for tooltip
+            function getFullTimestamp(dateStr) {
+                if (!dateStr) return '';
+                try {
+                    const date = new Date(dateStr);
+                    return date.toLocaleString('vi-VN', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
                         hour: '2-digit',
-                        minute: '2-digit'
+                        minute: '2-digit',
+                        second: '2-digit'
                     });
                 } catch (error) {
                     return '';
@@ -1935,7 +2376,8 @@
                 });
             }
 
-            async function apiRequest(path, options = {}) {
+            // Retry mechanism with exponential backoff
+            async function apiRequest(path, options = {}, retries = 3) {
                 const opts = {
                     method: 'GET',
                     credentials: 'include',
@@ -1948,20 +2390,83 @@
                     opts.body = JSON.stringify(opts.body);
                 }
 
-                const response = await fetch(`${API_BASE}${path}`, opts);
-                let data = {};
-                try {
-                    data = await response.json();
-                } catch (error) {
-                    // ignore
-                }
+                for (let attempt = 0; attempt < retries; attempt++) {
+                    try {
+                        const response = await fetch(`${API_BASE}${path}`, opts);
+                        let data = {};
+                        try {
+                            data = await response.json();
+                        } catch (error) {
+                            // ignore JSON parse errors
+                        }
 
-                if (!response.ok || data.success === false) {
-                    const message = data && data.message ? data.message : 'Có lỗi xảy ra';
-                    throw new Error(message);
-                }
+                        if (!response.ok || data.success === false) {
+                            // Don't retry on 4xx errors (client errors)
+                            if (response.status >= 400 && response.status < 500) {
+                                const message = data && data.message ? data.message : 'Có lỗi xảy ra';
+                                throw new Error(message);
+                            }
+                            
+                            // Retry on 5xx errors (server errors) or network errors
+                            if (attempt < retries - 1) {
+                                const delay = Math.min(1000 * Math.pow(2, attempt), 10000); // Exponential backoff, max 10s
+                                await new Promise(resolve => setTimeout(resolve, delay));
+                                continue;
+                            }
+                            
+                            const message = data && data.message ? data.message : 'Có lỗi xảy ra';
+                            throw new Error(message);
+                        }
 
-                return data;
+                        // Update connection status on success
+                        updateConnectionStatus(true);
+                        return data;
+                    } catch (error) {
+                        // Network error or last attempt
+                        if (attempt === retries - 1 || error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                            updateConnectionStatus(false);
+                            throw error;
+                        }
+                        
+                        // Wait before retry
+                        const delay = Math.min(1000 * Math.pow(2, attempt), 10000);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    }
+                }
+            }
+
+            // Connection status indicator
+            let connectionStatusElement = null;
+            function initConnectionStatus() {
+                const statusBar = document.querySelector('.panel-status');
+                if (statusBar && !connectionStatusElement) {
+                    connectionStatusElement = document.createElement('div');
+                    connectionStatusElement.id = 'connectionStatus';
+                    connectionStatusElement.style.cssText = 'position: fixed; top: 10px; right: 10px; padding: 8px 12px; border-radius: 6px; font-size: 12px; z-index: 1000; display: none;';
+                    document.body.appendChild(connectionStatusElement);
+                }
+            }
+
+            function updateConnectionStatus(isConnected) {
+                if (!connectionStatusElement) initConnectionStatus();
+                if (!connectionStatusElement) return;
+
+                if (isConnected) {
+                    connectionStatusElement.textContent = '🟢 Đã kết nối';
+                    connectionStatusElement.style.background = '#43b581';
+                    connectionStatusElement.style.color = '#fff';
+                    connectionStatusElement.style.display = 'block';
+                    setTimeout(() => {
+                        if (connectionStatusElement) {
+                            connectionStatusElement.style.display = 'none';
+                        }
+                    }, 2000);
+                } else {
+                    connectionStatusElement.textContent = '🔴 Mất kết nối - Đang thử lại...';
+                    connectionStatusElement.style.background = '#ed4245';
+                    connectionStatusElement.style.color = '#fff';
+                    connectionStatusElement.style.display = 'block';
+                }
             }
 
             // Render skeleton loaders
@@ -2004,7 +2509,13 @@
             function renderFriends() {
                 friendsList.innerHTML = '';
                 if (!state.friends.length) {
-                    friendsList.innerHTML = '<div class="empty-state">Bạn chưa có bạn bè nào. Hãy gửi lời mời kết bạn để bắt đầu trò chuyện!</div>';
+                    friendsList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">👥</div>
+                            <div class="empty-state-title">Chưa có bạn bè</div>
+                            <div class="empty-state-message">Hãy gửi lời mời kết bạn để bắt đầu trò chuyện!</div>
+                        </div>
+                    `;
                     updateChatSelection(null);
                     return;
                 }
@@ -2060,13 +2571,25 @@
 
             function renderMessages(friendId) {
                 if (!friendId) {
-                    messagesContainer.innerHTML = '<div class="empty-state">Chọn một người bạn ở danh sách bên trái để bắt đầu trò chuyện.</div>';
+                    messagesContainer.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">💬</div>
+                            <div class="empty-state-title">Chưa chọn cuộc trò chuyện</div>
+                            <div class="empty-state-message">Chọn một người bạn ở danh sách bên trái để bắt đầu trò chuyện.</div>
+                        </div>
+                    `;
                     return;
                 }
                 
                 const messages = state.messages[friendId] || [];
                 if (!messages.length) {
-                    messagesContainer.innerHTML = '<div class="empty-state">Chưa có tin nhắn nào. Hãy bắt đầu cuộc trò chuyện!</div>';
+                    messagesContainer.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">💭</div>
+                            <div class="empty-state-title">Chưa có tin nhắn nào</div>
+                            <div class="empty-state-message">Hãy bắt đầu cuộc trò chuyện bằng cách gửi tin nhắn đầu tiên!</div>
+                        </div>
+                    `;
                     return;
                 }
 
@@ -2141,10 +2664,50 @@
                     } else {
                         contentHtml = `<div class="bubble">${escapeHtml(msg.content)}</div>`;
                     }
+
+                    // Reply preview nếu có
+                    let replyHtml = '';
+                    if (msg.replyTo && msg.replyTo.id) {
+                        const repliedMsg = state.messages[friendId]?.find(m => m.id === msg.replyTo.id);
+                        if (repliedMsg) {
+                            const repliedContent = repliedMsg.content || (repliedMsg.fileName || 'File');
+                            const replyAuthor = repliedMsg.senderId === state.currentUser.id ? 'Bạn' : (state.selectedFriend?.username || 'Người dùng');
+                            replyHtml = `
+                                <div class="message-reply" data-reply-id="${msg.replyTo.id}">
+                                    <div class="message-reply-author">${escapeHtml(replyAuthor)}</div>
+                                    <div class="message-reply-content">${escapeHtml(repliedContent.substring(0, 50))}${repliedContent.length > 50 ? '...' : ''}</div>
+                                </div>
+                            `;
+                        }
+                    }
+                    
+                    // Message status (chỉ cho tin nhắn của mình)
+                    let statusHtml = '';
+                    if (isMine) {
+                        const status = msg.status || (state.pendingMessages.has(msg.id) ? 'sending' : 'sent');
+                        const statusIcon = status === 'sending' ? '⏳' : 
+                                         status === 'sent' ? '✓' : 
+                                         status === 'delivered' ? '✓✓' : 
+                                         status === 'read' ? '✓✓' : '✓';
+                        statusHtml = `<span class="message-status ${status}" title="${status === 'sending' ? 'Đang gửi' : status === 'sent' ? 'Đã gửi' : status === 'delivered' ? 'Đã gửi đến' : 'Đã đọc'}">${statusIcon}</span>`;
+                    }
+
+                    const fullTimestamp = getFullTimestamp(msg.createdAt);
+                    const relativeTimestamp = formatTimestamp(msg.createdAt);
                     
                     wrapper.innerHTML = `
-                        ${contentHtml}
-                        <div class="time">${formatTimestamp(msg.createdAt)}</div>
+                        ${replyHtml}
+                        <div style="display: flex; align-items: flex-end; gap: 8px;">
+                            ${contentHtml}
+                            <div class="message-actions">
+                                <button class="message-action-btn" data-action="copy" data-message-id="${msg.id}" title="Sao chép" aria-label="Sao chép tin nhắn">📋</button>
+                                <button class="message-action-btn" data-action="reply" data-message-id="${msg.id}" title="Trả lời" aria-label="Trả lời tin nhắn">↩️</button>
+                            </div>
+                        </div>
+                        <div class="time" title="${fullTimestamp}">
+                            ${relativeTimestamp}
+                            ${statusHtml}
+                        </div>
                     `;
                     fragment.appendChild(wrapper);
                 });
@@ -2157,6 +2720,29 @@
                     
                     // Initialize Intersection Observer for lazy loading images
                     initImageLazyLoading();
+                    
+                    // Attach event listeners to message action buttons
+                    messagesContainer.querySelectorAll('.message-action-btn[data-action="copy"]').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const messageId = parseInt(btn.dataset.messageId);
+                            copyMessage(messageId);
+                        });
+                    });
+                    
+                    messagesContainer.querySelectorAll('.message-action-btn[data-action="reply"]').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const messageId = parseInt(btn.dataset.messageId);
+                            replyToMessage(messageId);
+                        });
+                    });
+                    
+                    // Attach event listeners to reply messages
+                    messagesContainer.querySelectorAll('.message-reply').forEach(reply => {
+                        reply.addEventListener('click', () => {
+                            const replyId = parseInt(reply.dataset.replyId);
+                            scrollToMessage(replyId);
+                        });
+                    });
                 });
             }
 
@@ -2512,8 +3098,18 @@
                 } catch (error) {
                     if (reset) {
                         setStatus(error.message, 'error');
-                        showToast('Lỗi', error.message, 'error');
-                        messagesContainer.innerHTML = `<div class="empty-state">${error.message}</div>`;
+                        const retryFn = () => loadConversation(friendId, reset);
+                        showToast('Lỗi', error.message, 'error', retryFn);
+                        messagesContainer.innerHTML = `
+                            <div class="empty-state">
+                                <div>${error.message}</div>
+                                <button onclick="loadConversation(${friendId}, ${reset})" 
+                                        style="margin-top: 12px; padding: 8px 16px; background: #5865f2; color: white; border: none; border-radius: 6px; cursor: pointer;"
+                                        aria-label="Thử lại tải tin nhắn">
+                                    🔄 Thử lại
+                                </button>
+                            </div>
+                        `;
                     }
                 }
             }
@@ -2535,6 +3131,84 @@
                 }
             }
 
+            // Copy message text
+            function copyMessage(messageId) {
+                const messages = state.messages[state.selectedFriend.id] || [];
+                const msg = messages.find(m => m.id === messageId);
+                if (!msg) return;
+
+                const textToCopy = msg.content || msg.fileName || '';
+                if (!textToCopy) {
+                    showToast('Lỗi', 'Không thể sao chép tin nhắn này', 'error');
+                    return;
+                }
+
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showToast('Thành công', 'Đã sao chép tin nhắn', 'success');
+                }).catch(() => {
+                    // Fallback for older browsers
+                    const textarea = document.createElement('textarea');
+                    textarea.value = textToCopy;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    showToast('Thành công', 'Đã sao chép tin nhắn', 'success');
+                });
+            }
+
+            // Reply to message
+            function replyToMessage(messageId) {
+                const messages = state.messages[state.selectedFriend.id] || [];
+                const msg = messages.find(m => m.id === messageId);
+                if (!msg) return;
+
+                state.replyTo = {
+                    id: msg.id,
+                    content: msg.content || msg.fileName || 'File',
+                    senderId: msg.senderId
+                };
+
+                // Show reply preview
+                const replyPreviewArea = document.getElementById('replyPreviewArea');
+                const replyPreviewAuthor = document.getElementById('replyPreviewAuthor');
+                const replyPreviewText = document.getElementById('replyPreviewText');
+                
+                if (replyPreviewArea && replyPreviewAuthor && replyPreviewText) {
+                    const authorName = msg.senderId === state.currentUser.id ? 'Bạn' : (state.selectedFriend?.username || 'Người dùng');
+                    replyPreviewAuthor.textContent = authorName;
+                    replyPreviewText.textContent = state.replyTo.content;
+                    replyPreviewArea.style.display = 'block';
+                }
+
+                // Focus input
+                if (messageInput) {
+                    messageInput.focus();
+                }
+            }
+
+            // Clear reply
+            function clearReply() {
+                state.replyTo = null;
+                const replyPreviewArea = document.getElementById('replyPreviewArea');
+                if (replyPreviewArea) {
+                    replyPreviewArea.style.display = 'none';
+                }
+            }
+
+            // Scroll to message
+            function scrollToMessage(messageId) {
+                const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+                if (messageElement) {
+                    messageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Highlight message
+                    messageElement.style.background = 'rgba(88, 101, 242, 0.2)';
+                    setTimeout(() => {
+                        messageElement.style.background = '';
+                    }, 2000);
+                }
+            }
+
             async function sendChatMessage() {
                 if (!state.selectedFriend) return;
                 const text = messageInput.value.trim();
@@ -2547,8 +3221,9 @@
 
                 // Nếu có file preview, upload file trước
                 if (state.pendingFile) {
-                    await uploadFileWithText(state.pendingFile, text);
+                    await uploadFileWithText(state.pendingFile, text, state.replyTo);
                     clearFilePreview();
+                    clearReply();
                     messageInput.value = '';
                     return;
                 }
@@ -2560,10 +3235,12 @@
                         const message = {
                             type: 'message',
                             receiverId: state.selectedFriend.id,
-                            content: text
+                            content: text,
+                            replyTo: state.replyTo ? { id: state.replyTo.id } : null
                         };
                         state.websocket.send(JSON.stringify(message));
                         messageInput.value = '';
+                        clearReply();
                         setStatus('');
                         // Tin nhắn sẽ được thêm vào state khi nhận response từ server
                     } catch (error) {
@@ -2582,9 +3259,13 @@
                 try {
                     const data = await apiRequest(`/messages/${state.selectedFriend.id}`, {
                         method: 'POST',
-                        body: { content: text }
+                        body: { 
+                            content: text,
+                            replyTo: state.replyTo ? { id: state.replyTo.id } : null
+                        }
                     });
                     messageInput.value = '';
+                    clearReply();
                     setStatus('');
                     const msg = data.message;
                     if (!state.messages[state.selectedFriend.id]) {
@@ -2909,12 +3590,14 @@
             startOnlineStatusPolling();
 
             // Toast notification function
-            function showToast(title, message, type = 'info') {
+            function showToast(title, message, type = 'info', retryCallback = null) {
                 const toastContainer = document.getElementById('toastContainer');
                 if (!toastContainer) return;
 
                 const toast = document.createElement('div');
                 toast.className = `toast ${type}`;
+                toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
+                toast.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
                 
                 const icons = {
                     success: '✅',
@@ -2923,13 +3606,21 @@
                     info: 'ℹ️'
                 };
 
+                const retryButton = retryCallback ? `
+                    <button class="toast-retry" onclick="
+                        this.parentElement.remove();
+                        (${retryCallback.toString()})();
+                    " aria-label="Thử lại">🔄 Thử lại</button>
+                ` : '';
+
                 toast.innerHTML = `
                     <div class="toast-icon">${icons[type] || icons.info}</div>
                     <div class="toast-content">
                         <div class="toast-title">${escapeHtml(title)}</div>
                         <div class="toast-message">${escapeHtml(message)}</div>
                     </div>
-                    <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+                    ${retryButton}
+                    <button class="toast-close" onclick="this.parentElement.remove()" aria-label="Đóng">×</button>
                 `;
 
                 toastContainer.appendChild(toast);
@@ -3154,12 +3845,15 @@
             }
             
             // Upload file với text kèm theo
-            async function uploadFileWithText(file, text = '') {
+            async function uploadFileWithText(file, text = '', replyTo = null) {
                 try {
                     const formData = new FormData();
                     formData.append('file', file);
                     if (text && text.trim()) {
                         formData.append('text', text.trim());
+                    }
+                    if (replyTo) {
+                        formData.append('replyToId', replyTo.id);
                     }
                     
                     setStatus('Đang tải file lên...');
@@ -3502,10 +4196,17 @@
                 return fn();
             }
 
+            // Initialize reply preview close button
+            const replyPreviewClose = document.getElementById('replyPreviewClose');
+            if (replyPreviewClose) {
+                replyPreviewClose.addEventListener('click', clearReply);
+            }
+
             // Initialize
             initThemeToggle();
             initMessageSearch();
             initKeyboardShortcuts();
+            initConnectionStatus();
 
             loadFriends();
             loadRequests();
