@@ -221,6 +221,36 @@
             min-width: 0;
         }
 
+        .friend-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .friend-remove-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            color: #f04747;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+        }
+
+        .friend-item:hover .friend-remove-btn {
+            opacity: 1;
+        }
+
+        .friend-remove-btn:hover {
+            background: rgba(240, 71, 71, 0.15);
+            color: #ff6b6b;
+            transform: scale(1.05);
+        }
+
         .friend-name {
             font-size: 14px;
             font-weight: 500;
@@ -383,22 +413,6 @@
             display: flex;
             gap: 12px;
             align-items: center;
-        }
-
-        .unfriend-btn {
-            padding: 6px 12px;
-            background: #f04747;
-            border: none;
-            border-radius: 4px;
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .unfriend-btn:hover {
-            background: #d84040;
         }
 
         .icon-btn {
@@ -1339,16 +1353,10 @@
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
-            <div class="sidebar-item active">
+            <div class="sidebar-item" data-action="reset" title="Làm mới trang chat">
                 <span>💬</span>
             </div>
-            <div class="sidebar-item">
-                <span>👥</span>
-            </div>
-            <div class="sidebar-item">
-                <span>🎮</span>
-            </div>
-            <div class="sidebar-item">
+            <div class="sidebar-item" data-action="settings" title="Cài đặt tài khoản">
                 <span>⚙️</span>
             </div>
         </div>
@@ -1389,7 +1397,6 @@
                     </div>
                     <button class="icon-btn" title="Tìm kiếm tin nhắn" id="searchMessagesBtn" style="display: none;">🔍</button>
                     <button class="icon-btn" title="Thông tin cuộc trò chuyện" id="chatInfoBtn">ℹ️</button>
-                    <button class="unfriend-btn" id="unfriendBtn" style="display: none;" title="Xóa bạn bè">Xóa bạn bè</button>
                 </div>
             </div>
 
@@ -1771,6 +1778,9 @@
             const messageInputModal = document.getElementById('friendMessage');
 
             const tabs = document.querySelectorAll('.tab');
+            const sidebarItems = document.querySelectorAll('.sidebar .sidebar-item');
+            const sidebarResetBtn = document.querySelector('.sidebar-item[data-action="reset"]');
+            const sidebarSettingsBtn = document.querySelector('.sidebar-item[data-action="settings"]');
             const friendsList = document.getElementById('friendsList');
             const panelStatus = document.getElementById('panelStatus');
             const chatHeaderTitle = document.getElementById('chatHeaderTitle');
@@ -1807,6 +1817,18 @@
                 panelStatus.style.display = 'block';
                 panelStatus.textContent = message;
                 panelStatus.className = `panel-status ${type}`;
+            }
+
+            function setSidebarActive(action) {
+                if (!sidebarItems || !sidebarItems.length) return;
+                sidebarItems.forEach(item => {
+                    if (!item.dataset.action) return;
+                    if (action && item.dataset.action === action) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
             }
 
             function escapeHtml(str) {
@@ -1894,7 +1916,18 @@
                             <div class="friend-name">${friend.username}</div>
                             <div class="friend-status">${statusText}</div>
                         </div>
+                        <div class="friend-actions">
+                            <button class="friend-remove-btn" title="Xóa bạn bè" aria-label="Xóa ${friend.username}" data-friend-id="${friend.id}">&times;</button>
+                        </div>
                     `;
+
+                    const removeBtn = item.querySelector('.friend-remove-btn');
+                    if (removeBtn) {
+                        removeBtn.addEventListener('click', (event) => {
+                            event.stopPropagation();
+                            handleRemoveFriend(friend);
+                        });
+                    }
 
                     item.addEventListener('click', () => {
                         updateChatSelection(friend);
@@ -2082,7 +2115,6 @@
             function updateChatSelection(friend) {
                 stopPolling();
                 state.selectedFriend = friend;
-                const unfriendBtn = document.getElementById('unfriendBtn');
                 const emojiBtn = document.getElementById('emojiBtn');
                 const fileBtn = document.getElementById('fileBtn');
                 
@@ -2094,7 +2126,6 @@
                     sendButton.disabled = true;
                     if (emojiBtn) emojiBtn.disabled = true;
                     if (fileBtn) fileBtn.disabled = true;
-                    if (unfriendBtn) unfriendBtn.style.display = 'none';
                     
                     // Clear file preview
                     clearFilePreview();
@@ -2118,7 +2149,6 @@
                 sendButton.disabled = false;
                 if (emojiBtn) emojiBtn.disabled = false;
                 if (fileBtn) fileBtn.disabled = false;
-                if (unfriendBtn) unfriendBtn.style.display = 'block';
                 
                 // Show search button
                 const searchBtn = document.getElementById('searchMessagesBtn');
@@ -2137,42 +2167,36 @@
                 startPolling(friend.id);
             }
 
-            // Xử lý xóa bạn bè
-            const unfriendBtn = document.getElementById('unfriendBtn');
-            if (unfriendBtn) {
-                unfriendBtn.addEventListener('click', async () => {
-                    if (!state.selectedFriend) return;
+            async function handleRemoveFriend(friend) {
+                if (!friend) return;
+                const friendName = friend.username;
+                if (!confirm(`Bạn có chắc chắn muốn xóa "${friendName}" khỏi danh sách bạn bè?`)) {
+                    return;
+                }
 
-                    const friendName = state.selectedFriend.username;
-                    if (!confirm(`Bạn có chắc chắn muốn xóa "${friendName}" khỏi danh sách bạn bè?`)) {
-                        return;
-                    }
+                try {
+                    setStatus('Đang xóa bạn bè...');
+                    await apiRequest(`/friends/${friend.id}`, {
+                        method: 'DELETE'
+                    });
 
-                    try {
-                        setStatus('Đang xóa bạn bè...');
-                        await apiRequest(`/friends/${state.selectedFriend.id}`, {
-                            method: 'DELETE'
-                        });
+                    setStatus('Đã xóa bạn bè thành công', 'success');
 
-                        setStatus('Đã xóa bạn bè thành công', 'success');
-                        
-                        // Xóa tin nhắn của bạn bè này
-                        delete state.messages[state.selectedFriend.id];
-                        delete state.lastMessageIds[state.selectedFriend.id];
+                    delete state.messages[friend.id];
+                    delete state.lastMessageIds[friend.id];
 
-                        // Reload danh sách bạn bè
-                        await loadFriends();
-                        
-                        // Xóa selection
+                    if (state.selectedFriend && state.selectedFriend.id === friend.id) {
                         updateChatSelection(null);
-
-                        setTimeout(() => {
-                            setStatus('');
-                        }, 3000);
-                    } catch (error) {
-                        setStatus(error.message, 'error');
                     }
-                });
+
+                    await loadFriends();
+
+                    setTimeout(() => {
+                        setStatus('');
+                    }, 3000);
+                } catch (error) {
+                    setStatus(error.message, 'error');
+                }
             }
 
             function renderCurrentView() {
@@ -2463,6 +2487,13 @@
                 }
             }
 
+            if (sidebarResetBtn) {
+                sidebarResetBtn.addEventListener('click', () => {
+                    setSidebarActive('reset');
+                    window.location.reload();
+                });
+            }
+
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     tabs.forEach(t => t.classList.remove('active'));
@@ -2492,10 +2523,9 @@
                 }
             });
 
-            // Xử lý Profile Modal
-            const settingsBtn = document.querySelector('.sidebar-item:nth-child(4)'); // Nút ⚙️
-            if (settingsBtn) {
-                settingsBtn.addEventListener('click', () => {
+            if (sidebarSettingsBtn) {
+                sidebarSettingsBtn.addEventListener('click', () => {
+                    setSidebarActive('settings');
                     if (isEditingProfile) {
                         exitEditMode();
                     }
@@ -2510,6 +2540,7 @@
                         exitEditMode();
                     }
                     profileModal.classList.remove('active');
+                    setSidebarActive(null);
                 }
             });
 
