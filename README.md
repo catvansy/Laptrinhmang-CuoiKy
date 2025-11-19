@@ -56,19 +56,23 @@
 - **Spring Boot 2.7.15** - Framework chính
 - **Spring WebSocket** - Real-time communication
 - **Spring Data JPA** - Database ORM
-- **MySQL 8.0** - Database
+- **Spring Security Crypto** - Password encoding
+- **MySQL 8.0** - Database (Driver 8.0.33)
 - **Maven** - Build tool
+- **Lombok** - Reduce boilerplate code
+- **Spring Boot DevTools** - Auto reload (development)
 
 ### Frontend
 - **HTML5/CSS3** - Markup và styling
 - **JavaScript (Vanilla)** - Logic và interactions
 - **WebSocket API** - Real-time messaging
-- **Intersection Observer** - Lazy loading
+- **Intersection Observer** - Lazy loading images
 - **Fetch API** - HTTP requests
 
 ### Tools & Libraries
 - **Google Fonts (Inter)** - Typography
 - **Emoji** - Icons và visual elements
+- **Cloudflared** - Public tunnel (optional)
 
 ---
 
@@ -132,35 +136,80 @@ Laptrinhmang-CuoiKy/
 ├── src/
 │   └── main/
 │       ├── java/com/megachat/
-│       │   ├── MegaChatApplication.java      # Main class
+│       │   ├── MegaChatApplication.java          # Main application class
 │       │   ├── controller/
-│       │   │   ├── HomeController.java       # Routing & static files
-│       │   │   ├── AuthController.java       # Authentication
-│       │   │   ├── FriendController.java     # Friend management
-│       │   │   └── MessageController.java    # Message API
+│       │   │   ├── HomeController.java           # Static file routing
+│       │   │   ├── AuthController.java           # Authentication API (/api/auth)
+│       │   │   ├── FriendshipController.java     # Friend management API (/api/friends)
+│       │   │   └── ChatController.java           # Message API (/api/messages)
 │       │   ├── config/
-│       │   │   ├── AuthFilter.java           # Authentication filter
-│       │   │   ├── WebSocketConfig.java      # WebSocket config
-│       │   │   ├── ContextPathRedirectFilter.java  # 404 fix
-│       │   │   ├── TomcatConfig.java         # Tomcat config
-│       │   │   └── WebMvcConfig.java         # MVC config
-│       │   ├── model/                        # Entity models
-│       │   ├── repository/                   # JPA repositories
-│       │   ├── service/                      # Business logic
+│       │   │   ├── AuthFilter.java               # Authentication filter
+│       │   │   ├── WebSocketConfig.java          # WebSocket configuration
+│       │   │   ├── ContextPathRedirectFilter.java  # Context path handler
+│       │   │   ├── DatabaseInitializer.java      # Database initialization
+│       │   │   ├── TomcatConfig.java             # Tomcat configuration
+│       │   │   └── WebMvcConfig.java             # MVC configuration
+│       │   ├── model/
+│       │   │   ├── User.java                     # User entity
+│       │   │   ├── ChatMessage.java              # Message entity
+│       │   │   ├── Friendship.java               # Friendship entity
+│       │   │   └── FriendshipStatus.java         # Friendship status enum
+│       │   ├── repository/
+│       │   │   ├── UserRepository.java           # User repository
+│       │   │   ├── ChatMessageRepository.java    # Message repository
+│       │   │   └── FriendshipRepository.java     # Friendship repository
+│       │   ├── service/
+│       │   │   ├── UserService.java              # User business logic
+│       │   │   ├── ChatMessageService.java       # Message business logic
+│       │   │   ├── FriendshipService.java        # Friendship business logic
+│       │   │   └── FileStorageService.java       # File upload service
+│       │   ├── dto/
+│       │   │   └── FriendRequestDto.java         # Friend request DTO
 │       │   └── websocket/
-│       │       └── ChatEndpoint.java         # WebSocket endpoint
+│       │       └── ChatEndpoint.java             # WebSocket endpoint
 │       └── resources/
 │           ├── static/
-│           │   ├── index.html                # Redirect page
-│           │   ├── landing.html              # Landing page
-│           │   ├── login.html                # Login page
-│           │   ├── chat.html                 # Chat interface
-│           │   └── forgot-password.html      # Password reset
-│           └── application.properties        # Configuration
-├── pom.xml                                   # Maven config
-├── start-megachat.bat                       # Startup script (Windows)
-└── README.md                                 # File này
+│           │   ├── index.html                    # Redirect page
+│           │   ├── landing.html                  # Landing page
+│           │   ├── login.html                    # Login/Register page
+│           │   ├── chat.html                     # Chat interface
+│           │   └── forgot-password.html          # Password reset page
+│           └── application.properties            # Application configuration
+├── pom.xml                                       # Maven configuration
+├── start-megachat.bat                           # Startup script (Windows)
+├── start-megachat with cloudflared.bat          # Startup with Cloudflare tunnel
+├── cloudflared.exe                               # Cloudflare tunnel binary
+├── init.sql                                      # Database initialization script
+└── README.md                                     # Documentation
 ```
+
+---
+
+## 🔌 API Endpoints
+
+### Authentication (`/api/auth`)
+- `POST /api/auth/register` - Đăng ký tài khoản mới
+- `POST /api/auth/login` - Đăng nhập
+- `POST /api/auth/logout` - Đăng xuất
+- `POST /api/auth/forgot-password` - Gửi email reset mật khẩu
+- `POST /api/auth/reset-password` - Reset mật khẩu với token
+
+### Friends (`/api/friends`)
+- `GET /api/friends` - Lấy danh sách bạn bè
+- `POST /api/friends/requests` - Gửi lời mời kết bạn
+- `PUT /api/friends/requests/{requestId}/accept` - Chấp nhận lời mời
+- `PUT /api/friends/requests/{requestId}/reject` - Từ chối lời mời
+- `DELETE /api/friends/{friendId}` - Xóa bạn bè
+- `GET /api/friends/search?q={username}` - Tìm kiếm người dùng
+
+### Messages (`/api/messages`)
+- `GET /api/messages?friendId={id}` - Lấy lịch sử tin nhắn
+- `POST /api/messages` - Gửi tin nhắn mới
+- `POST /api/messages/upload` - Upload file/ảnh
+- `GET /api/messages/files/{filename}` - Tải file đã upload
+
+### WebSocket
+- `ws://localhost:8080/megachat/chat` - Kết nối WebSocket cho chat real-time
 
 ---
 
@@ -193,17 +242,33 @@ Laptrinhmang-CuoiKy/
 
 ### application.properties
 ```properties
-# Server
+# Server Configuration
 server.port=8080
+server.address=0.0.0.0
 server.servlet.context-path=/megachat
+server.servlet.session.timeout=30m
 
-# Database
-spring.datasource.url=jdbc:mysql://localhost:3307/megachat
+# MySQL Database
+spring.datasource.url=jdbc:mysql://localhost:3307/megachat?useSSL=false&serverTimezone=UTC
 spring.datasource.username=root
 spring.datasource.password=
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.hikari.maximum-pool-size=5
 
-# JPA
+# JPA/Hibernate
+spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=true
+
+# File Upload
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=100MB
+spring.servlet.multipart.max-request-size=100MB
+
+# Static Resources
+spring.web.resources.static-locations=classpath:/static/
+spring.web.resources.cache.period=3600
 ```
 
 ---
@@ -229,6 +294,27 @@ taskkill /PID <PID> /F
 1. Kiểm tra MySQL đang chạy trên port 3307
 2. Kiểm tra username/password trong `application.properties`
 3. Đảm bảo database `megachat` tồn tại hoặc để JPA tự tạo
+4. Kiểm tra MySQL service: `net start MySQL` (Windows) hoặc `sudo systemctl start mysql` (Linux)
+
+### Maven không tìm thấy dependencies
+**Giải pháp**:
+1. Kiểm tra kết nối internet
+2. Xóa cache: `mvn clean`
+3. Tải lại dependencies: `mvn dependency:resolve`
+4. Rebuild project: `mvn clean install`
+
+### File upload không hoạt động
+**Giải pháp**:
+1. Kiểm tra thư mục `uploads/` có tồn tại trong project root
+2. Đảm bảo quyền ghi file cho thư mục `uploads/`
+3. Kiểm tra `spring.servlet.multipart` configuration trong `application.properties`
+
+### WebSocket không kết nối được
+**Giải pháp**:
+1. Kiểm tra WebSocket config trong `WebSocketConfig.java`
+2. Đảm bảo URL kết nối đúng: `ws://localhost:8080/megachat/chat`
+3. Kiểm tra CORS settings nếu chạy frontend từ domain khác
+4. Xem console browser để kiểm tra lỗi WebSocket
 
 ---
 
@@ -236,15 +322,19 @@ taskkill /PID <PID> /F
 
 ### Đã hoàn thành ✅
 - [x] Real-time chat với WebSocket
-- [x] Friend management
-- [x] Message status indicators
+- [x] Friend management (thêm, xóa, tìm kiếm)
+- [x] Message status indicators (đang gửi, đã gửi, đã đọc)
 - [x] Copy & Reply messages
+- [x] File upload và chia sẻ
 - [x] Landing page với animations
-- [x] Performance optimizations
-- [x] Accessibility improvements
+- [x] Performance optimizations (lazy loading, debounce, throttle)
+- [x] Accessibility improvements (ARIA, keyboard navigation)
 - [x] Mobile responsive design
-- [x] Error handling với retry
+- [x] Error handling với retry mechanism
 - [x] Connection status indicator
+- [x] Password reset functionality
+- [x] Session management
+- [x] Protected routes với AuthFilter
 
 ### Đang phát triển 🚧
 - [ ] PWA support (Service Worker, offline access)
@@ -291,6 +381,63 @@ MIT License - Tự do sử dụng, chỉnh sửa và phân phối
 
 ---
 
+## 🗄️ Cơ sở dữ liệu
+
+### Bảng chính
+
+#### User
+- `id` - Primary key (BIGINT)
+- `username` - Tên người dùng (VARCHAR, UNIQUE)
+- `email` - Email (VARCHAR, UNIQUE)
+- `phone` - Số điện thoại (VARCHAR)
+- `password` - Mật khẩu đã hash (VARCHAR)
+- `reset_token` - Token reset mật khẩu (VARCHAR)
+- `reset_token_expiry` - Thời gian hết hạn token (TIMESTAMP)
+- `created_at` - Thời gian tạo (TIMESTAMP)
+
+#### ChatMessage
+- `id` - Primary key (BIGINT)
+- `sender_id` - ID người gửi (BIGINT, FK -> User)
+- `receiver_id` - ID người nhận (BIGINT, FK -> User)
+- `content` - Nội dung tin nhắn (TEXT)
+- `reply_to_id` - ID tin nhắn được reply (BIGINT, FK -> ChatMessage, nullable)
+- `file_path` - Đường dẫn file (VARCHAR, nullable)
+- `timestamp` - Thời gian gửi (TIMESTAMP)
+- `read` - Đã đọc chưa (BOOLEAN)
+
+#### Friendship
+- `id` - Primary key (BIGINT)
+- `requester_id` - ID người gửi lời mời (BIGINT, FK -> User)
+- `addressee_id` - ID người nhận lời mời (BIGINT, FK -> User)
+- `status` - Trạng thái (ENUM: PENDING, ACCEPTED, REJECTED)
+- `request_message` - Lời nhắn kèm theo (TEXT, nullable)
+- `created_at` - Thời gian tạo (TIMESTAMP)
+- `updated_at` - Thời gian cập nhật (TIMESTAMP)
+
+Database sẽ tự động được tạo bởi JPA với `ddl-auto=update` khi ứng dụng khởi động lần đầu.
+
+---
+
+## 📊 Luồng hoạt động
+
+### Chat Flow
+1. Người dùng đăng nhập → Session được tạo
+2. Kết nối WebSocket → Join chat room
+3. Gửi tin nhắn → Frontend gửi qua WebSocket
+4. Server nhận → Lưu vào database → Broadcast đến receiver
+5. Receiver nhận → Cập nhật UI real-time
+6. Đọc tin nhắn → Gửi ACK → Cập nhật trạng thái đã đọc
+
+### Friend Management Flow
+1. Tìm kiếm người dùng → API `/api/friends/search`
+2. Gửi lời mời → POST `/api/friends/requests`
+3. Nhận lời mời → Danh sách pending requests
+4. Chấp nhận/Từ chối → PUT `/api/friends/requests/{id}/accept|reject`
+5. Khi chấp nhận → Friendship status = ACCEPTED
+6. Xóa bạn bè → DELETE `/api/friends/{id}`
+
+---
+
 ## 👨‍💻 Tác giả
 
 **MegaChat Team**
@@ -299,9 +446,9 @@ MIT License - Tự do sử dụng, chỉnh sửa và phân phối
 
 ## 🙏 Lời cảm ơn
 
-- Spring Boot team
-- Discord (inspiration cho UI/UX)
-- Tất cả contributors
+- Spring Boot team - Framework tuyệt vời
+- Discord - Inspiration cho UI/UX design
+- Tất cả contributors đã đóng góp cho project
 
 ---
 
@@ -311,4 +458,5 @@ MIT License - Tự do sử dụng, chỉnh sửa và phân phối
 
 **Phiên bản:** 1.0.0  
 **Cập nhật:** 2024  
-**Trạng thái:** ✅ Đang phát triển tích cực
+**Trạng thái:** ✅ Đang phát triển tích cực  
+**License:** MIT License
