@@ -57,7 +57,7 @@
             position: relative;
         }
 
-        /* Animated gradient background với nhiều layers */
+        /* Animated gradient background với nhiều layers - Enhanced */
         .bg-gradient {
             position: fixed;
             top: 0;
@@ -65,12 +65,31 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 10% 20%, rgba(88, 101, 242, 0.25) 0%, transparent 50%),
-                radial-gradient(circle at 90% 80%, rgba(114, 137, 218, 0.25) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 70%),
+                radial-gradient(circle at 10% 20%, rgba(88, 101, 242, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(114, 137, 218, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.2) 0%, transparent 70%),
+                radial-gradient(circle at 30% 70%, rgba(236, 72, 153, 0.15) 0%, transparent 60%),
+                radial-gradient(circle at 70% 30%, rgba(245, 158, 11, 0.1) 0%, transparent 60%),
                 linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 50%, #0a0a0f 100%);
             z-index: 0;
-            animation: gradientMove 15s ease infinite;
+            animation: gradientMove 20s ease infinite;
+        }
+        
+        .bg-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(88, 101, 242, 0.1) 0%, transparent 50%);
+            animation: pulseGlow 8s ease-in-out infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.2); }
         }
 
         @keyframes gradientMove {
@@ -284,13 +303,16 @@
             width: 48px;
             height: 48px;
             background: linear-gradient(135deg, #5865f2, #7289da, #a855f7);
+            background-size: 200% 200%;
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
-            box-shadow: 0 8px 24px rgba(88, 101, 242, 0.5);
-            animation: logoGlow 3s ease-in-out infinite;
+            box-shadow: 
+                0 8px 24px rgba(88, 101, 242, 0.5),
+                0 0 20px rgba(88, 101, 242, 0.3);
+            animation: logoGlow 3s ease-in-out infinite, gradientShift 5s ease infinite;
             position: relative;
         }
 
@@ -448,9 +470,27 @@
             margin-bottom: 32px;
             color: #ffffff;
             letter-spacing: -3px;
-            text-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
-            animation: titleReveal 1.5s ease;
+            text-shadow: 
+                0 8px 40px rgba(0, 0, 0, 0.5),
+                0 0 80px rgba(88, 101, 242, 0.3),
+                0 0 120px rgba(88, 101, 242, 0.2);
+            animation: titleReveal 1.5s ease, titleGlow 3s ease-in-out infinite;
             position: relative;
+        }
+        
+        @keyframes titleGlow {
+            0%, 100% {
+                text-shadow: 
+                    0 8px 40px rgba(0, 0, 0, 0.5),
+                    0 0 80px rgba(88, 101, 242, 0.3),
+                    0 0 120px rgba(88, 101, 242, 0.2);
+            }
+            50% {
+                text-shadow: 
+                    0 8px 40px rgba(0, 0, 0, 0.5),
+                    0 0 100px rgba(88, 101, 242, 0.5),
+                    0 0 150px rgba(88, 101, 242, 0.3);
+            }
         }
 
         @keyframes titleReveal {
@@ -506,6 +546,43 @@
             animation: fadeInUp 1.5s ease 0.3s both;
         }
 
+        .trust-indicators {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+            animation: fadeInUp 1.5s ease 0.45s both;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            font-size: 15px;
+            color: #d1d5db;
+            transition: all 0.3s ease;
+        }
+
+        .trust-item:hover {
+            background: rgba(88, 101, 242, 0.15);
+            border-color: rgba(88, 101, 242, 0.6);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 
+                0 8px 24px rgba(88, 101, 242, 0.3),
+                0 0 20px rgba(88, 101, 242, 0.2);
+        }
+
+        .trust-icon {
+            font-size: 18px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
         .hero-buttons {
             display: flex;
             gap: 20px;
@@ -553,15 +630,56 @@
         .btn-primary {
             background: linear-gradient(135deg, #5865f2, #7289da);
             color: #ffffff;
-            box-shadow: 0 8px 32px rgba(88, 101, 242, 0.5);
+            box-shadow: 
+                0 8px 32px rgba(88, 101, 242, 0.5),
+                0 0 40px rgba(88, 101, 242, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
             position: relative;
             z-index: 1;
+            animation: buttonPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes buttonPulse {
+            0%, 100% {
+                box-shadow: 
+                    0 8px 32px rgba(88, 101, 242, 0.5),
+                    0 0 40px rgba(88, 101, 242, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            }
+            50% {
+                box-shadow: 
+                    0 8px 32px rgba(88, 101, 242, 0.7),
+                    0 0 60px rgba(88, 101, 242, 0.5),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            }
         }
 
         .btn-primary:hover {
             background: linear-gradient(135deg, #4752c4, #5b6eae);
-            box-shadow: 0 12px 48px rgba(88, 101, 242, 0.7);
-            transform: translateY(-4px) scale(1.03);
+            box-shadow: 
+                0 12px 48px rgba(88, 101, 242, 0.8),
+                0 0 80px rgba(88, 101, 242, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transform: translateY(-4px) scale(1.05);
+            animation: none;
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn-primary:hover::after {
+            width: 500px;
+            height: 500px;
         }
 
         .btn-secondary {
@@ -608,11 +726,27 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 
                 0 20px 60px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.05);
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                0 0 40px rgba(88, 101, 242, 0.1);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             animation: floatChat 6s ease-in-out infinite;
             flex-shrink: 0;
             overflow: hidden;
+        }
+        
+        .chat-window::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #5865f2, #7289da, #a855f7);
+            border-radius: 16px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.4s ease;
+            filter: blur(10px);
         }
 
         .chat-window:nth-child(1) {
@@ -639,8 +773,13 @@
         .chat-window:hover {
             transform: translateY(-15px) scale(1.02);
             box-shadow: 
-                0 30px 80px rgba(88, 101, 242, 0.3),
-                0 0 0 1px rgba(88, 101, 242, 0.2);
+                0 30px 80px rgba(88, 101, 242, 0.4),
+                0 0 0 1px rgba(88, 101, 242, 0.3),
+                0 0 60px rgba(88, 101, 242, 0.2);
+        }
+        
+        .chat-window:hover::before {
+            opacity: 0.3;
         }
 
         /* Chat Window Header */
@@ -691,6 +830,9 @@
             border-radius: 50%;
             background: #43b581;
             animation: pulse 2s ease infinite;
+            box-shadow: 
+                0 0 8px rgba(67, 181, 129, 0.6),
+                0 0 16px rgba(67, 181, 129, 0.3);
         }
 
         @keyframes pulse {
@@ -772,13 +914,31 @@
             font-size: 15px;
             line-height: 1.5;
             word-wrap: break-word;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.2),
+                0 0 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .chat-message:hover .message-bubble {
+            transform: scale(1.02);
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.3),
+                0 0 15px rgba(88, 101, 242, 0.1);
         }
 
         .chat-message.own .message-bubble {
             background: linear-gradient(135deg, #5865f2, #7289da);
             color: #ffffff;
-            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
+            box-shadow: 
+                0 4px 12px rgba(88, 101, 242, 0.4),
+                0 0 20px rgba(88, 101, 242, 0.2);
+        }
+        
+        .chat-message.own:hover .message-bubble {
+            box-shadow: 
+                0 6px 16px rgba(88, 101, 242, 0.6),
+                0 0 30px rgba(88, 101, 242, 0.3);
         }
 
         @keyframes messageSlide {
@@ -847,15 +1007,18 @@
         }
 
         .stat-card:hover {
-            transform: translateY(-12px) scale(1.03);
-            border-color: rgba(88, 101, 242, 0.5);
-            box-shadow: 0 20px 60px rgba(88, 101, 242, 0.3);
+            transform: translateY(-12px) scale(1.03) rotate(0.5deg);
+            border-color: rgba(88, 101, 242, 0.6);
+            box-shadow: 
+                0 20px 60px rgba(88, 101, 242, 0.4),
+                0 0 50px rgba(88, 101, 242, 0.2);
         }
 
         .stat-number {
             font-size: 72px;
             font-weight: 900;
-            background: linear-gradient(135deg, #5865f2, #7289da, #a855f7);
+            background: linear-gradient(135deg, #5865f2, #7289da, #a855f7, #ec4899);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -864,6 +1027,8 @@
             line-height: 1;
             position: relative;
             z-index: 1;
+            animation: gradientShift 4s ease infinite;
+            filter: drop-shadow(0 2px 8px rgba(88, 101, 242, 0.3));
         }
 
         .stat-label {
@@ -892,6 +1057,19 @@
             color: #ffffff;
             letter-spacing: -2px;
             position: relative;
+            text-shadow: 
+                0 4px 20px rgba(0, 0, 0, 0.3),
+                0 0 40px rgba(88, 101, 242, 0.2);
+        }
+        
+        .section-title .highlight {
+            background: linear-gradient(135deg, #5865f2, #7289da, #a855f7);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite;
+            filter: drop-shadow(0 2px 8px rgba(88, 101, 242, 0.4));
         }
 
         .section-subtitle {
@@ -949,9 +1127,11 @@
         }
 
         .feature-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            border-color: rgba(88, 101, 242, 0.4);
-            box-shadow: 0 24px 64px rgba(88, 101, 242, 0.3);
+            transform: translateY(-12px) scale(1.02) rotate(0.5deg);
+            border-color: rgba(88, 101, 242, 0.5);
+            box-shadow: 
+                0 24px 64px rgba(88, 101, 242, 0.4),
+                0 0 40px rgba(88, 101, 242, 0.2);
         }
 
         .feature-card:hover::before {
@@ -974,13 +1154,28 @@
             margin-bottom: 28px;
             position: relative;
             z-index: 1;
-            box-shadow: 0 8px 24px rgba(88, 101, 242, 0.4);
+            box-shadow: 
+                0 8px 24px rgba(88, 101, 242, 0.4),
+                0 0 20px rgba(88, 101, 242, 0.2);
             transition: all 0.5s ease;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes iconFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-8px) rotate(2deg);
+            }
         }
 
         .feature-card:hover .feature-icon {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 12px 32px rgba(88, 101, 242, 0.6);
+            transform: scale(1.15) rotate(8deg) translateY(-5px);
+            box-shadow: 
+                0 12px 32px rgba(88, 101, 242, 0.7),
+                0 0 40px rgba(88, 101, 242, 0.4);
+            animation: none;
         }
 
         .feature-card h3 {
@@ -998,6 +1193,161 @@
             position: relative;
             z-index: 1;
             font-size: 17px;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 160px 80px;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .steps-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            margin-top: 80px;
+            flex-wrap: wrap;
+        }
+
+        .step-card {
+            flex: 1;
+            min-width: 280px;
+            max-width: 380px;
+            padding: 48px 40px;
+            background: linear-gradient(135deg, rgba(44, 47, 51, 0.8), rgba(35, 39, 42, 0.8));
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px) saturate(180%);
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(88, 101, 242, 0.15), rgba(114, 137, 218, 0.15));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .step-card:hover::before {
+            opacity: 1;
+        }
+
+        .step-card:hover {
+            transform: translateY(-16px) scale(1.03) rotate(0.5deg);
+            border-color: rgba(88, 101, 242, 0.6);
+            box-shadow: 
+                0 24px 64px rgba(88, 101, 242, 0.5),
+                0 0 50px rgba(88, 101, 242, 0.3);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #5865f2, #7289da);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 900;
+            color: #ffffff;
+            box-shadow: 
+                0 8px 24px rgba(88, 101, 242, 0.5),
+                0 0 30px rgba(88, 101, 242, 0.3);
+            position: relative;
+            z-index: 1;
+            animation: numberPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes numberPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 
+                    0 8px 24px rgba(88, 101, 242, 0.5),
+                    0 0 30px rgba(88, 101, 242, 0.3);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 
+                    0 8px 24px rgba(88, 101, 242, 0.7),
+                    0 0 40px rgba(88, 101, 242, 0.5);
+            }
+        }
+        
+        .step-card:hover .step-number {
+            animation: none;
+            transform: scale(1.1) rotate(360deg);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .step-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+            position: relative;
+            z-index: 1;
+            transition: transform 0.5s ease;
+        }
+
+        .step-card:hover .step-icon {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .step-card h3 {
+            font-size: 26px;
+            margin-bottom: 16px;
+            color: #ffffff;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-card p {
+            color: #b9bbbe;
+            line-height: 1.8;
+            font-size: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-arrow {
+            font-size: 48px;
+            color: rgba(88, 101, 242, 0.6);
+            align-self: center;
+            margin: 0 -20px;
+            animation: arrowPulse 2s ease infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes arrowPulse {
+            0%, 100% {
+                transform: translateX(0);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateX(10px);
+                opacity: 1;
+            }
+        }
+
+        .steps-cta {
+            text-align: center;
+            margin-top: 80px;
         }
 
         /* Testimonials - Enhanced */
@@ -1042,9 +1392,11 @@
         }
 
         .testimonial-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            border-color: rgba(88, 101, 242, 0.4);
-            box-shadow: 0 24px 64px rgba(88, 101, 242, 0.3);
+            transform: translateY(-12px) scale(1.02) rotate(0.3deg);
+            border-color: rgba(88, 101, 242, 0.5);
+            box-shadow: 
+                0 24px 64px rgba(88, 101, 242, 0.4),
+                0 0 40px rgba(88, 101, 242, 0.2);
         }
 
         .testimonial-header {
@@ -1063,7 +1415,29 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
-            box-shadow: 0 4px 16px rgba(88, 101, 242, 0.4);
+            box-shadow: 
+                0 4px 16px rgba(88, 101, 242, 0.4),
+                0 0 20px rgba(88, 101, 242, 0.2);
+            transition: all 0.3s ease;
+            animation: avatarPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes avatarPulse {
+            0%, 100% {
+                box-shadow: 
+                    0 4px 16px rgba(88, 101, 242, 0.4),
+                    0 0 20px rgba(88, 101, 242, 0.2);
+            }
+            50% {
+                box-shadow: 
+                    0 4px 16px rgba(88, 101, 242, 0.6),
+                    0 0 30px rgba(88, 101, 242, 0.4);
+            }
+        }
+        
+        .testimonial-card:hover .testimonial-avatar {
+            transform: scale(1.1) rotate(5deg);
+            animation: none;
         }
 
         .testimonial-info h4 {
@@ -1140,9 +1514,120 @@
         .cta p {
             font-size: 24px;
             color: #b9bbbe;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-benefits {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            flex-wrap: wrap;
             margin-bottom: 48px;
             position: relative;
             z-index: 1;
+        }
+
+        .cta-benefits span {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 15px;
+            color: #d1d5db;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .cta-benefits span:hover {
+            background: rgba(88, 101, 242, 0.25);
+            border-color: rgba(88, 101, 242, 0.6);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 8px 24px rgba(88, 101, 242, 0.3),
+                0 0 20px rgba(88, 101, 242, 0.2);
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 160px 80px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .faq-container {
+            margin-top: 80px;
+        }
+
+        .faq-item {
+            background: linear-gradient(135deg, rgba(44, 47, 51, 0.8), rgba(35, 39, 42, 0.8));
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(88, 101, 242, 0.4);
+        }
+
+        .faq-item.active {
+            border-color: rgba(88, 101, 242, 0.6);
+            box-shadow: 0 8px 32px rgba(88, 101, 242, 0.2);
+        }
+
+        .faq-question {
+            padding: 28px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(88, 101, 242, 0.05);
+        }
+
+        .faq-question h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .faq-icon {
+            font-size: 28px;
+            font-weight: 300;
+            color: #5865f2;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            margin-left: 20px;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 32px;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 0 32px 28px;
+        }
+
+        .faq-answer p {
+            color: #b9bbbe;
+            line-height: 1.8;
+            font-size: 16px;
+            margin: 0;
         }
 
         /* Footer */
@@ -1247,6 +1732,34 @@
             .chat-messages {
                 height: 350px;
             }
+
+            .trust-indicators {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .steps-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .step-arrow {
+                transform: rotate(90deg);
+                margin: 20px 0;
+            }
+
+            .faq {
+                padding: 80px 24px;
+            }
+
+            .faq-question h3 {
+                font-size: 18px;
+            }
+
+            .cta-benefits {
+                flex-direction: column;
+                gap: 12px;
+            }
         }
     </style>
 </head>
@@ -1278,10 +1791,31 @@
             <div class="hero-content">
                 <h1>Nơi bạn <span class="highlight">trò chuyện</span><br>và <span class="highlight">kết nối</span></h1>
                 <p>MegaChat là ứng dụng web chat hiện đại, nơi bạn có thể trò chuyện với bạn bè, xây dựng cộng đồng và tạo ra những khoảnh khắc đáng nhớ. Truy cập trực tiếp từ trình duyệt, không cần cài đặt.</p>
+                
+                <!-- Trust Indicators -->
+                <div class="trust-indicators">
+                    <div class="trust-item">
+                        <span class="trust-icon">✅</span>
+                        <span>Hoàn toàn miễn phí</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-icon">🔒</span>
+                        <span>Bảo mật cao</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-icon">⚡</span>
+                        <span>Khởi động nhanh</span>
+                </div>
+            </div>
+
                 <div class="hero-buttons">
                     <a href="login.html" class="btn btn-primary">
                         <span>🚀</span>
                         Bắt đầu trò chuyện ngay
+                    </a>
+                    <a href="#how-it-works" class="btn btn-secondary">
+                        <span>📖</span>
+                        Tìm hiểu thêm
                     </a>
                 </div>
                 
@@ -1486,6 +2020,46 @@
             </div>
         </section>
 
+        <!-- How It Works Section -->
+        <section class="how-it-works" id="how-it-works">
+            <h2 class="section-title">Bắt đầu chỉ trong <span class="highlight">3 bước</span></h2>
+            <p class="section-subtitle">Đơn giản, nhanh chóng và dễ dàng - Bạn sẽ trò chuyện trong vòng chưa đầy 1 phút</p>
+            
+            <div class="steps-container">
+                <div class="step-card fade-in">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">📝</div>
+                    <h3>Đăng ký tài khoản</h3>
+                    <p>Tạo tài khoản miễn phí chỉ với email và mật khẩu. Không cần thông tin phức tạp, chỉ mất vài giây.</p>
+                </div>
+                
+                <div class="step-arrow">→</div>
+                
+                <div class="step-card fade-in">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">👥</div>
+                    <h3>Thêm bạn bè</h3>
+                    <p>Tìm kiếm và thêm bạn bè vào danh sách. Bạn có thể tìm theo tên hoặc email một cách dễ dàng.</p>
+                </div>
+                
+                <div class="step-arrow">→</div>
+                
+                <div class="step-card fade-in">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">💬</div>
+                    <h3>Bắt đầu trò chuyện</h3>
+                    <p>Nhắn tin ngay lập tức với bạn bè. Gửi tin nhắn, hình ảnh và file một cách nhanh chóng và an toàn.</p>
+                </div>
+            </div>
+            
+            <div class="steps-cta fade-in">
+                <a href="login.html" class="btn btn-primary">
+                    <span>🚀</span>
+                    Bắt đầu ngay bây giờ
+                </a>
+            </div>
+        </section>
+
         <!-- Features Section -->
         <section class="features" id="features">
             <h2 class="section-title">Tại sao chọn MegaChat?</h2>
@@ -1571,10 +2145,73 @@
             </div>
         </section>
 
+        <!-- FAQ Section -->
+        <section class="faq">
+            <h2 class="section-title">Câu hỏi thường gặp</h2>
+            <p class="section-subtitle">Tìm câu trả lời cho những thắc mắc phổ biến về MegaChat</p>
+            
+            <div class="faq-container">
+                <div class="faq-item fade-in">
+                    <div class="faq-question">
+                        <h3>MegaChat có miễn phí không?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Có! MegaChat hoàn toàn miễn phí và sẽ luôn miễn phí. Bạn có thể sử dụng tất cả các tính năng mà không cần trả phí.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item fade-in">
+                    <div class="faq-question">
+                        <h3>Tôi có cần cài đặt ứng dụng không?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Không! MegaChat là ứng dụng web, bạn chỉ cần truy cập qua trình duyệt. Không cần tải xuống hay cài đặt gì cả.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item fade-in">
+                    <div class="faq-question">
+                        <h3>Dữ liệu của tôi có an toàn không?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Rất an toàn! Chúng tôi sử dụng mã hóa tiên tiến để bảo vệ dữ liệu của bạn. Quyền riêng tư là ưu tiên hàng đầu của chúng tôi.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item fade-in">
+                    <div class="faq-question">
+                        <h3>Tôi có thể sử dụng trên điện thoại không?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Có! MegaChat hoạt động hoàn hảo trên mọi thiết bị - máy tính, điện thoại, tablet. Chỉ cần có trình duyệt web là được.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item fade-in">
+                    <div class="faq-question">
+                        <h3>Làm thế nào để thêm bạn bè?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Rất đơn giản! Sau khi đăng nhập, bạn có thể tìm kiếm bạn bè theo tên hoặc email và gửi lời mời kết bạn. Họ chấp nhận là có thể trò chuyện ngay.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- CTA Section -->
         <section class="cta fade-in">
             <h2>Sẵn sàng bắt đầu hành trình của bạn?</h2>
             <p>Tham gia cùng hàng nghìn người dùng đang sử dụng MegaChat mỗi ngày</p>
+            <div class="cta-benefits">
+                <span>✅ Miễn phí mãi mãi</span>
+                <span>✅ Không cần cài đặt</span>
+                <span>✅ Bảo mật cao</span>
+            </div>
             <a href="login.html" class="btn btn-primary">
                 <span>🚀</span>
                 Đăng ký miễn phí ngay
@@ -1722,6 +2359,79 @@
             });
         }
 
+
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+
+        // Add parallax effect to floating shapes
+        window.addEventListener('mousemove', (e) => {
+            const shapes = document.querySelectorAll('.shape');
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            shapes.forEach((shape, index) => {
+                const speed = (index + 1) * 0.5;
+                const x = (mouseX - 0.5) * speed * 50;
+                const y = (mouseY - 0.5) * speed * 50;
+                shape.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+        
+        // Add sparkle effect to buttons
+        function createSparkle(button) {
+            const sparkle = document.createElement('div');
+            sparkle.style.position = 'absolute';
+            sparkle.style.width = '4px';
+            sparkle.style.height = '4px';
+            sparkle.style.background = 'rgba(255, 255, 255, 0.8)';
+            sparkle.style.borderRadius = '50%';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.animation = 'sparkleFade 1s ease-out forwards';
+            button.style.position = 'relative';
+            button.appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 1000);
+        }
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes sparkleFade {
+                0% {
+                    opacity: 1;
+                    transform: scale(0) translate(0, 0);
+                }
+                100% {
+                    opacity: 0;
+                    transform: scale(1) translate(var(--tx, 0), var(--ty, 0));
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => createSparkle(btn), i * 100);
+                }
+            });
+        });
 
         // Initialize
         window.addEventListener('load', () => {
