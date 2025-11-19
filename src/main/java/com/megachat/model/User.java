@@ -28,6 +28,15 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
+    @Column(name = "chat_theme")
+    private String chatTheme;
+
+    @Column(name = "last_seen")
+    private LocalDateTime lastSeen;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -89,6 +98,18 @@ public class User {
         return updatedAt;
     }
 
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public String getChatTheme() {
+        return chatTheme;
+    }
+
+    public LocalDateTime getLastSeen() {
+        return lastSeen;
+    }
+
     // Setters
     public void setId(Long id) {
         this.id = id;
@@ -116,5 +137,17 @@ public class User {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public void setChatTheme(String chatTheme) {
+        this.chatTheme = chatTheme;
+    }
+
+    public void setLastSeen(LocalDateTime lastSeen) {
+        this.lastSeen = lastSeen;
     }
 }

@@ -98,6 +98,16 @@ public class ChatEndpoint extends TextWebSocketHandler {
             userSessions.computeIfAbsent(userId, k -> Collections.synchronizedSet(new HashSet<>())).add(session);
             onlineUserIds.add(userId);
             
+            // Clear lastSeen when user comes online
+            try {
+                userRepository.findById(userId).ifPresent(user -> {
+                    user.setLastSeen(null); // null means currently online
+                    userRepository.save(user);
+                });
+            } catch (Exception e) {
+                logger.warning("✗ Lỗi cập nhật lastSeen: " + e.getMessage());
+            }
+            
             logger.info("📝 User " + userId + " đã đăng ký WebSocket (session: " + session.getId() + ")");
             
             // Gửi xác nhận
@@ -254,6 +264,15 @@ public class ChatEndpoint extends TextWebSocketHandler {
                 if (sessions.isEmpty()) {
                     userSessions.remove(userId);
                     onlineUserIds.remove(userId);
+                    // Update lastSeen when user goes offline
+                    try {
+                        userRepository.findById(userId).ifPresent(user -> {
+                            user.setLastSeen(java.time.LocalDateTime.now());
+                            userRepository.save(user);
+                        });
+                    } catch (Exception e) {
+                        logger.warning("✗ Lỗi cập nhật lastSeen: " + e.getMessage());
+                    }
                     logger.info("✗ User " + userId + " offline (không còn session nào)");
                 } else {
                     logger.info("✗ User " + userId + " đóng một session (còn " + sessions.size() + " session)");

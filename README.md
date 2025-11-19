@@ -17,17 +17,31 @@
 - ✅ **Trạng thái tin nhắn** - Hiển thị đang gửi, đã gửi, đã đọc
 - ✅ **Reply tin nhắn** - Trả lời tin nhắn cụ thể với preview
 - ✅ **Copy tin nhắn** - Sao chép nội dung tin nhắn nhanh chóng
+- ✅ **Forward tin nhắn** - Chuyển tiếp tin nhắn cho bạn bè khác
+- ✅ **Edit & Delete tin nhắn** - Chỉnh sửa và xóa tin nhắn của bạn
 - ✅ **Gửi file** - Upload và chia sẻ hình ảnh, file
+- ✅ **Image viewer** - Xem ảnh fullscreen với modal đẹp mắt
 - ✅ **Timestamps thông minh** - Hiển thị thời gian tương đối ("2 phút trước", "Hôm qua")
+- ✅ **Date separators** - Phân cách tin nhắn theo ngày (Hôm nay, Hôm qua)
+- ✅ **Scroll to bottom** - Nút cuộn nhanh xuống dưới
+- ✅ **Message reactions** - Đánh dấu tin nhắn đã chỉnh sửa
 
 ### 🎨 Giao diện & UX
 - ✅ **Giao diện Discord-like** - Thiết kế hiện đại, đẹp mắt
 - ✅ **Landing page ấn tượng** - Nhiều animations và visual effects
 - ✅ **Responsive design** - Tối ưu cho mobile và desktop
-- ✅ **Dark theme** - Giao diện tối dễ nhìn
+- ✅ **13 Theme đa dạng** - Chọn từ 13 theme màu sắc khác nhau:
+  - Mặc định, Xanh dương, Tím hồng, Xanh biển
+  - Hồng vàng, Cam nắng, Tối, Đại dương
+  - Hoàng hôn, Rừng xanh, Vũ trụ, Cực quang, Oải hương
+- ✅ **Theme đồng bộ** - Message bubbles, input, header tự động đồng bộ màu với theme
+- ✅ **Avatar customization** - Upload và thay đổi avatar cá nhân
+- ✅ **Online status** - Hiển thị trạng thái online/offline và "last seen"
+- ✅ **Avatar trong chat** - Hiển thị avatar người dùng trong tin nhắn và header
 - ✅ **Loading skeletons** - Hiển thị khi đang tải dữ liệu
 - ✅ **Toast notifications** - Thông báo đẹp mắt
 - ✅ **Keyboard shortcuts** - Phím tắt để tăng tốc độ sử dụng
+- ✅ **Emoji & Sticker picker** - Bộ emoji và sticker phong phú
 
 ### ⚡ Performance & Optimization
 - ✅ **Lazy loading images** - Tải ảnh khi cần
@@ -41,6 +55,8 @@
 - ✅ **Session management** - Quản lý phiên đăng nhập
 - ✅ **Password reset** - Quên mật khẩu
 - ✅ **Protected routes** - Bảo vệ các trang cần đăng nhập
+- ✅ **File validation** - Kiểm tra loại file và kích thước khi upload
+- ✅ **Avatar management** - Upload, xem và xóa avatar an toàn
 
 ### ♿ Accessibility
 - ✅ **ARIA labels** - Hỗ trợ screen readers
@@ -238,7 +254,15 @@ taskkill /PID <PID> /F
 - [x] Real-time chat với WebSocket
 - [x] Friend management
 - [x] Message status indicators
-- [x] Copy & Reply messages
+- [x] Copy, Reply, Forward messages
+- [x] Edit & Delete messages
+- [x] Avatar upload và customization
+- [x] 13 Theme đa dạng với đồng bộ màu sắc
+- [x] Online status và last seen
+- [x] Image viewer fullscreen
+- [x] Date separators trong chat
+- [x] Scroll to bottom button
+- [x] Emoji & Sticker picker phong phú
 - [x] Landing page với animations
 - [x] Performance optimizations
 - [x] Accessibility improvements
@@ -251,18 +275,19 @@ taskkill /PID <PID> /F
 - [ ] Tách CSS/JS ra file riêng
 - [ ] Drag & drop files
 - [ ] Better file preview (PDF, video, audio)
-- [ ] Message reactions (emoji)
-- [ ] Typing indicators
+- [ ] Message reactions (emoji reactions)
+- [ ] Typing indicators (đã có UI, cần backend)
 - [ ] Read receipts chi tiết hơn
 
 ### Kế hoạch 📋
 - [ ] Group chat / Channels
 - [ ] Voice/Video call
 - [ ] File sharing improvements
-- [ ] Theme customization
 - [ ] Notification system
-- [ ] Message search
+- [ ] Message search (đã có UI, cần backend)
 - [ ] Message pinning
+- [ ] Custom emoji upload
+- [ ] Message formatting (bold, italic, code)
 
 ---
 
@@ -309,6 +334,32 @@ MIT License - Tự do sử dụng, chỉnh sửa và phân phối
 
 ---
 
-**Phiên bản:** 1.0.0  
+**Phiên bản:** 2.0.0  
 **Cập nhật:** 2024  
 **Trạng thái:** ✅ Đang phát triển tích cực
+
+---
+
+## 🆕 Cập nhật mới nhất (v2.0.0)
+
+### ✨ Tính năng mới
+- 🎨 **13 Theme đa dạng** - Chọn từ nhiều theme màu sắc đẹp mắt
+- 🖼️ **Avatar customization** - Upload, xem và xóa avatar
+- ✏️ **Edit & Delete messages** - Chỉnh sửa và xóa tin nhắn của bạn
+- 🔄 **Forward messages** - Chuyển tiếp tin nhắn cho bạn bè
+- 📅 **Date separators** - Phân cách tin nhắn theo ngày
+- 👁️ **Image viewer** - Xem ảnh fullscreen với modal
+- ⬇️ **Scroll to bottom** - Nút cuộn nhanh xuống dưới
+- 😊 **Emoji & Sticker picker** - Bộ emoji và sticker phong phú
+- 🟢 **Online status** - Hiển thị trạng thái online và "last seen"
+- 🎨 **Theme đồng bộ** - Message bubbles tự động đồng bộ màu với theme
+
+### 🐛 Bug fixes
+- ✅ Sửa lỗi theme preview hiển thị sai màu
+- ✅ Sửa lỗi theme không áp dụng vào background
+- ✅ Sửa lỗi isDeleted undefined
+- ✅ Cải thiện error handling
+
+### 📝 Database migrations
+- `migration_add_avatar_theme.sql` - Thêm avatar_url, chat_theme, last_seen
+- `migration_add_edit_delete.sql` - Thêm edited_at, is_deleted cho messages

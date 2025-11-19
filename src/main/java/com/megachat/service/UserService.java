@@ -247,4 +247,22 @@ public class UserService {
         
         return users;
     }
+
+    /**
+     * Cập nhật avatar của user
+     */
+    public User updateAvatar(Long userId, String avatarUrl) throws Exception {
+        User user = getUserOrThrow(userId);
+        user.setAvatarUrl(avatarUrl);
+        return userRepository.save(user);
+    }
+
+    /**
+     * Cập nhật theme chat của user
+     */
+    public User updateTheme(Long userId, String theme) throws Exception {
+        User user = getUserOrThrow(userId);
+        user.setChatTheme(theme);
+        return userRepository.save(user);
+    }
 }

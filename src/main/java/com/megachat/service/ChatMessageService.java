@@ -81,6 +81,44 @@ public class ChatMessageService {
         return messageRepository.findConversation(userId, friendId, afterId);
     }
 
+    @Transactional
+    public ChatMessage editMessage(Long messageId, Long userId, String newContent) throws Exception {
+        ChatMessage message = messageRepository.findById(messageId)
+            .orElseThrow(() -> new Exception("Không tìm thấy tin nhắn"));
+
+        if (!message.getSender().getId().equals(userId)) {
+            throw new Exception("Bạn chỉ có thể chỉnh sửa tin nhắn của chính mình");
+        }
+
+        if (message.getIsDeleted()) {
+            throw new Exception("Không thể chỉnh sửa tin nhắn đã bị xóa");
+        }
+
+        if (newContent == null || newContent.trim().isEmpty()) {
+            throw new Exception("Nội dung tin nhắn không được để trống");
+        }
+
+        message.setContent(newContent.trim());
+        message.setEditedAt(java.time.LocalDateTime.now());
+
+        return messageRepository.save(message);
+    }
+
+    @Transactional
+    public ChatMessage deleteMessage(Long messageId, Long userId) throws Exception {
+        ChatMessage message = messageRepository.findById(messageId)
+            .orElseThrow(() -> new Exception("Không tìm thấy tin nhắn"));
+
+        if (!message.getSender().getId().equals(userId)) {
+            throw new Exception("Bạn chỉ có thể xóa tin nhắn của chính mình");
+        }
+
+        message.setIsDeleted(true);
+        message.setContent("Tin nhắn đã bị xóa");
+
+        return messageRepository.save(message);
+    }
+
     private User getUserOrThrow(Long id) throws Exception {
         return userRepository.findById(id)
             .orElseThrow(() -> new Exception("Không tìm thấy người dùng"));

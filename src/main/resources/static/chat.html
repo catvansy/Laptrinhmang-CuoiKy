@@ -24,6 +24,353 @@
             color: #2c2f33;
         }
 
+        /* Theme Styles - Beautiful gradients applied to body and container */
+        body.theme-blue,
+        body.theme-blue .container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+        }
+
+        body.theme-purple,
+        body.theme-purple .container {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background-attachment: fixed;
+        }
+
+        body.theme-green,
+        body.theme-green .container {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background-attachment: fixed;
+        }
+
+        body.theme-pink,
+        body.theme-pink .container {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            background-attachment: fixed;
+        }
+
+        body.theme-orange,
+        body.theme-orange .container {
+            background: linear-gradient(135deg, #fad961 0%, #f76b1c 100%);
+            background-attachment: fixed;
+        }
+
+        body.theme-dark,
+        body.theme-dark .container {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            background-attachment: fixed;
+        }
+
+        body.theme-ocean,
+        body.theme-ocean .container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-attachment: fixed;
+        }
+
+        body.theme-sunset,
+        body.theme-sunset .container {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+            background-attachment: fixed;
+        }
+
+        body.theme-forest,
+        body.theme-forest .container {
+            background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);
+            background-attachment: fixed;
+        }
+
+        body.theme-cosmic,
+        body.theme-cosmic .container {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            background-attachment: fixed;
+        }
+
+        body.theme-aurora,
+        body.theme-aurora .container {
+            background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+            background-attachment: fixed;
+        }
+
+        body.theme-lavender,
+        body.theme-lavender .container {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            background-attachment: fixed;
+        }
+        
+        /* Theme-specific adjustments for better visibility */
+        body.theme-blue .chat-area,
+        body.theme-purple .chat-area,
+        body.theme-green .chat-area,
+        body.theme-pink .chat-area,
+        body.theme-orange .chat-area,
+        body.theme-ocean .chat-area,
+        body.theme-sunset .chat-area,
+        body.theme-forest .chat-area,
+        body.theme-aurora .chat-area,
+        body.theme-lavender .chat-area {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        body.theme-dark .chat-area,
+        body.theme-cosmic .chat-area {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Theme-specific message bubble colors */
+        /* Blue Theme */
+        body.theme-blue .message.mine .bubble {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        body.theme-blue .message.their .bubble {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Purple Theme */
+        body.theme-purple .message.mine .bubble {
+            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
+        }
+        
+        body.theme-purple .message.their .bubble {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Green Theme */
+        body.theme-green .message.mine .bubble {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+        }
+        
+        body.theme-green .message.their .bubble {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Pink Theme */
+        body.theme-pink .message.mine .bubble {
+            background: linear-gradient(135deg, #fee140 0%, #fa709a 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(250, 112, 154, 0.4);
+        }
+        
+        body.theme-pink .message.their .bubble {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Orange Theme */
+        body.theme-orange .message.mine .bubble {
+            background: linear-gradient(135deg, #f76b1c 0%, #fad961 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(247, 107, 28, 0.4);
+        }
+        
+        body.theme-orange .message.their .bubble {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Dark Theme */
+        body.theme-dark .message.mine .bubble {
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.4);
+        }
+        
+        body.theme-dark .message.their .bubble {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Ocean Theme */
+        body.theme-ocean .message.mine .bubble {
+            background: linear-gradient(135deg, #f093fb 0%, #764ba2 50%, #667eea 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        body.theme-ocean .message.their .bubble {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Sunset Theme */
+        body.theme-sunset .message.mine .bubble {
+            background: linear-gradient(135deg, #4facfe 0%, #f5576c 50%, #f093fb 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
+        }
+        
+        body.theme-sunset .message.their .bubble {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Forest Theme */
+        body.theme-forest .message.mine .bubble {
+            background: linear-gradient(135deg, #71b280 0%, #134e5e 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(19, 78, 94, 0.4);
+        }
+        
+        body.theme-forest .message.their .bubble {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Cosmic Theme */
+        body.theme-cosmic .message.mine .bubble {
+            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 50%, #0c0c0c 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(22, 33, 62, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        body.theme-cosmic .message.their .bubble {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        /* Aurora Theme */
+        body.theme-aurora .message.mine .bubble {
+            background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 210, 255, 0.4);
+        }
+        
+        body.theme-aurora .message.their .bubble {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Lavender Theme */
+        body.theme-lavender .message.mine .bubble {
+            background: linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%);
+            color: #2c2f33;
+            box-shadow: 0 4px 12px rgba(224, 195, 252, 0.4);
+        }
+        
+        body.theme-lavender .message.their .bubble {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            color: #2c2f33;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Theme-specific input area styling */
+        body.theme-blue .input-area,
+        body.theme-purple .input-area,
+        body.theme-green .input-area,
+        body.theme-pink .input-area,
+        body.theme-orange .input-area,
+        body.theme-ocean .input-area,
+        body.theme-sunset .input-area,
+        body.theme-forest .input-area,
+        body.theme-aurora .input-area,
+        body.theme-lavender .input-area {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        body.theme-dark .input-area,
+        body.theme-cosmic .input-area {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Theme-specific chat header styling */
+        body.theme-blue .chat-header,
+        body.theme-purple .chat-header,
+        body.theme-green .chat-header,
+        body.theme-pink .chat-header,
+        body.theme-orange .chat-header,
+        body.theme-ocean .chat-header,
+        body.theme-sunset .chat-header,
+        body.theme-forest .chat-header,
+        body.theme-aurora .chat-header,
+        body.theme-lavender .chat-header {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        body.theme-dark .chat-header,
+        body.theme-cosmic .chat-header {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Theme-specific input box styling */
+        body.theme-blue .input-box,
+        body.theme-purple .input-box,
+        body.theme-green .input-box,
+        body.theme-pink .input-box,
+        body.theme-orange .input-box,
+        body.theme-ocean .input-box,
+        body.theme-sunset .input-box,
+        body.theme-forest .input-box,
+        body.theme-aurora .input-box,
+        body.theme-lavender .input-box {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+        
+        body.theme-dark .input-box,
+        body.theme-cosmic .input-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+        
+        body.theme-blue .input-box::placeholder,
+        body.theme-purple .input-box::placeholder,
+        body.theme-green .input-box::placeholder,
+        body.theme-pink .input-box::placeholder,
+        body.theme-orange .input-box::placeholder,
+        body.theme-ocean .input-box::placeholder,
+        body.theme-sunset .input-box::placeholder,
+        body.theme-forest .input-box::placeholder,
+        body.theme-aurora .input-box::placeholder,
+        body.theme-lavender .input-box::placeholder,
+        body.theme-dark .input-box::placeholder,
+        body.theme-cosmic .input-box::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
         .container {
             display: flex;
             height: 100vh;
@@ -423,12 +770,81 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            background: #1a1a1a;
+        }
+
+        .chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-header-avatar {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            min-height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7289da, #5865f2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-header-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .chat-header-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+            flex: 1;
         }
 
         .chat-header-title {
             font-size: 16px;
             font-weight: 600;
             color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-header-status {
+            font-size: 12px;
+            color: #b9bbbe;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chat-header-status.online {
+            color: #43b581;
+        }
+
+        .chat-header-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #72767d;
+            display: inline-block;
+        }
+
+        .chat-header-status-dot.online {
+            background: #43b581;
+            box-shadow: 0 0 6px rgba(67, 181, 129, 0.6);
         }
 
         .chat-header-icons {
@@ -467,15 +883,57 @@
 
         .message {
             display: flex;
-            flex-direction: column;
-            gap: 4px;
-            max-width: 50%;
+            flex-direction: row;
+            gap: 8px;
+            max-width: 70%;
             width: fit-content;
+            align-items: flex-end;
         }
 
         .message.mine {
             align-self: flex-end;
-            text-align: right;
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            min-height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7289da, #5865f2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            flex-shrink: 0;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .message-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .message.their {
+            align-self: flex-start;
+        }
+
+        .message-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message.mine .message-content-wrapper {
+            align-items: flex-end;
         }
 
         .message .bubble {
@@ -783,7 +1241,7 @@
             transform: translateY(0) scale(0.98);
         }
 
-        /* Emoji Picker */
+        /* Emoji & Sticker Picker */
         .emoji-picker {
             position: absolute;
             bottom: 70px;
@@ -791,12 +1249,61 @@
             background: #1a1a1a;
             border: 1px solid #2c2f33;
             border-radius: 12px;
-            padding: 15px;
-            width: 320px;
-            max-height: 300px;
-            overflow-y: auto;
+            padding: 0;
+            width: 360px;
+            max-height: 400px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .emoji-picker-tabs {
+            display: flex;
+            border-bottom: 1px solid #2c2f33;
+            padding: 8px;
+            gap: 4px;
+        }
+
+        .emoji-picker-tab {
+            flex: 1;
+            padding: 8px;
+            background: transparent;
+            border: none;
+            color: #b9bbbe;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .emoji-picker-tab:hover {
+            background: #2c2f33;
+            color: #ffffff;
+        }
+
+        .emoji-picker-tab.active {
+            background: #5865f2;
+            color: #ffffff;
+        }
+
+        .emoji-picker-content {
+            padding: 15px;
+            max-height: 340px;
+            overflow-y: auto;
+        }
+
+        .emoji-category {
+            margin-bottom: 20px;
+        }
+
+        .emoji-category-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #b9bbbe;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            padding: 0 4px;
         }
 
         .emoji-grid {
@@ -819,6 +1326,159 @@
         .emoji-item:hover {
             background: #2c2f33;
             transform: scale(1.2);
+        }
+
+        .sticker-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .sticker-item {
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.2s ease;
+            font-size: 48px;
+            line-height: 1;
+        }
+
+        .sticker-item:hover {
+            background: #2c2f33;
+            transform: scale(1.1);
+        }
+
+        /* Date Separator */
+        .date-separator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 16px 0;
+            position: relative;
+        }
+
+        .date-separator::before,
+        .date-separator::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #2c2f33;
+        }
+
+        .date-separator-text {
+            padding: 0 12px;
+            font-size: 12px;
+            color: #72767d;
+            font-weight: 500;
+            background: #0f0f0f;
+        }
+
+        body.light-mode .date-separator-text {
+            background: #f5f5f5;
+        }
+
+        body.light-mode .date-separator::before,
+        body.light-mode .date-separator::after {
+            background: #e0e0e0;
+        }
+
+        /* Scroll to Bottom Button */
+        .scroll-to-bottom-btn {
+            position: absolute;
+            bottom: 100px;
+            right: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #5865f2;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .scroll-to-bottom-btn:hover {
+            background: #4752c4;
+            transform: scale(1.1);
+        }
+
+        .scroll-to-bottom-btn.show {
+            display: flex;
+        }
+
+        /* Image Viewer Modal */
+        .image-viewer-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .image-viewer-modal.show {
+            display: flex;
+        }
+
+        .image-viewer-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .image-viewer-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(44, 47, 51, 0.8);
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.2s ease;
+        }
+
+        .image-viewer-close:hover {
+            background: rgba(44, 47, 51, 1);
+            transform: scale(1.1);
+        }
+
+        /* Message Edited Indicator */
+        .message-edited {
+            font-size: 10px;
+            color: #72767d;
+            font-style: italic;
+            margin-left: 4px;
+        }
+
+        .message-deleted {
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        .message-deleted .bubble {
+            background: #1a1a1a !important;
+            color: #72767d !important;
         }
 
         /* Typing Indicator */
@@ -1253,6 +1913,205 @@
             font-weight: 600;
             color: #ffffff;
             flex-shrink: 0;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .profile-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .profile-avatar-large:hover::after {
+            content: '📷 Đổi avatar';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .profile-avatar-large.uploading::after {
+            content: '⏳ Đang tải...';
+            background: rgba(88, 101, 242, 0.8);
+        }
+
+        .avatar-upload-input {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .avatar-upload-hint {
+            font-size: 11px;
+            color: #72767d;
+            margin-top: 4px;
+            text-align: center;
+        }
+
+        .avatar-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            justify-content: center;
+        }
+
+        .avatar-action-btn {
+            padding: 6px 12px;
+            background: #2c2f33;
+            border: 1px solid #2c2f33;
+            border-radius: 4px;
+            color: #b9bbbe;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .avatar-action-btn:hover {
+            background: #3a3d42;
+            color: #ffffff;
+            border-color: #5865f2;
+        }
+
+        .avatar-action-btn.danger:hover {
+            background: #f04747;
+            border-color: #f04747;
+            color: #ffffff;
+        }
+
+        .theme-selector {
+            margin-bottom: 16px;
+        }
+
+        .theme-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .theme-option {
+            padding: 0;
+            border: 3px solid #2c2f33;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 11px;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+            background: #1a1a1a;
+        }
+
+        .theme-option:hover {
+            border-color: #5865f2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
+        }
+
+        .theme-option.active {
+            border-color: #5865f2;
+            box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.2), 0 4px 12px rgba(88, 101, 242, 0.4);
+            transform: scale(1.05);
+        }
+
+        .theme-option.active::after {
+            content: '✓';
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 20px;
+            height: 20px;
+            background: #5865f2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #ffffff;
+            z-index: 10;
+        }
+
+        .theme-preview {
+            width: 100%;
+            height: 50px;
+            border-radius: 8px 8px 0 0;
+            margin: 0;
+            position: relative;
+        }
+
+        .theme-option > div:last-child {
+            padding: 6px 4px;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-option.theme-default .theme-preview {
+            background: linear-gradient(135deg, #0f0f0f, #1a1a1a) !important;
+        }
+
+        .theme-option.theme-blue .theme-preview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        }
+
+        .theme-option.theme-purple .theme-preview {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+        }
+
+        .theme-option.theme-green .theme-preview {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+        }
+
+        .theme-option.theme-pink .theme-preview {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%) !important;
+        }
+
+        .theme-option.theme-orange .theme-preview {
+            background: linear-gradient(135deg, #fad961 0%, #f76b1c 100%) !important;
+        }
+
+        .theme-option.theme-dark .theme-preview {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
+        }
+
+        .theme-option.theme-ocean .theme-preview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) !important;
+        }
+
+        .theme-option.theme-sunset .theme-preview {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%) !important;
+        }
+
+        .theme-option.theme-forest .theme-preview {
+            background: linear-gradient(135deg, #134e5e 0%, #71b280 100%) !important;
+        }
+
+        .theme-option.theme-cosmic .theme-preview {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%) !important;
+        }
+
+        .theme-option.theme-aurora .theme-preview {
+            background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%) !important;
+        }
+
+        .theme-option.theme-lavender .theme-preview {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%) !important;
         }
 
         .profile-info {
@@ -1808,7 +2667,16 @@
         <!-- Chat Area -->
         <div class="chat-area">
             <div class="chat-header">
+                <div class="chat-header-info">
+                    <div class="chat-header-avatar" id="chatHeaderAvatar"></div>
+                    <div class="chat-header-details">
                 <div class="chat-header-title" id="chatHeaderTitle">Chưa chọn bạn bè</div>
+                        <div class="chat-header-status" id="chatHeaderStatus">
+                            <span class="chat-header-status-dot"></span>
+                            <span id="chatHeaderStatusText">Chọn một người bạn để bắt đầu trò chuyện</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="chat-header-icons">
                     <div class="search-messages" id="messageSearchContainer" style="display: none;">
                         <input type="text" class="search-messages-input" id="messageSearchInput" placeholder="🔍 Tìm kiếm tin nhắn...">
@@ -1825,6 +2693,7 @@
                     <div class="empty-state-title">Chưa chọn cuộc trò chuyện</div>
                     <div class="empty-state-message">Chọn một người bạn ở danh sách bên trái để bắt đầu trò chuyện.</div>
                 </div>
+                <button class="scroll-to-bottom-btn" id="scrollToBottomBtn" title="Cuộn xuống dưới">⬇️</button>
             </div>
 
             <!-- Reply Preview Area -->
@@ -1859,8 +2728,17 @@
                 <button class="send-btn" id="sendButton" aria-label="Gửi tin nhắn" disabled>➤</button>
             </div>
             
-            <!-- Emoji Picker -->
+            <!-- Emoji & Sticker Picker -->
             <div class="emoji-picker" id="emojiPicker" style="display: none;">
+                <div class="emoji-picker-tabs">
+                    <button class="emoji-picker-tab active" data-tab="emoji">😊</button>
+                    <button class="emoji-picker-tab" data-tab="sticker">🎨</button>
+                </div>
+                <div class="emoji-picker-content">
+                    <!-- Emoji Tab -->
+                    <div class="emoji-tab-content" id="emojiTabContent">
+                        <div class="emoji-category">
+                            <div class="emoji-category-title">😊 Cảm xúc</div>
                 <div class="emoji-grid">
                     <span class="emoji-item">😀</span><span class="emoji-item">😃</span><span class="emoji-item">😄</span><span class="emoji-item">😁</span>
                     <span class="emoji-item">😆</span><span class="emoji-item">😅</span><span class="emoji-item">🤣</span><span class="emoji-item">😂</span>
@@ -1877,22 +2755,147 @@
                     <span class="emoji-item">🤢</span><span class="emoji-item">🤮</span><span class="emoji-item">🤧</span><span class="emoji-item">🥵</span>
                     <span class="emoji-item">🥶</span><span class="emoji-item">😵</span><span class="emoji-item">🤯</span><span class="emoji-item">🤠</span>
                     <span class="emoji-item">🥳</span><span class="emoji-item">😎</span><span class="emoji-item">🤓</span><span class="emoji-item">🧐</span>
+                            </div>
+                        </div>
+                        <div class="emoji-category">
+                            <div class="emoji-category-title">👋 Cử chỉ</div>
+                            <div class="emoji-grid">
                     <span class="emoji-item">👍</span><span class="emoji-item">👎</span><span class="emoji-item">👌</span><span class="emoji-item">✌️</span>
                     <span class="emoji-item">🤞</span><span class="emoji-item">🤟</span><span class="emoji-item">🤘</span><span class="emoji-item">🤙</span>
                     <span class="emoji-item">👏</span><span class="emoji-item">🙌</span><span class="emoji-item">👐</span><span class="emoji-item">🤲</span>
                     <span class="emoji-item">🤝</span><span class="emoji-item">🙏</span><span class="emoji-item">✍️</span><span class="emoji-item">💪</span>
+                                <span class="emoji-item">🦵</span><span class="emoji-item">🦶</span><span class="emoji-item">👂</span><span class="emoji-item">🦻</span>
+                                <span class="emoji-item">👃</span><span class="emoji-item">👶</span><span class="emoji-item">🧒</span><span class="emoji-item">👦</span>
+                                <span class="emoji-item">👧</span><span class="emoji-item">🧑</span><span class="emoji-item">👱</span><span class="emoji-item">👨</span>
+                                <span class="emoji-item">🧔</span><span class="emoji-item">👩</span><span class="emoji-item">🧓</span><span class="emoji-item">👴</span>
+                            </div>
+                        </div>
+                        <div class="emoji-category">
+                            <div class="emoji-category-title">❤️ Trái tim</div>
+                            <div class="emoji-grid">
                     <span class="emoji-item">❤️</span><span class="emoji-item">🧡</span><span class="emoji-item">💛</span><span class="emoji-item">💚</span>
                     <span class="emoji-item">💙</span><span class="emoji-item">💜</span><span class="emoji-item">🖤</span><span class="emoji-item">🤍</span>
                     <span class="emoji-item">🤎</span><span class="emoji-item">💔</span><span class="emoji-item">❣️</span><span class="emoji-item">💕</span>
                     <span class="emoji-item">💞</span><span class="emoji-item">💓</span><span class="emoji-item">💗</span><span class="emoji-item">💖</span>
                     <span class="emoji-item">💘</span><span class="emoji-item">💝</span><span class="emoji-item">💟</span><span class="emoji-item">☮️</span>
-                    <span class="emoji-item">✝️</span><span class="emoji-item">☪️</span><span class="emoji-item">🕉️</span><span class="emoji-item">☸️</span>
-                    <span class="emoji-item">✡️</span><span class="emoji-item">🔯</span><span class="emoji-item">🕎</span><span class="emoji-item">☯️</span>
-                    <span class="emoji-item">☦️</span><span class="emoji-item">🛐</span><span class="emoji-item">⛎</span><span class="emoji-item">♈</span>
-                    <span class="emoji-item">♉</span><span class="emoji-item">♊</span><span class="emoji-item">♋</span><span class="emoji-item">♌</span>
-                    <span class="emoji-item">♍</span><span class="emoji-item">♎</span><span class="emoji-item">♏</span><span class="emoji-item">♐</span>
-                    <span class="emoji-item">♑</span><span class="emoji-item">♒</span><span class="emoji-item">♓</span><span class="emoji-item">🆔</span>
-                    <span class="emoji-item">⚛️</span><span class="emoji-item">🉑</span><span class="emoji-item">☢️</span><span class="emoji-item">☣️</span>
+                                <span class="emoji-item">💋</span><span class="emoji-item">💌</span><span class="emoji-item">💐</span><span class="emoji-item">🌹</span>
+                                <span class="emoji-item">🥀</span><span class="emoji-item">🌺</span><span class="emoji-item">🌻</span><span class="emoji-item">🌷</span>
+                            </div>
+                        </div>
+                        <div class="emoji-category">
+                            <div class="emoji-category-title">🐾 Động vật</div>
+                            <div class="emoji-grid">
+                                <span class="emoji-item">🐶</span><span class="emoji-item">🐱</span><span class="emoji-item">🐭</span><span class="emoji-item">🐹</span>
+                                <span class="emoji-item">🐰</span><span class="emoji-item">🦊</span><span class="emoji-item">🐻</span><span class="emoji-item">🐼</span>
+                                <span class="emoji-item">🐨</span><span class="emoji-item">🐯</span><span class="emoji-item">🦁</span><span class="emoji-item">🐮</span>
+                                <span class="emoji-item">🐷</span><span class="emoji-item">🐽</span><span class="emoji-item">🐸</span><span class="emoji-item">🐵</span>
+                                <span class="emoji-item">🙈</span><span class="emoji-item">🙉</span><span class="emoji-item">🙊</span><span class="emoji-item">🐒</span>
+                                <span class="emoji-item">🐔</span><span class="emoji-item">🐧</span><span class="emoji-item">🐦</span><span class="emoji-item">🐤</span>
+                                <span class="emoji-item">🐣</span><span class="emoji-item">🐥</span><span class="emoji-item">🦆</span><span class="emoji-item">🦅</span>
+                                <span class="emoji-item">🦉</span><span class="emoji-item">🦇</span><span class="emoji-item">🐺</span><span class="emoji-item">🐗</span>
+                                <span class="emoji-item">🐴</span><span class="emoji-item">🦄</span><span class="emoji-item">🐝</span><span class="emoji-item">🐛</span>
+                                <span class="emoji-item">🦋</span><span class="emoji-item">🐌</span><span class="emoji-item">🐞</span><span class="emoji-item">🐜</span>
+                            </div>
+                        </div>
+                        <div class="emoji-category">
+                            <div class="emoji-category-title">🍕 Đồ ăn</div>
+                            <div class="emoji-grid">
+                                <span class="emoji-item">🍕</span><span class="emoji-item">🍔</span><span class="emoji-item">🍟</span><span class="emoji-item">🌭</span>
+                                <span class="emoji-item">🍿</span><span class="emoji-item">🧂</span><span class="emoji-item">🥓</span><span class="emoji-item">🥚</span>
+                                <span class="emoji-item">🍳</span><span class="emoji-item">🥞</span><span class="emoji-item">🥐</span><span class="emoji-item">🥨</span>
+                                <span class="emoji-item">🍞</span><span class="emoji-item">🥖</span><span class="emoji-item">🧀</span><span class="emoji-item">🥗</span>
+                                <span class="emoji-item">🥙</span><span class="emoji-item">🥪</span><span class="emoji-item">🌮</span><span class="emoji-item">🌯</span>
+                                <span class="emoji-item">🥫</span><span class="emoji-item">🍝</span><span class="emoji-item">🍜</span><span class="emoji-item">🍲</span>
+                                <span class="emoji-item">🍛</span><span class="emoji-item">🍣</span><span class="emoji-item">🍱</span><span class="emoji-item">🥟</span>
+                                <span class="emoji-item">🍚</span><span class="emoji-item">🍙</span><span class="emoji-item">🍘</span><span class="emoji-item">🍥</span>
+                                <span class="emoji-item">🥠</span><span class="emoji-item">🍢</span><span class="emoji-item">🍡</span><span class="emoji-item">🍧</span>
+                                <span class="emoji-item">🍨</span><span class="emoji-item">🍦</span><span class="emoji-item">🥧</span><span class="emoji-item">🍰</span>
+                                <span class="emoji-item">🎂</span><span class="emoji-item">🍮</span><span class="emoji-item">🍭</span><span class="emoji-item">🍬</span>
+                                <span class="emoji-item">🍫</span><span class="emoji-item">🍿</span><span class="emoji-item">🍩</span><span class="emoji-item">🍪</span>
+                            </div>
+                        </div>
+                        <div class="emoji-category">
+                            <div class="emoji-category-title">⚽ Hoạt động</div>
+                            <div class="emoji-grid">
+                                <span class="emoji-item">⚽</span><span class="emoji-item">🏀</span><span class="emoji-item">🏈</span><span class="emoji-item">⚾</span>
+                                <span class="emoji-item">🎾</span><span class="emoji-item">🏐</span><span class="emoji-item">🏉</span><span class="emoji-item">🎱</span>
+                                <span class="emoji-item">🏓</span><span class="emoji-item">🏸</span><span class="emoji-item">🥅</span><span class="emoji-item">🏒</span>
+                                <span class="emoji-item">🏑</span><span class="emoji-item">🏏</span><span class="emoji-item">⛳</span><span class="emoji-item">🏹</span>
+                                <span class="emoji-item">🎣</span><span class="emoji-item">🥊</span><span class="emoji-item">🥋</span><span class="emoji-item">🎽</span>
+                                <span class="emoji-item">🏋️</span><span class="emoji-item">🤼</span><span class="emoji-item">🤸</span><span class="emoji-item">🤺</span>
+                                <span class="emoji-item">🤾</span><span class="emoji-item">🏌️</span><span class="emoji-item">🏇</span><span class="emoji-item">🧘</span>
+                            </div>
+                        </div>
+                        <div class="emoji-category">
+                            <div class="emoji-category-title">🚗 Phương tiện</div>
+                            <div class="emoji-grid">
+                                <span class="emoji-item">🚗</span><span class="emoji-item">🚕</span><span class="emoji-item">🚙</span><span class="emoji-item">🚌</span>
+                                <span class="emoji-item">🚎</span><span class="emoji-item">🏎️</span><span class="emoji-item">🚓</span><span class="emoji-item">🚑</span>
+                                <span class="emoji-item">🚒</span><span class="emoji-item">🚐</span><span class="emoji-item">🚚</span><span class="emoji-item">🚛</span>
+                                <span class="emoji-item">🚜</span><span class="emoji-item">🛴</span><span class="emoji-item">🚲</span><span class="emoji-item">🛵</span>
+                                <span class="emoji-item">🏍️</span><span class="emoji-item">🚨</span><span class="emoji-item">🚔</span><span class="emoji-item">🚍</span>
+                                <span class="emoji-item">🚘</span><span class="emoji-item">🚖</span><span class="emoji-item">🚡</span><span class="emoji-item">🚠</span>
+                                <span class="emoji-item">🚟</span><span class="emoji-item">🚃</span><span class="emoji-item">🚋</span><span class="emoji-item">🚞</span>
+                                <span class="emoji-item">🚝</span><span class="emoji-item">🚄</span><span class="emoji-item">🚅</span><span class="emoji-item">🚈</span>
+                                <span class="emoji-item">🚂</span><span class="emoji-item">🚆</span><span class="emoji-item">🚇</span><span class="emoji-item">🚊</span>
+                                <span class="emoji-item">🚉</span><span class="emoji-item">✈️</span><span class="emoji-item">🛫</span><span class="emoji-item">🛬</span>
+                                <span class="emoji-item">🛩️</span><span class="emoji-item">💺</span><span class="emoji-item">🚁</span><span class="emoji-item">🚟</span>
+                                <span class="emoji-item">🚀</span><span class="emoji-item">🛸</span><span class="emoji-item">🚤</span><span class="emoji-item">⛵</span>
+                                <span class="emoji-item">🛥️</span><span class="emoji-item">🚢</span><span class="emoji-item">⚓</span><span class="emoji-item">⛽</span>
+                            </div>
+                        </div>
+                        <div class="emoji-category">
+                            <div class="emoji-category-title">⭐ Biểu tượng</div>
+                            <div class="emoji-grid">
+                                <span class="emoji-item">⭐</span><span class="emoji-item">🌟</span><span class="emoji-item">✨</span><span class="emoji-item">💫</span>
+                                <span class="emoji-item">🔥</span><span class="emoji-item">💥</span><span class="emoji-item">💢</span><span class="emoji-item">💯</span>
+                                <span class="emoji-item">✅</span><span class="emoji-item">❌</span><span class="emoji-item">⭕</span><span class="emoji-item">🆗</span>
+                                <span class="emoji-item">🆕</span><span class="emoji-item">🆓</span><span class="emoji-item">🆒</span><span class="emoji-item">🆔</span>
+                                <span class="emoji-item">🆚</span><span class="emoji-item">🈲</span><span class="emoji-item">🈳</span><span class="emoji-item">🈴</span>
+                                <span class="emoji-item">🈵</span><span class="emoji-item">🈶</span><span class="emoji-item">🈷️</span><span class="emoji-item">🈸</span>
+                                <span class="emoji-item">🈹</span><span class="emoji-item">🈺</span><span class="emoji-item">🉐</span><span class="emoji-item">🉑</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Sticker Tab -->
+                    <div class="sticker-tab-content" id="stickerTabContent" style="display: none;">
+                        <div class="sticker-grid">
+                            <span class="sticker-item">🎉</span><span class="sticker-item">🎊</span><span class="sticker-item">🎈</span><span class="sticker-item">🎁</span>
+                            <span class="sticker-item">🎀</span><span class="sticker-item">🎂</span><span class="sticker-item">🎃</span><span class="sticker-item">🎄</span>
+                            <span class="sticker-item">🎅</span><span class="sticker-item">🎆</span><span class="sticker-item">🎇</span><span class="sticker-item">✨</span>
+                            <span class="sticker-item">🌟</span><span class="sticker-item">⭐</span><span class="sticker-item">💫</span><span class="sticker-item">🔥</span>
+                            <span class="sticker-item">💥</span><span class="sticker-item">💯</span><span class="sticker-item">🎯</span><span class="sticker-item">🎪</span>
+                            <span class="sticker-item">🎭</span><span class="sticker-item">🎨</span><span class="sticker-item">🎬</span><span class="sticker-item">🎤</span>
+                            <span class="sticker-item">🎧</span><span class="sticker-item">🎵</span><span class="sticker-item">🎶</span><span class="sticker-item">🎼</span>
+                            <span class="sticker-item">🎹</span><span class="sticker-item">🥁</span><span class="sticker-item">🎷</span><span class="sticker-item">🎺</span>
+                            <span class="sticker-item">🎸</span><span class="sticker-item">🎻</span><span class="sticker-item">🎲</span><span class="sticker-item">🎰</span>
+                            <span class="sticker-item">🎮</span><span class="sticker-item">🕹️</span><span class="sticker-item">🎳</span><span class="sticker-item">🏓</span>
+                            <span class="sticker-item">🏸</span><span class="sticker-item">🏒</span><span class="sticker-item">🏑</span><span class="sticker-item">🏏</span>
+                            <span class="sticker-item">🥅</span><span class="sticker-item">⚽</span><span class="sticker-item">🏀</span><span class="sticker-item">🏈</span>
+                            <span class="sticker-item">⚾</span><span class="sticker-item">🎾</span><span class="sticker-item">🏐</span><span class="sticker-item">🏉</span>
+                            <span class="sticker-item">🎱</span><span class="sticker-item">🏓</span><span class="sticker-item">🏸</span><span class="sticker-item">🥊</span>
+                            <span class="sticker-item">🥋</span><span class="sticker-item">🥇</span><span class="sticker-item">🥈</span><span class="sticker-item">🥉</span>
+                            <span class="sticker-item">🏆</span><span class="sticker-item">🏅</span><span class="sticker-item">🎖️</span><span class="sticker-item">🎗️</span>
+                            <span class="sticker-item">🎫</span><span class="sticker-item">🎟️</span><span class="sticker-item">🎪</span><span class="sticker-item">🤹</span>
+                            <span class="sticker-item">🎭</span><span class="sticker-item">🩰</span><span class="sticker-item">🎨</span><span class="sticker-item">🎬</span>
+                            <span class="sticker-item">🎤</span><span class="sticker-item">🎧</span><span class="sticker-item">🎼</span><span class="sticker-item">🎹</span>
+                            <span class="sticker-item">🥁</span><span class="sticker-item">🎷</span><span class="sticker-item">🎺</span><span class="sticker-item">🎸</span>
+                            <span class="sticker-item">🎻</span><span class="sticker-item">🎲</span><span class="sticker-item">🎰</span><span class="sticker-item">🎮</span>
+                            <span class="sticker-item">🕹️</span><span class="sticker-item">🎳</span><span class="sticker-item">🚗</span><span class="sticker-item">🚕</span>
+                            <span class="sticker-item">🚙</span><span class="sticker-item">🚌</span><span class="sticker-item">🚎</span><span class="sticker-item">🏎️</span>
+                            <span class="sticker-item">🚓</span><span class="sticker-item">🚑</span><span class="sticker-item">🚒</span><span class="sticker-item">🚐</span>
+                            <span class="sticker-item">🚚</span><span class="sticker-item">🚛</span><span class="sticker-item">🚜</span><span class="sticker-item">🛴</span>
+                            <span class="sticker-item">🚲</span><span class="sticker-item">🛵</span><span class="sticker-item">🏍️</span><span class="sticker-item">✈️</span>
+                            <span class="sticker-item">🛫</span><span class="sticker-item">🛬</span><span class="sticker-item">🛩️</span><span class="sticker-item">🚁</span>
+                            <span class="sticker-item">🚀</span><span class="sticker-item">🛸</span><span class="sticker-item">🚤</span><span class="sticker-item">⛵</span>
+                            <span class="sticker-item">🛥️</span><span class="sticker-item">🚢</span><span class="sticker-item">⚓</span><span class="sticker-item">⛽</span>
+                            <span class="sticker-item">🚨</span><span class="sticker-item">🚔</span><span class="sticker-item">🚍</span><span class="sticker-item">🚘</span>
+                            <span class="sticker-item">🚖</span><span class="sticker-item">🚡</span><span class="sticker-item">🚠</span><span class="sticker-item">🚟</span>
+                            <span class="sticker-item">🚃</span><span class="sticker-item">🚋</span><span class="sticker-item">🚞</span><span class="sticker-item">🚝</span>
+                            <span class="sticker-item">🚄</span><span class="sticker-item">🚅</span><span class="sticker-item">🚈</span><span class="sticker-item">🚂</span>
+                            <span class="sticker-item">🚆</span><span class="sticker-item">🚇</span><span class="sticker-item">🚊</span><span class="sticker-item">🚉</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -1938,10 +2941,47 @@
             <div class="modal-header">Cài đặt tài khoản</div>
             <div class="profile-section">
                 <div class="profile-header">
-                    <div class="profile-avatar-large" id="profileAvatarLarge"></div>
+                    <div class="profile-avatar-large" id="profileAvatarLarge" title="Click để đổi avatar"></div>
+                    <input type="file" class="avatar-upload-input" id="avatarUploadInput" accept="image/*">
                     <div class="profile-info">
                         <div class="profile-username" id="profileUsername"></div>
                         <div class="profile-email" id="profileEmail"></div>
+                    </div>
+                </div>
+                <div class="profile-detail">
+                    <div class="profile-detail-label">Avatar</div>
+                    <div class="avatar-upload-hint">Nhấp vào avatar để tải ảnh lên (JPG, PNG, tối đa 5MB)</div>
+                    <div class="avatar-actions" id="avatarActions" style="display: none;">
+                        <button class="avatar-action-btn" id="removeAvatarBtn">Xóa avatar</button>
+                    </div>
+                </div>
+                <div class="profile-detail theme-selector">
+                    <div class="profile-detail-label">Theme Chat</div>
+                    <div class="theme-options" id="themeOptions">
+                        <div class="theme-option theme-default" data-theme="default">
+                            <div class="theme-preview"></div>
+                            <div>Mặc định</div>
+                        </div>
+                        <div class="theme-option theme-blue" data-theme="blue">
+                            <div class="theme-preview"></div>
+                            <div>Xanh dương</div>
+                        </div>
+                        <div class="theme-option theme-purple" data-theme="purple">
+                            <div class="theme-preview"></div>
+                            <div>Tím</div>
+                        </div>
+                        <div class="theme-option theme-green" data-theme="green">
+                            <div class="theme-preview"></div>
+                            <div>Xanh lá</div>
+                        </div>
+                        <div class="theme-option theme-pink" data-theme="pink">
+                            <div class="theme-preview"></div>
+                            <div>Hồng</div>
+                        </div>
+                        <div class="theme-option theme-orange" data-theme="orange">
+                            <div class="theme-preview"></div>
+                            <div>Cam</div>
+                        </div>
                     </div>
                 </div>
                 <div class="profile-detail">
@@ -1990,10 +3030,190 @@
             let isEditingProfile = false;
             let originalProfileData = {};
 
+            // Avatar actions elements (will be set later)
+            let avatarActions = null;
+            let profileAvatarLarge = null;
+            let avatarUploadInput = null;
+
+            // Show/hide remove avatar button based on current avatar
+            function updateAvatarActions() {
+                if (avatarActions) {
+                    if (currentUser && currentUser.avatarUrl) {
+                        avatarActions.style.display = 'flex';
+                    } else {
+                        avatarActions.style.display = 'none';
+                    }
+                }
+            }
+
+            // Handle avatar upload
+            async function handleAvatarUpload(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                // Validate file type
+                if (!file.type.startsWith('image/')) {
+                    if (typeof showToast === 'function') {
+                        showToast('Lỗi', 'Vui lòng chọn file ảnh (JPG, PNG, GIF)', 'error');
+                    }
+                    e.target.value = '';
+                    return;
+                }
+
+                // Validate file size (max 5MB)
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                if (file.size > maxSize) {
+                    if (typeof showToast === 'function') {
+                        showToast('Lỗi', 'Kích thước file không được vượt quá 5MB', 'error');
+                    }
+                    e.target.value = '';
+                    return;
+                }
+
+                // Show preview before upload
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    if (!profileAvatarLarge) return;
+                    const previewImg = document.createElement('img');
+                    previewImg.src = event.target.result;
+                    previewImg.style.width = '100%';
+                    previewImg.style.height = '100%';
+                    previewImg.style.objectFit = 'cover';
+                    previewImg.style.borderRadius = '50%';
+                    profileAvatarLarge.innerHTML = '';
+                    profileAvatarLarge.appendChild(previewImg);
+                    profileAvatarLarge.classList.add('uploading');
+                };
+                reader.readAsDataURL(file);
+
+                // Upload file
+                const formData = new FormData();
+                formData.append('file', file);
+
+                try {
+                    if (typeof setStatus === 'function') {
+                        setStatus('Đang tải avatar...');
+                    }
+                    const response = await fetch(`${API_BASE}/auth/avatar`, {
+                        method: 'POST',
+                        body: formData,
+                        credentials: 'include'
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        currentUser.avatarUrl = data.avatarUrl;
+                        localStorage.setItem('user', JSON.stringify(currentUser));
+                        updateProfileModal();
+                        updateAvatarActions();
+                        
+                        // Update sidebar avatar if exists
+                        const sidebarAvatar = document.querySelector('.sidebar-item.active img');
+                        if (sidebarAvatar) {
+                            sidebarAvatar.src = CONTEXT_PATH + data.avatarUrl;
+                        }
+                        
+                        // Update all friend avatars in the list
+                        document.querySelectorAll('.friend-avatar img').forEach(img => {
+                            if (img.alt === currentUser.username) {
+                                img.src = CONTEXT_PATH + data.avatarUrl;
+                            }
+                        });
+                        
+                        if (typeof showToast === 'function') {
+                            showToast('Thành công', 'Đã cập nhật avatar thành công', 'success');
+                        }
+                        if (typeof setStatus === 'function') {
+                            setStatus('');
+                        }
+                    } else {
+                        if (typeof showToast === 'function') {
+                            showToast('Lỗi', data.message || 'Không thể cập nhật avatar', 'error');
+                        }
+                        if (typeof setStatus === 'function') {
+                            setStatus('');
+                        }
+                        // Restore original avatar on error
+                        updateProfileModal();
+                    }
+                } catch (error) {
+                    console.error('Avatar upload error:', error);
+                    if (typeof showToast === 'function') {
+                        showToast('Lỗi', 'Không thể cập nhật avatar. Vui lòng thử lại.', 'error');
+                    }
+                    if (typeof setStatus === 'function') {
+                        setStatus('');
+                    }
+                    // Restore original avatar on error
+                    updateProfileModal();
+                } finally {
+                    if (profileAvatarLarge) {
+                        profileAvatarLarge.classList.remove('uploading');
+                    }
+                    e.target.value = '';
+                }
+            }
+
+            // Handle remove avatar
+            async function handleRemoveAvatar(e) {
+                e.stopPropagation();
+                if (!confirm('Bạn có chắc chắn muốn xóa avatar? Avatar sẽ quay về mặc định.')) {
+                    return;
+                }
+
+                try {
+                    if (typeof setStatus === 'function') {
+                        setStatus('Đang xóa avatar...');
+                    }
+                    const response = await fetch(`${API_BASE}/auth/avatar`, {
+                        method: 'DELETE',
+                        credentials: 'include'
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success) {
+                            currentUser.avatarUrl = null;
+                            localStorage.setItem('user', JSON.stringify(currentUser));
+                            updateProfileModal();
+                            updateAvatarActions();
+                            
+                            // Update sidebar
+                            const sidebarAvatar = document.querySelector('.sidebar-item.active img');
+                            if (sidebarAvatar) {
+                                sidebarAvatar.remove();
+                            }
+                                        
+                            if (typeof showToast === 'function') {
+                                showToast('Thành công', 'Đã xóa avatar', 'success');
+                            }
+                            if (typeof setStatus === 'function') {
+                                setStatus('');
+                            }
+                        } else {
+                            throw new Error(data.message || 'Không thể xóa avatar');
+                        }
+                    } else {
+                        throw new Error('Không thể xóa avatar');
+                    }
+                } catch (error) {
+                    console.error('Remove avatar error:', error);
+                    if (typeof showToast === 'function') {
+                        showToast('Lỗi', error.message || 'Không thể xóa avatar', 'error');
+                    }
+                    if (typeof setStatus === 'function') {
+                        setStatus('');
+                    }
+                }
+            }
+
             // Hiển thị thông tin user trong profile modal
             function updateProfileModal() {
                 if (currentUser) {
-                    const profileAvatarLarge = document.getElementById('profileAvatarLarge');
+                    // Use global profileAvatarLarge if available, otherwise get it
+                    if (!profileAvatarLarge) {
+                        profileAvatarLarge = document.getElementById('profileAvatarLarge');
+                    }
                     const profileUsername = document.getElementById('profileUsername');
                     const profileEmail = document.getElementById('profileEmail');
                     const profileUsernameValue = document.getElementById('profileUsernameValue');
@@ -2004,8 +3224,26 @@
                     const profilePhoneInput = document.getElementById('profilePhoneInput');
 
                     if (profileAvatarLarge) {
+                        // Remove uploading class if exists
+                        profileAvatarLarge.classList.remove('uploading');
+                        
+                        if (currentUser.avatarUrl) {
+                            const img = document.createElement('img');
+                            img.src = CONTEXT_PATH + currentUser.avatarUrl;
+                            img.alt = currentUser.username || 'Avatar';
+                            img.onerror = function() {
+                                // Fallback to initial if image fails to load
+                                profileAvatarLarge.textContent = currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'U';
+                            };
+                            profileAvatarLarge.innerHTML = '';
+                            profileAvatarLarge.appendChild(img);
+                        } else {
                         profileAvatarLarge.textContent = currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'U';
                     }
+                    }
+                    
+                    // Update avatar actions visibility
+                    updateAvatarActions();
                     if (profileUsername) {
                         profileUsername.textContent = currentUser.username || 'User';
                     }
@@ -2037,9 +3275,93 @@
                         email: currentUser.email || '',
                         phone: currentUser.phone || ''
                     };
+                    
+                    // Update theme selector active state when modal is updated
+                    setTimeout(() => {
+                        try {
+                            if (typeof initThemeSelector === 'function') {
+                                initThemeSelector();
+                            } else {
+                                // Just update active state if function not available yet
+                                const themeOptions = document.querySelectorAll('.theme-option');
+                                if (themeOptions.length > 0) {
+                                    const currentTheme = (currentUser && currentUser.chatTheme) || (state.currentUser && state.currentUser.chatTheme) || 'default';
+                                    themeOptions.forEach(opt => {
+                                        opt.classList.remove('active');
+                                        if (opt.dataset.theme === currentTheme) {
+                                            opt.classList.add('active');
+                                        }
+                                    });
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Error updating theme selector:', error);
+                        }
+                    }, 100);
                 }
             }
+            
+            // Initialize avatar elements
+            function initAvatarUpload() {
+                avatarUploadInput = document.getElementById('avatarUploadInput');
+                profileAvatarLarge = document.getElementById('profileAvatarLarge');
+                avatarActions = document.getElementById('avatarActions');
+                
+                if (!avatarUploadInput || !profileAvatarLarge) {
+                    console.warn('Avatar elements not found, retrying...');
+                    setTimeout(initAvatarUpload, 200);
+                    return;
+                }
+                
+                console.log('Avatar elements found:', { avatarUploadInput, profileAvatarLarge, avatarActions });
+                
+                // Remove existing listeners by using once option or checking
+                // Setup click handler for avatar (use capture to ensure it fires)
+                profileAvatarLarge.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Avatar clicked!');
+                    if (!profileAvatarLarge.classList.contains('uploading')) {
+                        if (avatarUploadInput) {
+                            avatarUploadInput.click();
+                        } else {
+                            console.error('avatarUploadInput not found!');
+                        }
+                    }
+                };
+                
+                // Setup file change handler
+                avatarUploadInput.onchange = function(e) {
+                    console.log('File selected:', e.target.files[0]);
+                    handleAvatarUpload(e);
+                };
+                
+                // Initialize remove button if exists
+                const removeAvatarBtn = document.getElementById('removeAvatarBtn');
+                if (removeAvatarBtn) {
+                    removeAvatarBtn.addEventListener('click', handleRemoveAvatar);
+                }
+                
+                updateAvatarActions();
+            }
+            
+            // Initialize when DOM is ready
+            function initializeAvatar() {
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', function() {
+                        initAvatarUpload();
             updateProfileModal();
+                    });
+                } else {
+                    // Wait a bit to ensure modal is rendered
+                    setTimeout(function() {
+                        initAvatarUpload();
+                        updateProfileModal();
+                    }, 100);
+                }
+            }
+            
+            initializeAvatar();
 
             // Xử lý chỉnh sửa profile
             const editProfileBtn = document.getElementById('editProfileBtn');
@@ -2536,11 +3858,13 @@
                     item.className = 'friend-item';
                         item.dataset.friendId = friendId;
 
+                    const avatarHtml = friend.avatarUrl 
+                        ? `<img src="${CONTEXT_PATH}${friend.avatarUrl}" alt="${friend.username}" onerror="this.parentElement.innerHTML='<div style=\\'width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 16px;\\'>${friend.username.charAt(0).toUpperCase()}</div>'">`
+                        : `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 16px;">${friend.username.charAt(0).toUpperCase()}</div>`;
+
                     item.innerHTML = `
                         <div class="friend-avatar">
-                            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
-                                ${friend.username.charAt(0).toUpperCase()}
-                            </div>
+                            ${avatarHtml}
                                 <div class="status-dot"></div>
                         </div>
                         <div class="friend-info">
@@ -2579,12 +3903,31 @@
                     const statusClass = isOnline ? 'online' : 'offline';
                     const statusText = isOnline ? 'Online' : 'Offline';
 
-                    // Update avatar initial nếu username thay đổi
-                    const avatarInitial = item.querySelector('.friend-avatar > div');
-                    if (avatarInitial) {
+                    // Update avatar nếu có thay đổi
+                    const avatarContainer = item.querySelector('.friend-avatar');
+                    if (avatarContainer) {
+                        const existingImg = avatarContainer.querySelector('img');
+                        const existingDiv = avatarContainer.querySelector('div');
+                        
+                        if (friend.avatarUrl) {
+                            if (!existingImg || existingImg.src !== `${CONTEXT_PATH}${friend.avatarUrl}`) {
+                                avatarContainer.innerHTML = `<img src="${CONTEXT_PATH}${friend.avatarUrl}" alt="${friend.username}" onerror="this.parentElement.innerHTML='<div style=\\'width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 16px;\\'>${friend.username.charAt(0).toUpperCase()}</div>'"><div class="status-dot"></div>`;
+                            }
+                        } else {
+                            if (existingImg || !existingDiv) {
+                                avatarContainer.innerHTML = `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 16px;">${friend.username.charAt(0).toUpperCase()}</div><div class="status-dot"></div>`;
+                            } else {
                         const newInitial = friend.username.charAt(0).toUpperCase();
-                        if (avatarInitial.textContent !== newInitial) {
-                            avatarInitial.textContent = newInitial;
+                                if (existingDiv.textContent !== newInitial) {
+                                    existingDiv.textContent = newInitial;
+                                }
+                            }
+                        }
+                        
+                        // Update status dot
+                        const statusDot = avatarContainer.querySelector('.status-dot');
+                        if (statusDot) {
+                            statusDot.className = `status-dot ${statusClass}`;
                         }
                     }
 
@@ -2646,8 +3989,9 @@
                 const fragment = document.createDocumentFragment();
                 messages.forEach((msg, index) => {
                     const isMine = Number(msg.senderId) === Number(state.currentUser.id);
+                    const isDeleted = msg.isDeleted === true || msg.is_deleted === true;
                     const wrapper = document.createElement('div');
-                    wrapper.className = `message ${isMine ? 'mine' : 'their'}`;
+                    wrapper.className = `message ${isMine ? 'mine' : 'their'} ${isDeleted ? 'message-deleted' : ''}`;
                     wrapper.setAttribute('data-message-id', msg.id);
                     
                     let contentHtml = '';
@@ -2664,7 +4008,7 @@
                                          loading="lazy"
                                          decoding="async"
                                          style="max-width: 300px; max-height: 300px; border-radius: 8px; cursor: pointer; display: block; width: 100%; height: auto; object-fit: contain;"
-                                         onclick="window.open('${imageUrl}', '_blank')"
+                                         onclick="openImageViewer('${imageUrl}')"
                                          onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'300\\' height=\\'300\\'%3E%3Crect fill=\\'%232c2f33\\' width=\\'300\\' height=\\'300\\'/%3E%3Ctext fill=\\'%23fff\\' x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' dy=\\'.3em\\'%3ELỗi tải ảnh%3C/text%3E%3C/svg%3E';">
                                     ${msg.content ? `<div style="margin-top: 8px;">${escapeHtml(msg.content)}</div>` : ''}
                                 </div>
@@ -2711,7 +4055,12 @@
                             `;
                         }
                     } else {
+                        // Handle deleted messages
+                        if (isDeleted) {
+                            contentHtml = `<div class="bubble" style="opacity: 0.6; font-style: italic;">Tin nhắn đã bị xóa</div>`;
+                    } else {
                         contentHtml = `<div class="bubble">${escapeHtml(msg.content)}</div>`;
+                        }
                     }
 
                     // Reply preview nếu có
@@ -2741,10 +4090,46 @@
                         statusHtml = `<span class="message-status ${status}" title="${status === 'sending' ? 'Đang gửi' : status === 'sent' ? 'Đã gửi' : status === 'delivered' ? 'Đã gửi đến' : 'Đã đọc'}">${statusIcon}</span>`;
                     }
 
+                    // Get avatar for sender
+                    let senderAvatar = '';
+                    let senderName = '';
+                    if (isMine) {
+                        // My message - use current user avatar
+                        const myAvatar = state.currentUser?.avatarUrl || currentUser?.avatarUrl;
+                        const myName = state.currentUser?.username || currentUser?.username || 'Bạn';
+                        senderName = myName;
+                        if (myAvatar) {
+                            senderAvatar = `<img src="${CONTEXT_PATH}${myAvatar}" alt="${myName}" onerror="this.parentElement.innerHTML='${myName.charAt(0).toUpperCase()}'">`;
+                        } else {
+                            senderAvatar = myName.charAt(0).toUpperCase();
+                        }
+                    } else {
+                        // Friend's message - use friend avatar
+                        const friendAvatar = state.selectedFriend?.avatarUrl;
+                        const friendName = state.selectedFriend?.username || 'Người dùng';
+                        senderName = friendName;
+                        if (friendAvatar) {
+                            senderAvatar = `<img src="${CONTEXT_PATH}${friendAvatar}" alt="${friendName}" onerror="this.parentElement.innerHTML='${friendName.charAt(0).toUpperCase()}'">`;
+                        } else {
+                            senderAvatar = friendName.charAt(0).toUpperCase();
+                        }
+                    }
+
                     const fullTimestamp = getFullTimestamp(msg.createdAt);
                     const relativeTimestamp = formatTimestamp(msg.createdAt);
+                    const editedIndicator = msg.editedAt ? '<span class="message-edited">(đã chỉnh sửa)</span>' : '';
+                    
+                    // Add date separator if needed
+                    if (index === 0 || shouldShowDateSeparator(messages[index - 1].createdAt, msg.createdAt)) {
+                        const dateSeparator = document.createElement('div');
+                        dateSeparator.className = 'date-separator';
+                        dateSeparator.innerHTML = `<div class="date-separator-text">${formatDateSeparator(msg.createdAt)}</div>`;
+                        fragment.appendChild(dateSeparator);
+                    }
                     
                     wrapper.innerHTML = `
+                        <div class="message-avatar" title="${senderName}">${senderAvatar}</div>
+                        <div class="message-content-wrapper">
                         ${replyHtml}
                         <div style="display: flex; align-items: flex-end; gap: 0px; position: relative;">
                             ${contentHtml}
@@ -2752,11 +4137,17 @@
                                 <button class="message-action-btn" data-action="copy" data-message-id="${msg.id}" title="Sao chép" aria-label="Sao chép tin nhắn">📋</button>
                                 <button class="message-action-btn" data-action="reply" data-message-id="${msg.id}" title="Trả lời" aria-label="Trả lời tin nhắn">↩️</button>
                                 <button class="message-action-btn" data-action="forward" data-message-id="${msg.id}" title="Chuyển tiếp" aria-label="Chuyển tiếp tin nhắn">↪️</button>
+                                    ${isMine && !isDeleted ? `
+                                        <button class="message-action-btn" data-action="edit" data-message-id="${msg.id}" title="Chỉnh sửa" aria-label="Chỉnh sửa tin nhắn">✏️</button>
+                                        <button class="message-action-btn" data-action="delete" data-message-id="${msg.id}" title="Xóa" aria-label="Xóa tin nhắn">🗑️</button>
+                                    ` : ''}
                             </div>
                         </div>
                         <div class="time" title="${fullTimestamp}">
                             ${relativeTimestamp}
+                                ${editedIndicator}
                             ${statusHtml}
+                            </div>
                         </div>
                     `;
                     fragment.appendChild(wrapper);
@@ -2790,6 +4181,20 @@
                         btn.addEventListener('click', () => {
                             const messageId = parseInt(btn.dataset.messageId);
                             forwardMessage(messageId);
+                        });
+                    });
+                    
+                    messagesContainer.querySelectorAll('.message-action-btn[data-action="edit"]').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const messageId = parseInt(btn.dataset.messageId);
+                            editMessage(messageId);
+                        });
+                    });
+                    
+                    messagesContainer.querySelectorAll('.message-action-btn[data-action="delete"]').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const messageId = parseInt(btn.dataset.messageId);
+                            deleteMessage(messageId);
                         });
                     });
                     
@@ -2853,11 +4258,13 @@
                     ? 'Đang chờ bạn phản hồi'
                     : 'Đang chờ đối phương';
 
+                const avatarHtml = otherUser && otherUser.avatarUrl 
+                    ? `<img src="${CONTEXT_PATH}${otherUser.avatarUrl}" alt="${otherName}" onerror="this.parentElement.innerHTML='<div style=\\'width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 16px;\\'>${otherInitial}</div>'">`
+                    : `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 16px;">${otherInitial}</div>`;
+
                 item.innerHTML = `
                     <div class="friend-avatar">
-                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
-                            ${otherInitial}
-                        </div>
+                        ${avatarHtml}
                     </div>
                     <div class="friend-info">
                         <div class="friend-name">${otherName}</div>
@@ -2887,9 +4294,19 @@
                 state.selectedFriend = friend;
                 const emojiBtn = document.getElementById('emojiBtn');
                 const fileBtn = document.getElementById('fileBtn');
+                const chatHeaderAvatar = document.getElementById('chatHeaderAvatar');
+                const chatHeaderTitle = document.getElementById('chatHeaderTitle');
+                const chatHeaderStatus = document.getElementById('chatHeaderStatus');
+                const chatHeaderStatusText = document.getElementById('chatHeaderStatusText');
+                const chatHeaderStatusDot = chatHeaderStatus?.querySelector('.chat-header-status-dot');
                 
                 if (!friend) {
-                    chatHeaderTitle.textContent = 'Chưa chọn bạn bè';
+                    if (chatHeaderTitle) chatHeaderTitle.textContent = 'Chưa chọn bạn bè';
+                    if (chatHeaderAvatar) chatHeaderAvatar.innerHTML = '';
+                    if (chatHeaderStatusText) chatHeaderStatusText.textContent = 'Chọn một người bạn để bắt đầu trò chuyện';
+                    if (chatHeaderStatusDot) chatHeaderStatusDot.classList.remove('online');
+                    if (chatHeaderStatus) chatHeaderStatus.classList.remove('online');
+                    
                     messageInput.value = '';
                     messageInput.placeholder = 'Hãy chọn một người bạn để nhắn tin';
                     messageInput.disabled = true;
@@ -2907,13 +4324,35 @@
                     if (searchContainer) searchContainer.style.display = 'none';
                     
                     renderMessages(null);
+                    stopOnlineStatusPolling();
                     return;
                 }
                 
                 // Clear file preview khi đổi bạn
                 clearFilePreview();
 
-                chatHeaderTitle.textContent = friend.username;
+                // Update chat header with avatar and name
+                if (chatHeaderTitle) chatHeaderTitle.textContent = friend.username;
+                
+                // Update avatar
+                if (chatHeaderAvatar) {
+                    if (friend.avatarUrl) {
+                        const img = document.createElement('img');
+                        img.src = CONTEXT_PATH + friend.avatarUrl;
+                        img.alt = friend.username;
+                        img.onerror = function() {
+                            chatHeaderAvatar.textContent = friend.username ? friend.username.charAt(0).toUpperCase() : 'U';
+                        };
+                        chatHeaderAvatar.innerHTML = '';
+                        chatHeaderAvatar.appendChild(img);
+                    } else {
+                        chatHeaderAvatar.textContent = friend.username ? friend.username.charAt(0).toUpperCase() : 'U';
+                    }
+                }
+                
+                // Update online status
+                updateChatHeaderStatus(friend);
+                
                 messageInput.placeholder = `Nhắn tin cho @${friend.username}`;
                 messageInput.disabled = false;
                 sendButton.disabled = false;
@@ -2935,6 +4374,102 @@
 
                 loadConversation(friend.id, true);
                 startPolling(friend.id);
+                startOnlineStatusPolling();
+            }
+
+            // Function to update chat header status
+            function updateChatHeaderStatus(friend) {
+                const chatHeaderStatus = document.getElementById('chatHeaderStatus');
+                const chatHeaderStatusText = document.getElementById('chatHeaderStatusText');
+                const chatHeaderStatusDot = chatHeaderStatus?.querySelector('.chat-header-status-dot');
+                
+                if (!chatHeaderStatus || !chatHeaderStatusText || !friend) return;
+                
+                const isOnline = friend.online === true;
+                
+                if (isOnline) {
+                    chatHeaderStatus.classList.add('online');
+                    if (chatHeaderStatusDot) chatHeaderStatusDot.classList.add('online');
+                    chatHeaderStatusText.textContent = 'Online';
+                } else {
+                    chatHeaderStatus.classList.remove('online');
+                    if (chatHeaderStatusDot) chatHeaderStatusDot.classList.remove('online');
+                    
+                    // Calculate time since last seen
+                    let statusText = 'Offline';
+                    if (friend.lastSeen) {
+                        try {
+                            const lastSeenDate = new Date(friend.lastSeen);
+                            const now = new Date();
+                            const diffMs = now - lastSeenDate;
+                            const diffMins = Math.floor(diffMs / 60000);
+                            const diffHours = Math.floor(diffMs / 3600000);
+                            const diffDays = Math.floor(diffMs / 86400000);
+                            
+                            if (diffMins < 1) {
+                                statusText = 'Vừa online';
+                            } else if (diffMins < 60) {
+                                statusText = `Online ${diffMins} phút trước`;
+                            } else if (diffHours < 24) {
+                                statusText = `Online ${diffHours} giờ trước`;
+                            } else if (diffDays === 1) {
+                                statusText = 'Online hôm qua';
+                            } else if (diffDays < 7) {
+                                statusText = `Online ${diffDays} ngày trước`;
+                            } else {
+                                statusText = `Online ${lastSeenDate.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}`;
+                            }
+                        } catch (e) {
+                            statusText = 'Offline';
+                        }
+                    } else {
+                        statusText = 'Offline';
+                    }
+                    chatHeaderStatusText.textContent = statusText;
+                }
+            }
+
+            // Start polling for online status updates
+            function startOnlineStatusPolling() {
+                stopOnlineStatusPolling();
+                if (!state.selectedFriend) return;
+                
+                // Update status immediately
+                updateChatHeaderStatus(state.selectedFriend);
+                
+                // Poll every 5 seconds to update online status
+                state.onlineStatusInterval = setInterval(async () => {
+                    if (!state.selectedFriend) {
+                        stopOnlineStatusPolling();
+                        return;
+                    }
+                    
+                    try {
+                        // Reload friends to get updated online status
+                        const data = await apiRequest('/friends');
+                        const updatedFriend = data.friends?.find(f => f.id === state.selectedFriend.id);
+                        if (updatedFriend) {
+                            state.selectedFriend.online = updatedFriend.online;
+                            state.selectedFriend.lastSeen = updatedFriend.lastSeen;
+                            // Also update in friends list
+                            const friendInList = state.friends.find(f => f.id === updatedFriend.id);
+                            if (friendInList) {
+                                friendInList.online = updatedFriend.online;
+                                friendInList.lastSeen = updatedFriend.lastSeen;
+                            }
+                            updateChatHeaderStatus(state.selectedFriend);
+                        }
+                    } catch (error) {
+                        console.error('Error updating online status:', error);
+                    }
+                }, 5000); // Poll every 5 seconds
+            }
+
+            function stopOnlineStatusPolling() {
+                if (state.onlineStatusInterval) {
+                    clearInterval(state.onlineStatusInterval);
+                    state.onlineStatusInterval = null;
+                }
             }
 
             async function handleRemoveFriend(friend) {
@@ -3093,6 +4628,16 @@
                     state.friends = data.friends || [];
                     state.friendsLoaded = true; // Đánh dấu đã load
                     
+                    // Update selected friend's online status if available
+                    if (state.selectedFriend) {
+                        const updatedFriend = state.friends.find(f => f.id === state.selectedFriend.id);
+                        if (updatedFriend) {
+                            state.selectedFriend.online = updatedFriend.online;
+                            state.selectedFriend.lastSeen = updatedFriend.lastSeen;
+                            updateChatHeaderStatus(state.selectedFriend);
+                        }
+                    }
+                    
                     if (showStatus) {
                         setStatus('');
                     }
@@ -3196,6 +4741,124 @@
                     clearInterval(state.pollingInterval);
                     state.pollingInterval = null;
                 }
+            }
+
+            // Date separator helpers
+            function formatDateSeparator(dateStr) {
+                const date = new Date(dateStr);
+                const today = new Date();
+                const yesterday = new Date(today);
+                yesterday.setDate(yesterday.getDate() - 1);
+                
+                const dateStrOnly = date.toDateString();
+                const todayStr = today.toDateString();
+                const yesterdayStr = yesterday.toDateString();
+                
+                if (dateStrOnly === todayStr) {
+                    return 'Hôm nay';
+                } else if (dateStrOnly === yesterdayStr) {
+                    return 'Hôm qua';
+                } else {
+                    const days = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+                    const dayName = days[date.getDay()];
+                    const day = date.getDate();
+                    const month = date.getMonth() + 1;
+                    const year = date.getFullYear();
+                    const currentYear = today.getFullYear();
+                    
+                    if (year === currentYear) {
+                        return `${dayName}, ${day}/${month}`;
+                    } else {
+                        return `${dayName}, ${day}/${month}/${year}`;
+                    }
+                }
+            }
+            
+            function shouldShowDateSeparator(prevDateStr, currentDateStr) {
+                const prev = new Date(prevDateStr);
+                const current = new Date(currentDateStr);
+                return prev.toDateString() !== current.toDateString();
+            }
+            
+            // Image viewer
+            function openImageViewer(imageUrl) {
+                const modal = document.getElementById('imageViewerModal');
+                const img = document.getElementById('imageViewerContent');
+                if (modal && img) {
+                    img.src = imageUrl;
+                    modal.classList.add('show');
+                }
+            }
+            
+            // Edit message
+            function editMessage(messageId) {
+                const friendId = state.selectedFriend?.id;
+                if (!friendId) return;
+                
+                const messages = state.messages[friendId] || [];
+                const message = messages.find(m => m.id === messageId);
+                if (!message || message.isDeleted === true || message.is_deleted === true) return;
+                
+                const newContent = prompt('Chỉnh sửa tin nhắn:', message.content);
+                if (newContent === null || newContent.trim() === message.content) return;
+                
+                fetch(`${CONTEXT_PATH}/api/messages/${messageId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ content: newContent.trim() })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const msgIndex = messages.findIndex(m => m.id === messageId);
+                        if (msgIndex !== -1) {
+                            messages[msgIndex].content = data.message.content;
+                            messages[msgIndex].editedAt = data.message.editedAt;
+                            renderMessages(friendId);
+                            showToast('Đã chỉnh sửa tin nhắn', 'success');
+                        }
+                    } else {
+                        showToast(data.message || 'Lỗi khi chỉnh sửa tin nhắn', 'error');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error editing message:', err);
+                    showToast('Lỗi khi chỉnh sửa tin nhắn', 'error');
+                });
+            }
+            
+            // Delete message
+            function deleteMessage(messageId) {
+                if (!confirm('Bạn có chắc chắn muốn xóa tin nhắn này?')) return;
+                
+                fetch(`${CONTEXT_PATH}/api/messages/${messageId}`, {
+                    method: 'DELETE'
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const friendId = state.selectedFriend?.id;
+                        if (friendId) {
+                            const messages = state.messages[friendId] || [];
+                            const msgIndex = messages.findIndex(m => m.id === messageId);
+                            if (msgIndex !== -1) {
+                                messages[msgIndex].isDeleted = true;
+                                messages[msgIndex].is_deleted = true;
+                                messages[msgIndex].content = 'Tin nhắn đã bị xóa';
+                                renderMessages(friendId);
+                                showToast('Đã xóa tin nhắn', 'success');
+                            }
+                        }
+                    } else {
+                        showToast(data.message || 'Lỗi khi xóa tin nhắn', 'error');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error deleting message:', err);
+                    showToast('Lỗi khi xóa tin nhắn', 'error');
+                });
             }
 
             // Copy message text
@@ -3502,6 +5165,10 @@
                     }
                     updateProfileModal();
                     profileModal.classList.add('active');
+                    // Re-initialize avatar upload when modal opens
+                    setTimeout(function() {
+                        initAvatarUpload();
+                    }, 100);
                 });
             }
 
@@ -3556,16 +5223,200 @@
                 }
             });
 
-            // Emoji Picker functionality
+
+            // Theme Selector functionality
+            let themeInitialized = false;
+            
+            function applyTheme(theme) {
+                try {
+                    // Remove all theme classes from body
+                    const bodyClasses = document.body.className.split(' ').filter(c => !c.startsWith('theme-'));
+                    document.body.className = bodyClasses.join(' ').trim();
+                    
+                    // Apply new theme
+                    if (theme && theme !== 'default' && theme !== '') {
+                        document.body.classList.add(`theme-${theme}`);
+                        console.log('Applied theme:', theme);
+                    } else {
+                        // Default theme - ensure no theme classes
+                        document.body.className = document.body.className.replace(/\btheme-\w+/g, '').trim();
+                        console.log('Applied default theme');
+                    }
+                } catch (error) {
+                    console.error('Error applying theme:', error);
+                }
+            }
+            
+            function initThemeSelector() {
+                try {
+                    const themeOptions = document.querySelectorAll('.theme-option');
+                    if (themeOptions.length === 0) {
+                        return;
+                    }
+                    
+                    const currentTheme = (currentUser && currentUser.chatTheme) || (state.currentUser && state.currentUser.chatTheme) || 'default';
+                    
+                    // Apply current theme on init
+                    applyTheme(currentTheme);
+                    
+                    // Update active state
+                    themeOptions.forEach(opt => {
+                        opt.classList.remove('active');
+                        if (opt.dataset.theme === currentTheme) {
+                            opt.classList.add('active');
+                        }
+                    });
+
+                    // Add event listeners only if not already initialized
+                    if (!themeInitialized) {
+                        themeOptions.forEach(option => {
+                            option.addEventListener('click', async (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                const theme = option.dataset.theme;
+                                
+                                // Visual feedback
+                                const originalOpacity = option.style.opacity;
+                                option.style.opacity = '0.7';
+                                
+                                try {
+                                    const response = await fetch(`${CONTEXT_PATH}/api/auth/theme`, {
+                                        method: 'PUT',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        credentials: 'include',
+                                        body: JSON.stringify({ theme })
+                                    });
+
+                                    const data = await response.json();
+                                    if (data.success) {
+                                        // Update current user theme
+                                        if (currentUser) {
+                                            currentUser.chatTheme = theme;
+                                            localStorage.setItem('user', JSON.stringify(currentUser));
+                                        }
+                                        if (state.currentUser) {
+                                            state.currentUser.chatTheme = theme;
+                                        }
+                                        
+                                        applyTheme(theme);
+                                        
+                                        // Update active state - query again to get fresh elements
+                                        const updatedThemeOptions = document.querySelectorAll('.theme-option');
+                                        updatedThemeOptions.forEach(opt => {
+                                            opt.classList.remove('active');
+                                            if (opt.dataset.theme === theme) {
+                                                opt.classList.add('active');
+                                            }
+                                        });
+                                        
+                                        if (typeof showToast === 'function') {
+                                            showToast('Thành công', 'Đã cập nhật theme', 'success');
+                                        }
+                                    } else {
+                                        if (typeof showToast === 'function') {
+                                            showToast('Lỗi', data.message || 'Không thể cập nhật theme', 'error');
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.error('Error updating theme:', error);
+                                    if (typeof showToast === 'function') {
+                                        showToast('Lỗi', 'Không thể cập nhật theme', 'error');
+                                    }
+                                } finally {
+                                    option.style.opacity = originalOpacity || '1';
+                                }
+                            });
+                        });
+                        themeInitialized = true;
+                    }
+                } catch (error) {
+                    console.error('Error initializing theme selector:', error);
+                }
+            }
+            
+            // Initialize theme selector on page load - wrapped in try-catch
+            setTimeout(() => {
+                try {
+                    if (typeof initThemeSelector === 'function') {
+                        initThemeSelector();
+                    }
+                } catch (error) {
+                    console.error('Error initializing theme selector on load:', error);
+                }
+            }, 1000);
+            
+            // Re-initialize when profile modal is opened (but don't re-add listeners)
+            try {
+                const profileModal = document.getElementById('profileModal');
+                if (profileModal) {
+                    const observer = new MutationObserver(() => {
+                        try {
+                            if (profileModal.classList.contains('active')) {
+                                setTimeout(() => {
+                                    try {
+                                        // Just update active state, don't re-initialize listeners
+                                        const themeOptions = document.querySelectorAll('.theme-option');
+                                        if (themeOptions.length > 0) {
+                                            const currentTheme = (currentUser && currentUser.chatTheme) || (state.currentUser && state.currentUser.chatTheme) || 'default';
+                                            themeOptions.forEach(opt => {
+                                                opt.classList.remove('active');
+                                                if (opt.dataset.theme === currentTheme) {
+                                                    opt.classList.add('active');
+                                                }
+                                            });
+                                        }
+                                    } catch (error) {
+                                        console.error('Error updating theme state:', error);
+                                    }
+                                }, 200);
+                            }
+                        } catch (error) {
+                            console.error('Error in theme observer:', error);
+                        }
+                    });
+                    observer.observe(profileModal, { attributes: true, attributeFilter: ['class'] });
+                }
+            } catch (error) {
+                console.error('Error setting up theme observer:', error);
+            }
+
+            // Emoji & Sticker Picker functionality
             const emojiBtn = document.getElementById('emojiBtn');
             const emojiPicker = document.getElementById('emojiPicker');
+            const emojiTabContent = document.getElementById('emojiTabContent');
+            const stickerTabContent = document.getElementById('stickerTabContent');
+            const emojiPickerTabs = document.querySelectorAll('.emoji-picker-tab');
             const emojiItems = document.querySelectorAll('.emoji-item');
+            const stickerItems = document.querySelectorAll('.sticker-item');
+
+            // Tab switching
+            emojiPickerTabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const tabName = tab.dataset.tab;
+                    
+                    emojiPickerTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    if (tabName === 'emoji') {
+                        emojiTabContent.style.display = 'block';
+                        stickerTabContent.style.display = 'none';
+                    } else {
+                        emojiTabContent.style.display = 'none';
+                        stickerTabContent.style.display = 'block';
+                    }
+                });
+            });
 
             if (emojiBtn) {
                 emojiBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    if (emojiPicker.style.display === 'none') {
-                        emojiPicker.style.display = 'block';
+                    if (emojiPicker.style.display === 'none' || emojiPicker.style.display === '') {
+                        emojiPicker.style.display = 'flex';
+                        // Reset to emoji tab
+                        emojiPickerTabs[0].click();
                     } else {
                         emojiPicker.style.display = 'none';
                     }
@@ -3585,6 +5436,18 @@
                     const emoji = item.textContent;
                     if (messageInput && !messageInput.disabled) {
                         messageInput.value += emoji;
+                        messageInput.focus();
+                        emojiPicker.style.display = 'none';
+                    }
+                });
+            });
+
+            // Insert sticker into input
+            stickerItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const sticker = item.textContent;
+                    if (messageInput && !messageInput.disabled) {
+                        messageInput.value += sticker;
                         messageInput.focus();
                         emojiPicker.style.display = 'none';
                     }
@@ -3728,18 +5591,6 @@
                 }
             }
 
-            // Polling đã tắt - chỉ load status một lần khi load friends để tránh giật
-            function startOnlineStatusPolling() {
-                // Đã tắt polling để tránh giật list friend
-                // Status sẽ được cập nhật khi loadFriends() được gọi
-            }
-
-            function stopOnlineStatusPolling() {
-                if (state.onlineStatusInterval) {
-                    clearInterval(state.onlineStatusInterval);
-                    state.onlineStatusInterval = null;
-                }
-            }
 
             window.addEventListener('beforeunload', () => {
                 stopPolling();
@@ -4358,7 +6209,51 @@
             // Load friends và requests - chỉ load một lần, không polling để tránh giật list
             loadFriends();
             loadRequests();
+            
+            // Initialize scroll to bottom button
+            const scrollToBottomBtn = document.getElementById('scrollToBottomBtn');
+            const messagesContainerEl = document.getElementById('messagesContainer');
+            
+            if (scrollToBottomBtn && messagesContainerEl) {
+                messagesContainerEl.addEventListener('scroll', () => {
+                    const isNearBottom = messagesContainerEl.scrollHeight - messagesContainerEl.scrollTop - messagesContainerEl.clientHeight < 100;
+                    if (isNearBottom) {
+                        scrollToBottomBtn.classList.remove('show');
+                    } else {
+                        scrollToBottomBtn.classList.add('show');
+                    }
+                });
+                
+                scrollToBottomBtn.addEventListener('click', () => {
+                    scrollMessagesToBottom();
+                });
+            }
+            
+            // Initialize image viewer
+            const imageViewerModal = document.getElementById('imageViewerModal');
+            const imageViewerClose = document.getElementById('imageViewerClose');
+            
+            if (imageViewerModal && imageViewerClose) {
+                imageViewerClose.addEventListener('click', () => {
+                    imageViewerModal.classList.remove('show');
+                });
+                
+                imageViewerModal.addEventListener('click', (e) => {
+                    if (e.target === imageViewerModal) {
+                        imageViewerModal.classList.remove('show');
+                    }
+                });
+            }
+            
+            // Make openImageViewer global
+            window.openImageViewer = openImageViewer;
         })();
     </script>
+
+    <!-- Image Viewer Modal -->
+    <div class="image-viewer-modal" id="imageViewerModal">
+        <button class="image-viewer-close" id="imageViewerClose">×</button>
+        <img class="image-viewer-content" id="imageViewerContent" src="" alt="Image">
+    </div>
 </body>
 </html>

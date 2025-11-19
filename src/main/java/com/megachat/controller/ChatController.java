@@ -50,6 +50,12 @@ public class ChatController {
                     msgMap.put("receiverId", message.getReceiver().getId());
                     msgMap.put("content", message.getContent());
                     msgMap.put("createdAt", message.getCreatedAt());
+                    if (message.getEditedAt() != null) {
+                        msgMap.put("editedAt", message.getEditedAt());
+                    }
+                    if (message.getIsDeleted() != null) {
+                        msgMap.put("isDeleted", message.getIsDeleted());
+                    }
                     if (message.getFileUrl() != null) {
                         msgMap.put("fileUrl", message.getFileUrl());
                         msgMap.put("fileName", message.getFileName());
@@ -176,6 +182,53 @@ public class ChatController {
             }
         } catch (MalformedURLException e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{messageId}")
+    public ResponseEntity<?> editMessage(@PathVariable Long messageId,
+                                        @RequestBody Map<String, String> body,
+                                        HttpSession session) {
+        try {
+            Long userId = getUserId(session);
+            String newContent = body.get("content");
+            ChatMessage message = chatMessageService.editMessage(messageId, userId, newContent);
+            
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", Map.of(
+                    "id", message.getId(),
+                    "content", message.getContent(),
+                    "editedAt", message.getEditedAt()
+                )
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
+        }
+    }
+
+    @DeleteMapping("/{messageId}")
+    public ResponseEntity<?> deleteMessage(@PathVariable Long messageId,
+                                          HttpSession session) {
+        try {
+            Long userId = getUserId(session);
+            ChatMessage message = chatMessageService.deleteMessage(messageId, userId);
+            
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", Map.of(
+                    "id", message.getId(),
+                    "isDeleted", message.getIsDeleted()
+                )
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
         }
     }
 

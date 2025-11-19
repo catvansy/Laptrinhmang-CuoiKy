@@ -2,9 +2,11 @@ package com.megachat.controller;
 
 import com.megachat.model.User;
 import com.megachat.service.UserService;
+import com.megachat.service.FileStorageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -15,9 +17,11 @@ import java.util.Map;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class AuthController {
     private final UserService userService;
+    private final FileStorageService fileStorageService;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, FileStorageService fileStorageService) {
         this.userService = userService;
+        this.fileStorageService = fileStorageService;
     }
 
     @PostMapping("/register")
@@ -56,6 +60,8 @@ public class AuthController {
             userData.put("username", user.getUsername());
             userData.put("email", user.getEmail());
             userData.put("phone", user.getPhone());
+            userData.put("avatarUrl", user.getAvatarUrl());
+            userData.put("chatTheme", user.getChatTheme());
             response.put("user", userData);
 
             return ResponseEntity.ok(response);
@@ -105,6 +111,8 @@ public class AuthController {
             userData.put("username", user.getUsername());
             userData.put("email", user.getEmail());
             userData.put("phone", user.getPhone());
+            userData.put("avatarUrl", user.getAvatarUrl());
+            userData.put("chatTheme", user.getChatTheme());
             response.put("user", userData);
 
             return ResponseEntity.ok(response);
@@ -139,6 +147,8 @@ public class AuthController {
                     "username", user.getUsername(),
                     "email", user.getEmail(),
                     "phone", user.getPhone(),
+                    "avatarUrl", user.getAvatarUrl() != null ? user.getAvatarUrl() : "",
+                    "chatTheme", user.getChatTheme() != null ? user.getChatTheme() : "default",
                     "created_at", user.getCreatedAt()
                 )
             ));
@@ -255,6 +265,156 @@ public class AuthController {
             userData.put("username", user.getUsername());
             userData.put("email", user.getEmail());
             userData.put("phone", user.getPhone());
+            userData.put("avatarUrl", user.getAvatarUrl());
+            userData.put("chatTheme", user.getChatTheme());
+            response.put("user", userData);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
+        }
+    }
+
+    @PostMapping("/avatar")
+    public ResponseEntity<?> uploadAvatar(@RequestParam("file") MultipartFile file, HttpSession session) {
+        try {
+            Long userId = (Long) session.getAttribute("userId");
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                    "success", false,
+                    "message", "Bạn cần đăng nhập để thực hiện thao tác này"
+                ));
+            }
+
+            // Validate file
+            if (file.isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "File không được để trống"
+                ));
+            }
+
+            if (!fileStorageService.isImage(file.getContentType())) {
+                return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "File phải là hình ảnh (JPG, PNG, GIF)"
+                ));
+            }
+
+            // Validate file size (max 5MB)
+            long maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.getSize() > maxSize) {
+                return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "Kích thước file không được vượt quá 5MB"
+                ));
+            }
+
+            // Upload file
+            String filename = fileStorageService.storeFile(file);
+            String avatarUrl = "/api/messages/files/" + filename;
+
+            // Update user avatar
+            User user = userService.updateAvatar(userId, avatarUrl);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Cập nhật avatar thành công");
+            response.put("avatarUrl", avatarUrl);
+            
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("id", user.getId());
+            userData.put("username", user.getUsername());
+            userData.put("email", user.getEmail());
+            userData.put("phone", user.getPhone());
+            userData.put("avatarUrl", user.getAvatarUrl());
+            userData.put("chatTheme", user.getChatTheme());
+            response.put("user", userData);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
+        }
+    }
+
+    @DeleteMapping("/avatar")
+    public ResponseEntity<?> removeAvatar(HttpSession session) {
+        try {
+            Long userId = (Long) session.getAttribute("userId");
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                    "success", false,
+                    "message", "Bạn cần đăng nhập để thực hiện thao tác này"
+                ));
+            }
+
+            // Remove avatar by setting it to null
+            User user = userService.updateAvatar(userId, null);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Đã xóa avatar thành công");
+            
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("id", user.getId());
+            userData.put("username", user.getUsername());
+            userData.put("email", user.getEmail());
+            userData.put("phone", user.getPhone());
+            userData.put("avatarUrl", user.getAvatarUrl());
+            userData.put("chatTheme", user.getChatTheme());
+            response.put("user", userData);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
+        }
+    }
+
+    @PutMapping("/theme")
+    public ResponseEntity<?> updateTheme(@RequestBody Map<String, String> request, HttpSession session) {
+        try {
+            Long userId = (Long) session.getAttribute("userId");
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                    "success", false,
+                    "message", "Bạn cần đăng nhập để thực hiện thao tác này"
+                ));
+            }
+
+            String theme = request.get("theme");
+            if (theme == null || theme.trim().isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "Theme không được để trống"
+                ));
+            }
+
+            User user = userService.updateTheme(userId, theme.trim());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Cập nhật theme thành công");
+            response.put("theme", user.getChatTheme());
+            
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("id", user.getId());
+            userData.put("username", user.getUsername());
+            userData.put("email", user.getEmail());
+            userData.put("phone", user.getPhone());
+            userData.put("avatarUrl", user.getAvatarUrl());
+            userData.put("chatTheme", user.getChatTheme());
             response.put("user", userData);
 
             return ResponseEntity.ok(response);

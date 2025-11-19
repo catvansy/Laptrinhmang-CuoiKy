@@ -51,13 +51,16 @@ public class FriendshipController {
             List<Map<String, Object>> friendDtos = friends.stream()
                 .map(friendStatus -> {
                     User friend = friendStatus.getUser();
-                    return Map.<String, Object>of(
-                        "id", friend.getId(),
-                        "username", friend.getUsername(),
-                        "email", friend.getEmail(),
-                        "phone", friend.getPhone(),
-                        "online", friendStatus.isOnline()
-                    );
+                    Map<String, Object> friendMap = new HashMap<>();
+                    friendMap.put("id", friend.getId());
+                    friendMap.put("username", friend.getUsername());
+                    friendMap.put("email", friend.getEmail());
+                    friendMap.put("phone", friend.getPhone());
+                    friendMap.put("avatarUrl", friend.getAvatarUrl());
+                    friendMap.put("chatTheme", friend.getChatTheme());
+                    friendMap.put("online", friendStatus.isOnline());
+                    friendMap.put("lastSeen", friend.getLastSeen());
+                    return friendMap;
                 })
                 .collect(Collectors.toList());
 
