@@ -1,279 +1,314 @@
-# 🎯 MegaChat - Ứng dụng Chat Online
+# 💬 MegaChat - Ứng dụng Chat Web Hiện Đại
 
-Ứng dụng chat đơn giản, hiệu quả sử dụng **Java Socket** với mô hình **Multi Client-Server**. Cho phép nhiều người dùng chat trực tuyến trong thời gian thực.
+Ứng dụng chat web hiện đại được xây dựng với **Spring Boot**, **WebSocket**, và **MySQL**. Giao diện đẹp mắt theo phong cách Discord với nhiều tính năng tiên tiến.
 
----
-
-## 📋 Tính năng
-
-✅ **Chat trực tuyến** - Gửi/nhận tin nhắn realtime  
-✅ **Multi Client-Server** - Hỗ trợ nhiều client kết nối đồng thời  
-✅ **Giao diện Swing** - GUI đơn giản, dễ sử dụng  
-✅ **Phát sóng tin nhắn** - Broadcast tin cho tất cả user  
-✅ **Kết nối ổn định** - Xử lý lỗi kết nối tự động  
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.15-brightgreen)
+![Java](https://img.shields.io/badge/Java-11-orange)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)
+![WebSocket](https://img.shields.io/badge/WebSocket-Enabled-yellow)
 
 ---
 
-## 🔧 Yêu cầu hệ thống
+## ✨ Tính năng chính
 
-- **Java**: JDK 8 trở lên
+### 💬 Chat & Messaging
+- ✅ **Chat real-time** - Gửi/nhận tin nhắn tức thời qua WebSocket
+- ✅ **Quản lý bạn bè** - Tìm kiếm, thêm, xóa bạn bè dễ dàng
+- ✅ **Trạng thái tin nhắn** - Hiển thị đang gửi, đã gửi, đã đọc
+- ✅ **Reply tin nhắn** - Trả lời tin nhắn cụ thể với preview
+- ✅ **Copy tin nhắn** - Sao chép nội dung tin nhắn nhanh chóng
+- ✅ **Gửi file** - Upload và chia sẻ hình ảnh, file
+- ✅ **Timestamps thông minh** - Hiển thị thời gian tương đối ("2 phút trước", "Hôm qua")
+
+### 🎨 Giao diện & UX
+- ✅ **Giao diện Discord-like** - Thiết kế hiện đại, đẹp mắt
+- ✅ **Landing page ấn tượng** - Nhiều animations và visual effects
+- ✅ **Responsive design** - Tối ưu cho mobile và desktop
+- ✅ **Dark theme** - Giao diện tối dễ nhìn
+- ✅ **Loading skeletons** - Hiển thị khi đang tải dữ liệu
+- ✅ **Toast notifications** - Thông báo đẹp mắt
+- ✅ **Keyboard shortcuts** - Phím tắt để tăng tốc độ sử dụng
+
+### ⚡ Performance & Optimization
+- ✅ **Lazy loading images** - Tải ảnh khi cần
+- ✅ **Debounce search** - Tối ưu tìm kiếm
+- ✅ **Throttle scroll** - Tối ưu scroll performance
+- ✅ **Image optimization** - Async decoding, proper sizing
+- ✅ **Connection status** - Hiển thị trạng thái kết nối
+
+### 🔒 Bảo mật & Authentication
+- ✅ **Đăng nhập/Đăng ký** - Xác thực người dùng
+- ✅ **Session management** - Quản lý phiên đăng nhập
+- ✅ **Password reset** - Quên mật khẩu
+- ✅ **Protected routes** - Bảo vệ các trang cần đăng nhập
+
+### ♿ Accessibility
+- ✅ **ARIA labels** - Hỗ trợ screen readers
+- ✅ **Keyboard navigation** - Điều hướng bằng bàn phím
+- ✅ **Focus management** - Quản lý focus hợp lý
+- ✅ **Semantic HTML** - HTML có ý nghĩa
+
+---
+
+## 🛠️ Công nghệ sử dụng
+
+### Backend
+- **Spring Boot 2.7.15** - Framework chính
+- **Spring WebSocket** - Real-time communication
+- **Spring Data JPA** - Database ORM
+- **MySQL 8.0** - Database
+- **Maven** - Build tool
+
+### Frontend
+- **HTML5/CSS3** - Markup và styling
+- **JavaScript (Vanilla)** - Logic và interactions
+- **WebSocket API** - Real-time messaging
+- **Intersection Observer** - Lazy loading
+- **Fetch API** - HTTP requests
+
+### Tools & Libraries
+- **Google Fonts (Inter)** - Typography
+- **Emoji** - Icons và visual elements
+
+---
+
+## 📋 Yêu cầu hệ thống
+
+- **Java**: JDK 11 trở lên
+- **Maven**: 3.6 trở lên
+- **MySQL**: 8.0 trở lên (chạy trên port 3307)
+- **RAM**: 512MB tối thiểu
 - **OS**: Windows, Linux, macOS
-- **RAM**: 256MB tối thiểu
-- **Cổng**: 5000 (lắng nghe Server)
+
+---
+
+## 🚀 Cài đặt và Chạy
+
+### 1. Clone repository
+```bash
+git clone https://github.com/catvansy/Laptrinhmang-CuoiKy.git
+cd Laptrinhmang-CuoiKy
+```
+
+### 2. Cấu hình MySQL
+Đảm bảo MySQL đang chạy trên port **3307** với:
+- **Username**: `root`
+- **Password**: (trống)
+- **Database**: `megachat` (sẽ tự động tạo nếu chưa có)
+
+### 3. Khởi động ứng dụng
+
+**Windows:**
+```bash
+# Cách 1: Sử dụng script tự động (Khuyến nghị)
+start-megachat.bat
+
+# Cách 2: Chạy thủ công
+mvn spring-boot:run
+```
+
+**Linux/macOS:**
+```bash
+mvn spring-boot:run
+```
+
+### 4. Truy cập ứng dụng
+
+Sau khi server khởi động (khoảng 20-30 giây), truy cập:
+
+- **Trang chủ**: http://localhost:8080/megachat
+- **Landing page**: http://localhost:8080/megachat/landing.html
+- **Đăng nhập**: http://localhost:8080/megachat/login.html
+- **Chat**: http://localhost:8080/megachat/chat.html
+
+⚠️ **Lưu ý**: Phải có `/megachat` ở cuối URL!
 
 ---
 
 ## 📁 Cấu trúc dự án
 
 ```
-MegaChat/
+Laptrinhmang-CuoiKy/
 ├── src/
-│   └── megachat/
-│       ├── utils/
-│       │   └── Message.java           # Lớp tin nhắn chung
-│       ├── server/
-│       │   ├── ChatServer.java        # Server chính
-│       │   └── ClientHandler.java     # Xử lý client
-│       ├── client/
-│       │   ├── ChatClient.java        # Client GUI
-│       │   └── ChatClientTest.java    # Client test
-│       └── test/
-│           └── SimpleTest.java        # Test đơn giản
-├── bin/                               # Thư mục compile (tự tạo)
-├── compile.bat                        # Script compile Windows
-├── README.md                          # File này
-└── Readme.docx                        # Yêu cầu ban đầu
+│   └── main/
+│       ├── java/com/megachat/
+│       │   ├── MegaChatApplication.java      # Main class
+│       │   ├── controller/
+│       │   │   ├── HomeController.java       # Routing & static files
+│       │   │   ├── AuthController.java       # Authentication
+│       │   │   ├── FriendController.java     # Friend management
+│       │   │   └── MessageController.java    # Message API
+│       │   ├── config/
+│       │   │   ├── AuthFilter.java           # Authentication filter
+│       │   │   ├── WebSocketConfig.java      # WebSocket config
+│       │   │   ├── ContextPathRedirectFilter.java  # 404 fix
+│       │   │   ├── TomcatConfig.java         # Tomcat config
+│       │   │   └── WebMvcConfig.java         # MVC config
+│       │   ├── model/                        # Entity models
+│       │   ├── repository/                   # JPA repositories
+│       │   ├── service/                      # Business logic
+│       │   └── websocket/
+│       │       └── ChatEndpoint.java         # WebSocket endpoint
+│       └── resources/
+│           ├── static/
+│           │   ├── index.html                # Redirect page
+│           │   ├── landing.html              # Landing page
+│           │   ├── login.html                # Login page
+│           │   ├── chat.html                 # Chat interface
+│           │   └── forgot-password.html      # Password reset
+│           └── application.properties        # Configuration
+├── pom.xml                                   # Maven config
+├── start-megachat.bat                       # Startup script (Windows)
+└── README.md                                 # File này
 ```
 
 ---
 
-## 🚀 Cách sử dụng
+## 🎯 Các tính năng chi tiết
 
-### 1️⃣ **Biên dịch (Compile)**
+### Chat Interface
+- **Danh sách bạn bè** - Sidebar bên trái với search
+- **Chat area** - Hiển thị tin nhắn với timestamps
+- **Input area** - Gửi tin nhắn và file
+- **Message actions** - Copy, Reply, xem timestamp
 
-**Windows:**
-```bash
-cd d:\CurseForge\MegaChat
-javac -d bin src\megachat\utils\Message.java src\megachat\server\ChatServer.java src\megachat\server\ClientHandler.java src\megachat\client\ChatClient.java
-```
+### Landing Page
+- **Hero section** - Giới thiệu với animations
+- **Trust indicators** - Badges tin cậy
+- **How It Works** - 3 bước đơn giản
+- **Features** - Giới thiệu tính năng
+- **Testimonials** - Phản hồi người dùng
+- **FAQ** - Câu hỏi thường gặp
+- **CTA** - Call to action
 
-**Linux/macOS:**
-```bash
-cd ~/CurseForge/MegaChat
-javac -d bin src/megachat/utils/Message.java src/megachat/server/ChatServer.java src/megachat/server/ClientHandler.java src/megachat/client/ChatClient.java
-```
-
-### 2️⃣ **Chạy Server**
-
-**Windows:**
-```bash
-java -cp bin megachat.server.ChatServer
-```
-
-**Output:**
-```
-=== MegaChat Server khởi động ===
-Lắng nghe trên cổng: 5000
-```
-
-Để server chạy liên tục. Không đóng terminal này!
-
-### 3️⃣ **Chạy Client (mở terminal mới)**
-
-**Window 1 - User1:**
-```bash
-java -cp bin megachat.client.ChatClient User1
-```
-
-**Window 2 - User2:**
-```bash
-java -cp bin megachat.client.ChatClient User2
-```
-
-**Window 3 - User3 (tùy chọn):**
-```bash
-java -cp bin megachat.client.ChatClient User3
-```
-
-Mỗi cửa sổ GUI sẽ hiện lên. Nhập tin nhắn và bấm **"Gửi"** hoặc **Enter**.
+### Keyboard Shortcuts
+- `Ctrl+K` hoặc `/` - Tìm kiếm bạn bè
+- `Ctrl+Enter` - Gửi tin nhắn
+- `Esc` - Đóng modal/dropdown
+- `Ctrl+/` - Hiển thị danh sách shortcuts
 
 ---
 
-## 📝 Cách hoạt động
+## 🔧 Cấu hình
 
-### **Server (ChatServer.java)**
+### application.properties
+```properties
+# Server
+server.port=8080
+server.servlet.context-path=/megachat
 
-```
-PORT: 5000
-├── Chấp nhận kết nối từ client
-├── Tạo ClientHandler cho mỗi client
-├── Lắng nghe tin nhắn từ client
-└── Phát sóng (broadcast) cho tất cả client
-```
+# Database
+spring.datasource.url=jdbc:mysql://localhost:3307/megachat
+spring.datasource.username=root
+spring.datasource.password=
 
-**Server Log ví dụ:**
-```
-✓ Client kết nối: /127.0.0.1
-📨 Nhận từ [User1]: Xin chào
-✓ Client kết nối: /127.0.0.1
-📨 Nhận từ [User2]: Hello
-✗ Client ngắt kết nối. Còn: 1
-```
-
-### **Client (ChatClient.java)**
-
-```
-┌─────────────────────────────┐
-│  MegaChat - User1            │
-├─────────────────────────────┤
-│ ✓ Đã kết nối (User1)        │
-│                              │
-│ [User1]: Xin chào            │
-│ [User2]: Hi User1!           │
-│ [User1]: Bạn khỏe không?     │
-│ [User2]: Khỏe, cảm ơn       │
-│                              │
-├─────────────────────────────┤
-│ [Input: ] Gửi               │
-└─────────────────────────────┘
+# JPA
+spring.jpa.hibernate.ddl-auto=update
 ```
 
 ---
 
-## 🔌 Kiến trúc Socket
+## 🐛 Xử lý lỗi thường gặp
 
-### **Multi Client-Server Model**
+### Lỗi 404 khi truy cập `/megachat`
+**Nguyên nhân**: Context path không được xử lý đúng  
+**Giải pháp**: Đã được fix vĩnh viễn với `ContextPathRedirectFilter` và `TomcatConfig`. Nếu vẫn gặp:
+1. Dừng server: `taskkill /F /IM java.exe`
+2. Rebuild: `mvn clean install`
+3. Khởi động lại: `start-megachat.bat`
 
-```
-         ┌──────────────────┐
-         │  ChatServer      │
-         │  Port: 5000      │
-         └────────┬─────────┘
-                  │
-        ┌─────────┼─────────┐
-        │         │         │
-     Client1   Client2   Client3
-     (User1)   (User2)   (User3)
-```
-
-### **Quy trình gửi/nhận tin**
-
-```
-1. Client gửi tin → Socket OutputStream
-2. Server nhận tin → ClientHandler.readObject()
-3. Server phát sóng → broadcast() loop
-4. Tất cả Client nhận → Socket InputStream
-5. Client hiển thị GUI → JTextArea.append()
-```
-
----
-
-## 💾 Lớp chính
-
-### **Message.java** (Tin nhắn)
-```java
-- sender: String        // Người gửi
-- content: String       // Nội dung
-- type: String          // Loại: "chat", "login", "register"
-- timestamp: long       // Thời gian gửi
-```
-
-### **ChatServer.java** (Server)
-```java
-- PORT = 5000
-- clientHandlers: Set  // Danh sách client kết nối
-- main()              // Chương trình chính
-- broadcastMessage()  // Phát sóng tin nhắn
-- removeClient()      // Loại bỏ client
-```
-
-### **ClientHandler.java** (Xử lý Client)
-```java
-- socket: Socket
-- in/out: Streams
-- run()              // Lắng nghe tin từ client
-- sendMessage()      // Gửi tin cho client
-- cleanup()          // Dọn dẹp
-```
-
-### **ChatClient.java** (Client GUI)
-```java
-- username: String
-- chatArea: JTextArea      // Hiển thị tin
-- messageInput: JTextField // Ô nhập tin
-- connectToServer()        // Kết nối server
-- sendMessage()            // Gửi tin
-- listenForMessages()      // Lắng nghe server
-```
-
----
-
-## 🧪 Test
-
-### **Test 1: Compile OK**
+### Port 8080 đã được sử dụng
+**Giải pháp**: Script `start-megachat.bat` tự động xử lý. Hoặc thủ công:
 ```bash
-javac -d bin src\megachat\...java
-# Nếu không có lỗi → OK
+netstat -ano | findstr :8080
+taskkill /PID <PID> /F
 ```
 
-### **Test 2: Server hoạt động**
-```bash
-java -cp bin megachat.server.ChatServer
-# Nếu in "Lắng nghe trên cổng: 5000" → OK
-```
-
-### **Test 3: Client kết nối**
-```bash
-java -cp bin megachat.client.ChatClient User1
-# Nếu cửa sổ GUI hiện + "Đã kết nối (User1)" → OK
-```
-
-### **Test 4: Chat hoạt động**
-```
-1. Mở 2 Client khác nhau
-2. User1 gửi: "Hello User2"
-3. User2 nhận và trả lời: "Hi User1"
-4. Kiểm tra tin nhắn xuất hiện trên cả 2 cửa sổ
-```
+### MySQL connection error
+**Giải pháp**: 
+1. Kiểm tra MySQL đang chạy trên port 3307
+2. Kiểm tra username/password trong `application.properties`
+3. Đảm bảo database `megachat` tồn tại hoặc để JPA tự tạo
 
 ---
 
-## 🐛 Xử lý lỗi
+## 📈 Roadmap & Cải thiện tương lai
 
-| Lỗi | Nguyên nhân | Giải pháp |
-|-----|-----------|----------|
-| `Connection refused` | Server chưa chạy | Chạy `ChatServer` trước |
-| `Port already in use` | Cổng 5000 đã dùng | `netstat -ano \| findstr :5000` rồi kill |
-| `Cannot find symbol` | Thiếu file compile | Compile lại tất cả file |
-| `UI không hiện` | Cần GUI display | Chạy trên máy có desktop |
+### Đã hoàn thành ✅
+- [x] Real-time chat với WebSocket
+- [x] Friend management
+- [x] Message status indicators
+- [x] Copy & Reply messages
+- [x] Landing page với animations
+- [x] Performance optimizations
+- [x] Accessibility improvements
+- [x] Mobile responsive design
+- [x] Error handling với retry
+- [x] Connection status indicator
+
+### Đang phát triển 🚧
+- [ ] PWA support (Service Worker, offline access)
+- [ ] Tách CSS/JS ra file riêng
+- [ ] Drag & drop files
+- [ ] Better file preview (PDF, video, audio)
+- [ ] Message reactions (emoji)
+- [ ] Typing indicators
+- [ ] Read receipts chi tiết hơn
+
+### Kế hoạch 📋
+- [ ] Group chat / Channels
+- [ ] Voice/Video call
+- [ ] File sharing improvements
+- [ ] Theme customization
+- [ ] Notification system
+- [ ] Message search
+- [ ] Message pinning
 
 ---
 
-## 📈 Mở rộng tương lai
+## 📚 Tài liệu tham khảo
 
-- [ ] **MySQL** - Đăng nhập/đăng ký user
-- [ ] **Chat riêng tư** - Tin nhắn 1-1
-- [ ] **Lịch sử tin** - Lưu trữ tin nhắn
-- [ ] **Avatar/Emoji** - Giao diện phong phú
-- [ ] **Nhóm chat** - Tạo room chat
-- [ ] **Web version** - JavaWeb + JS/HTML/CSS
+- [FRONTEND-IMPROVEMENTS.md](./FRONTEND-IMPROVEMENTS.md) - Đề xuất cải thiện frontend
+- [FRONTEND-NEXT-STEPS.md](./FRONTEND-NEXT-STEPS.md) - Các bước tiếp theo
+- [PERFORMANCE-OPTIMIZATIONS.md](./PERFORMANCE-OPTIMIZATIONS.md) - Tối ưu hiệu năng
 
 ---
 
-## 📞 Liên hệ
+## 🤝 Đóng góp
 
-**Dự án:** MegaChat  
-**Phiên bản:** 1.0  
-**Ngôn ngữ:** Java  
-**Mô hình:** Multi Client-Server Socket  
-**Trạng thái:** ✅ Hoạt động tốt
+Mọi đóng góp đều được chào đón! Vui lòng:
+1. Fork project
+2. Tạo feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Mở Pull Request
 
 ---
 
 ## 📄 License
 
-MIT License - Tự do sử dụng, chỉnh sửa
+MIT License - Tự do sử dụng, chỉnh sửa và phân phối
 
 ---
 
-**Chúc bạn sử dụng MegaChat vui vẻ! 🎉**
+## 👨‍💻 Tác giả
+
+**MegaChat Team**
+
+---
+
+## 🙏 Lời cảm ơn
+
+- Spring Boot team
+- Discord (inspiration cho UI/UX)
+- Tất cả contributors
+
+---
+
+**⭐ Nếu bạn thấy project này hữu ích, hãy cho một star! ⭐**
+
+---
+
+**Phiên bản:** 1.0.0  
+**Cập nhật:** 2024  
+**Trạng thái:** ✅ Đang phát triển tích cực
