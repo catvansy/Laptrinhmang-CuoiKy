@@ -232,6 +232,57 @@ public class ChatController {
         }
     }
 
+    @GetMapping("/{friendId}/media")
+    public ResponseEntity<?> getMedia(@PathVariable Long friendId, HttpSession session) {
+        try {
+            Long userId = getUserId(session);
+            List<Map<String, Object>> media = chatMessageService.getMedia(userId, friendId);
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "media", media
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
+        }
+    }
+
+    @GetMapping("/{friendId}/files")
+    public ResponseEntity<?> getFiles(@PathVariable Long friendId, HttpSession session) {
+        try {
+            Long userId = getUserId(session);
+            List<Map<String, Object>> files = chatMessageService.getFiles(userId, friendId);
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "files", files
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
+        }
+    }
+
+    @GetMapping("/{friendId}/links")
+    public ResponseEntity<?> getLinks(@PathVariable Long friendId, HttpSession session) {
+        try {
+            Long userId = getUserId(session);
+            List<Map<String, Object>> links = chatMessageService.getLinks(userId, friendId);
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "links", links
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
+        }
+    }
+
     private Long getUserId(HttpSession session) throws Exception {
         Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {

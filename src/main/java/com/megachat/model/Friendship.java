@@ -34,6 +34,12 @@ public class Friendship {
     @Column(name = "responded_at")
     private LocalDateTime respondedAt;
 
+    @Column(name = "nickname", length = 100)
+    private String nickname;
+
+    @Column(name = "blocked", nullable = false)
+    private Boolean blocked = false;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -95,6 +101,22 @@ public class Friendship {
 
     public void setRespondedAt(LocalDateTime respondedAt) {
         this.respondedAt = respondedAt;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public Boolean getBlocked() {
+        return blocked != null ? blocked : false;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        this.blocked = blocked != null ? blocked : false;
     }
 }
 

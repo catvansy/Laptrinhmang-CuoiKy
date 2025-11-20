@@ -62,7 +62,7 @@ echo ========================================
 echo.
 
 REM Start Cloudflare tunnel
-cloudflared tunnel --url http://localhost:8080
+cloudflared tunnel --url http://127.0.0.1:8080
 
 echo.
 echo Tunnel closed.

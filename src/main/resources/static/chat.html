@@ -1028,6 +1028,200 @@
             background: #36393f;
         }
 
+        /* Friend Avatar Context Menu */
+        .friend-avatar-context-menu {
+            position: fixed;
+            background: #1a1a1a;
+            border: 1px solid #2c2f33;
+            border-radius: 8px;
+            padding: 4px;
+            z-index: 1001;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            display: none;
+            min-width: 200px;
+        }
+
+        .friend-avatar-context-menu.show {
+            display: block;
+        }
+
+        .friend-avatar-context-menu .context-menu-item {
+            padding: 10px 16px;
+        }
+
+        .friend-avatar-context-menu .context-menu-item .icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .friend-avatar {
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* Media/Files/Links Viewer */
+        .media-viewer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .media-viewer-modal.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .media-viewer-header {
+            padding: 16px 24px;
+            background: #1a1a1a;
+            border-bottom: 1px solid #2c2f33;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .media-viewer-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .media-viewer-close {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .media-viewer-close:hover {
+            background: #2c2f33;
+        }
+
+        .media-viewer-content {
+            flex: 1;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .media-item {
+            background: #1a1a1a;
+            border: 1px solid #2c2f33;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .media-item:hover {
+            transform: scale(1.05);
+        }
+
+        .media-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .media-item-info {
+            padding: 12px;
+        }
+
+        .media-item-name {
+            font-size: 12px;
+            color: #b9bbbe;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-item {
+            background: #1a1a1a;
+            border: 1px solid #2c2f33;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .file-item:hover {
+            background: #2c2f33;
+        }
+
+        .file-item-icon {
+            width: 48px;
+            height: 48px;
+            background: #5865f2;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .file-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .file-item-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-item-size {
+            font-size: 12px;
+            color: #b9bbbe;
+        }
+
+        .link-item {
+            background: #1a1a1a;
+            border: 1px solid #2c2f33;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .link-item:hover {
+            background: #2c2f33;
+        }
+
+        .link-item-url {
+            color: #5865f2;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .link-item-url:hover {
+            text-decoration: underline;
+        }
+
         /* Reply Message */
         .message-reply {
             background: rgba(255, 255, 255, 0.05);
@@ -2935,6 +3129,81 @@
         </div>
     </div>
 
+    <!-- Friend Avatar Context Menu -->
+    <div class="friend-avatar-context-menu" id="friendAvatarContextMenu">
+        <div class="context-menu-item" data-action="change-nickname">
+            <span class="icon">✏️</span>
+            <span>Thay đổi biệt danh</span>
+        </div>
+        <div class="context-menu-item" data-action="create-group">
+            <span class="icon">👥</span>
+            <span>Tạo nhóm</span>
+        </div>
+        <div class="context-menu-item" data-action="view-media">
+            <span class="icon">🖼️</span>
+            <span>Xem media</span>
+        </div>
+        <div class="context-menu-item" data-action="view-files">
+            <span class="icon">📁</span>
+            <span>Xem files và links</span>
+        </div>
+        <div class="context-menu-item" data-action="block-messages">
+            <span class="icon">🚫</span>
+            <span>Chặn tin nhắn</span>
+        </div>
+    </div>
+
+    <!-- Change Nickname Modal -->
+    <div class="modal-overlay" id="changeNicknameModal">
+        <div class="modal">
+            <div class="modal-header">Thay đổi biệt danh</div>
+            <form class="modal-form" id="changeNicknameForm">
+                <div class="form-group">
+                    <label class="form-label">Biệt danh</label>
+                    <input type="text" class="form-input" id="nicknameInput" placeholder="Nhập biệt danh (để trống để xóa)">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelNicknameBtn">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Group Modal -->
+    <div class="modal-overlay" id="createGroupModal">
+        <div class="modal">
+            <div class="modal-header">Tạo nhóm</div>
+            <form class="modal-form" id="createGroupForm">
+                <div class="form-group">
+                    <label class="form-label">Tên nhóm</label>
+                    <input type="text" class="form-input" id="groupNameInput" placeholder="Nhập tên nhóm" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Chọn thành viên</label>
+                    <div id="groupMembersList" style="max-height: 200px; overflow-y: auto; border: 1px solid #2c2f33; border-radius: 4px; padding: 8px;">
+                        <!-- Members will be added here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelGroupBtn">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Tạo nhóm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Media Viewer Modal -->
+    <div class="media-viewer-modal" id="mediaViewerModal">
+        <div class="media-viewer-header">
+            <div class="media-viewer-title" id="mediaViewerTitle">Media</div>
+            <button class="media-viewer-close" id="closeMediaViewerBtn">&times;</button>
+        </div>
+        <div class="media-viewer-content" id="mediaViewerContent">
+            <!-- Media items will be added here -->
+        </div>
+    </div>
+
     <!-- Profile Settings Modal -->
     <div class="modal-overlay" id="profileModal">
         <div class="modal">
@@ -3863,12 +4132,12 @@
                         : `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 16px;">${friend.username.charAt(0).toUpperCase()}</div>`;
 
                     item.innerHTML = `
-                        <div class="friend-avatar">
+                        <div class="friend-avatar" data-friend-id="${friend.id}">
                             ${avatarHtml}
                                 <div class="status-dot"></div>
                         </div>
                         <div class="friend-info">
-                            <div class="friend-name">${friend.username}</div>
+                            <div class="friend-name">${friend.nickname || friend.username}</div>
                                 <div class="friend-status"></div>
                             </div>
                             <div class="friend-actions">
@@ -3881,6 +4150,15 @@
                             removeBtn.addEventListener('click', (event) => {
                                 event.stopPropagation();
                                 handleRemoveFriend(friend);
+                            });
+                        }
+
+                        // Add click handler to avatar for context menu
+                        const avatarEl = item.querySelector('.friend-avatar');
+                        if (avatarEl) {
+                            avatarEl.addEventListener('click', (event) => {
+                                event.stopPropagation();
+                                showFriendAvatarContextMenu(event, friend);
                             });
                         }
 
@@ -3931,10 +4209,11 @@
                         }
                     }
 
-                    // Update name nếu thay đổi
+                    // Update name nếu thay đổi (show nickname if available)
                     const nameEl = item.querySelector('.friend-name');
-                    if (nameEl && nameEl.textContent !== friend.username) {
-                        nameEl.textContent = friend.username;
+                    const displayName = friend.nickname || friend.username;
+                    if (nameEl && nameEl.textContent !== displayName) {
+                        nameEl.textContent = displayName;
                     }
 
                     // Update status
@@ -4502,6 +4781,299 @@
                     } catch (error) {
                         setStatus(error.message, 'error');
                     }
+            }
+
+            // Friend Avatar Context Menu
+            let currentContextFriend = null;
+
+            function showFriendAvatarContextMenu(event, friend) {
+                const menu = document.getElementById('friendAvatarContextMenu');
+                if (!menu) return;
+
+                currentContextFriend = friend;
+                
+                // Get friendship info to check if blocked
+                loadFriendshipInfo(friend.id).then(friendship => {
+                    if (friendship) {
+                        const blockItem = menu.querySelector('[data-action="block-messages"]');
+                        if (blockItem) {
+                            blockItem.innerHTML = friendship.blocked 
+                                ? '<span class="icon">✅</span><span>Bỏ chặn tin nhắn</span>'
+                                : '<span class="icon">🚫</span><span>Chặn tin nhắn</span>';
+                        }
+                    }
+                });
+
+                // Position menu
+                const rect = event.target.getBoundingClientRect();
+                menu.style.left = `${rect.right + 10}px`;
+                menu.style.top = `${rect.top}px`;
+                menu.classList.add('show');
+
+                // Close menu when clicking outside
+                const closeMenu = (e) => {
+                    if (!menu.contains(e.target) && !event.target.contains(e.target)) {
+                        menu.classList.remove('show');
+                        document.removeEventListener('click', closeMenu);
+                    }
+                };
+                setTimeout(() => document.addEventListener('click', closeMenu), 0);
+            }
+
+            async function loadFriendshipInfo(friendId) {
+                try {
+                    const response = await apiRequest(`/friends/${friendId}`);
+                    return response.friendship;
+                } catch (error) {
+                    return null;
+                }
+            }
+
+            // Context menu actions
+            document.getElementById('friendAvatarContextMenu')?.addEventListener('click', async (e) => {
+                const action = e.target.closest('.context-menu-item')?.dataset.action;
+                if (!action || !currentContextFriend) return;
+
+                const menu = document.getElementById('friendAvatarContextMenu');
+                menu.classList.remove('show');
+
+                switch (action) {
+                    case 'change-nickname':
+                        showChangeNicknameModal(currentContextFriend);
+                        break;
+                    case 'create-group':
+                        showCreateGroupModal(currentContextFriend);
+                        break;
+                    case 'view-media':
+                        await showMediaViewer(currentContextFriend, 'media');
+                        break;
+                    case 'view-files':
+                        await showMediaViewer(currentContextFriend, 'files');
+                        break;
+                    case 'block-messages':
+                        await toggleBlockMessages(currentContextFriend);
+                        break;
+                }
+            });
+
+            // Change Nickname
+            function showChangeNicknameModal(friend) {
+                const modal = document.getElementById('changeNicknameModal');
+                const input = document.getElementById('nicknameInput');
+                if (!modal || !input) return;
+
+                // Load current nickname
+                loadFriendshipInfo(friend.id).then(friendship => {
+                    if (friendship && input) {
+                        input.value = friendship.nickname || '';
+                    }
+                });
+
+                modal.classList.add('active');
+                input.focus();
+            }
+
+            document.getElementById('changeNicknameForm')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (!currentContextFriend) return;
+
+                const input = document.getElementById('nicknameInput');
+                const nickname = input?.value.trim() || null;
+
+                try {
+                    await apiRequest(`/friends/${currentContextFriend.id}/nickname`, {
+                        method: 'PUT',
+                        body: { nickname }
+                    });
+
+                    document.getElementById('changeNicknameModal')?.classList.remove('active');
+                    showToast('Thành công', 'Đã cập nhật biệt danh', 'success');
+                    await loadFriends();
+                } catch (error) {
+                    showToast('Lỗi', error.message, 'error');
+                }
+            });
+
+            document.getElementById('cancelNicknameBtn')?.addEventListener('click', () => {
+                document.getElementById('changeNicknameModal')?.classList.remove('active');
+            });
+
+            // Create Group (placeholder - can be extended later)
+            function showCreateGroupModal(friend) {
+                const modal = document.getElementById('createGroupModal');
+                const membersList = document.getElementById('groupMembersList');
+                if (!modal || !membersList) return;
+
+                // Add current friend to members list
+                membersList.innerHTML = `
+                    <div style="padding: 8px; display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" checked disabled>
+                        <span>${escapeHtml(friend.username)}</span>
+                    </div>
+                `;
+
+                // Add other friends
+                state.friends.forEach(f => {
+                    if (f.id !== friend.id) {
+                        const memberItem = document.createElement('div');
+                        memberItem.style.cssText = 'padding: 8px; display: flex; align-items: center; gap: 8px;';
+                        memberItem.innerHTML = `
+                            <input type="checkbox" data-friend-id="${f.id}">
+                            <span>${escapeHtml(f.nickname || f.username)}</span>
+                        `;
+                        membersList.appendChild(memberItem);
+                    }
+                });
+
+                modal.classList.add('active');
+            }
+
+            document.getElementById('createGroupForm')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const nameInput = document.getElementById('groupNameInput');
+                const groupName = nameInput?.value.trim();
+                
+                if (!groupName) {
+                    showToast('Lỗi', 'Vui lòng nhập tên nhóm', 'error');
+                    return;
+                }
+
+                // Get selected members
+                const selected = Array.from(document.querySelectorAll('#groupMembersList input[type="checkbox"]:checked'))
+                    .map(cb => cb.dataset.friendId)
+                    .filter(id => id);
+
+                // TODO: Implement group creation API
+                showToast('Thông báo', 'Tính năng tạo nhóm đang được phát triển', 'info');
+                document.getElementById('createGroupModal')?.classList.remove('active');
+            });
+
+            document.getElementById('cancelGroupBtn')?.addEventListener('click', () => {
+                document.getElementById('createGroupModal')?.classList.remove('active');
+            });
+
+            // View Media/Files
+            async function showMediaViewer(friend, type) {
+                const modal = document.getElementById('mediaViewerModal');
+                const title = document.getElementById('mediaViewerTitle');
+                const content = document.getElementById('mediaViewerContent');
+                if (!modal || !title || !content) return;
+
+                try {
+                    let endpoint = '';
+                    let titleText = '';
+                    if (type === 'media') {
+                        endpoint = `/messages/${friend.id}/media`;
+                        titleText = `Media - ${friend.nickname || friend.username}`;
+                    } else {
+                        endpoint = `/messages/${friend.id}/files`;
+                        titleText = `Files và Links - ${friend.nickname || friend.username}`;
+                    }
+
+                    title.textContent = titleText;
+                    content.innerHTML = '<div style="text-align: center; padding: 40px;">Đang tải...</div>';
+
+                    const response = await apiRequest(endpoint);
+                    content.innerHTML = '';
+
+                    if (type === 'media') {
+                        if (response.media && response.media.length > 0) {
+                            response.media.forEach(item => {
+                                const mediaItem = document.createElement('div');
+                                mediaItem.className = 'media-item';
+                                mediaItem.innerHTML = `
+                                    <img src="${CONTEXT_PATH}${item.fileUrl}" alt="${escapeHtml(item.fileName || '')}" loading="lazy">
+                                    <div class="media-item-info">
+                                        <div class="media-item-name">${escapeHtml(item.fileName || '')}</div>
+                                    </div>
+                                `;
+                                mediaItem.addEventListener('click', () => {
+                                    window.open(`${CONTEXT_PATH}${item.fileUrl}`, '_blank');
+                                });
+                                content.appendChild(mediaItem);
+                            });
+                        } else {
+                            content.innerHTML = '<div style="text-align: center; padding: 40px; color: #b9bbbe;">Chưa có media nào</div>';
+                        }
+                    } else {
+                        // Show files
+                        if (response.files && response.files.length > 0) {
+                            response.files.forEach(item => {
+                                const fileItem = document.createElement('div');
+                                fileItem.className = 'file-item';
+                                fileItem.innerHTML = `
+                                    <div class="file-item-icon">📄</div>
+                                    <div class="file-item-info">
+                                        <div class="file-item-name">${escapeHtml(item.fileName || 'File')}</div>
+                                        <div class="file-item-size">${formatFileSize(item.fileSize)}</div>
+                                    </div>
+                                `;
+                                fileItem.addEventListener('click', () => {
+                                    window.open(`${CONTEXT_PATH}${item.fileUrl}`, '_blank');
+                                });
+                                content.appendChild(fileItem);
+                            });
+                        }
+
+                        // Show links
+                        try {
+                            const linksResponse = await apiRequest(`/messages/${friend.id}/links`);
+                            if (linksResponse.links && linksResponse.links.length > 0) {
+                                linksResponse.links.forEach(item => {
+                                    const linkItem = document.createElement('div');
+                                    linkItem.className = 'link-item';
+                                    linkItem.innerHTML = `
+                                        <a href="${escapeHtml(item.url)}" target="_blank" class="link-item-url">${escapeHtml(item.url)}</a>
+                                    `;
+                                    content.appendChild(linkItem);
+                                });
+                            }
+                        } catch (e) {
+                            // Ignore links error
+                        }
+
+                        if (content.children.length === 0) {
+                            content.innerHTML = '<div style="text-align: center; padding: 40px; color: #b9bbbe;">Chưa có files hoặc links nào</div>';
+                        }
+                    }
+
+                    modal.classList.add('active');
+                } catch (error) {
+                    content.innerHTML = `<div style="text-align: center; padding: 40px; color: #f04747;">Lỗi: ${escapeHtml(error.message)}</div>`;
+                    modal.classList.add('active');
+                }
+            }
+
+            document.getElementById('closeMediaViewerBtn')?.addEventListener('click', () => {
+                document.getElementById('mediaViewerModal')?.classList.remove('active');
+            });
+
+            // Block Messages
+            async function toggleBlockMessages(friend) {
+                if (!friend) return;
+
+                try {
+                    const friendship = await loadFriendshipInfo(friend.id);
+                    const newBlocked = !friendship?.blocked;
+
+                    await apiRequest(`/friends/${friend.id}/block`, {
+                        method: 'PUT',
+                        body: { blocked: newBlocked }
+                    });
+
+                    showToast('Thành công', newBlocked ? 'Đã chặn tin nhắn' : 'Đã bỏ chặn tin nhắn', 'success');
+                    await loadFriends();
+                } catch (error) {
+                    showToast('Lỗi', error.message, 'error');
+                }
+            }
+
+            function formatFileSize(bytes) {
+                if (!bytes) return '0 B';
+                const k = 1024;
+                const sizes = ['B', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
             }
 
             function renderCurrentView() {

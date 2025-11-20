@@ -60,6 +60,17 @@ public class FriendshipController {
                     friendMap.put("chatTheme", friend.getChatTheme());
                     friendMap.put("online", friendStatus.isOnline());
                     friendMap.put("lastSeen", friend.getLastSeen());
+                    
+                    // Get friendship info for nickname and blocked status
+                    try {
+                        Friendship friendship = friendshipService.getFriendship(userId, friend.getId());
+                        friendMap.put("nickname", friendship.getNickname());
+                        friendMap.put("blocked", friendship.getBlocked());
+                    } catch (Exception e) {
+                        friendMap.put("nickname", null);
+                        friendMap.put("blocked", false);
+                    }
+                    
                     return friendMap;
                 })
                 .collect(Collectors.toList());
@@ -207,6 +218,72 @@ public class FriendshipController {
             return ResponseEntity.ok(Map.of(
                 "success", true,
                 "message", "Đã xóa bạn bè thành công"
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
+        }
+    }
+
+    @PutMapping("/{friendId}/nickname")
+    public ResponseEntity<?> updateNickname(@PathVariable Long friendId, 
+                                           @RequestBody Map<String, String> request, 
+                                           HttpSession session) {
+        try {
+            Long userId = getUserId(session);
+            String nickname = request.get("nickname");
+            Friendship friendship = friendshipService.updateNickname(userId, friendId, nickname);
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Đã cập nhật biệt danh",
+                "nickname", friendship.getNickname() != null ? friendship.getNickname() : ""
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
+        }
+    }
+
+    @PutMapping("/{friendId}/block")
+    public ResponseEntity<?> toggleBlock(@PathVariable Long friendId,
+                                        @RequestBody Map<String, Boolean> request,
+                                        HttpSession session) {
+        try {
+            Long userId = getUserId(session);
+            Boolean blocked = request.get("blocked");
+            if (blocked == null) {
+                blocked = true;
+            }
+            Friendship friendship = friendshipService.toggleBlock(userId, friendId, blocked);
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", blocked ? "Đã chặn tin nhắn" : "Đã bỏ chặn tin nhắn",
+                "blocked", friendship.getBlocked()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "success", false,
+                "message", e.getMessage()
+            ));
+        }
+    }
+
+    @GetMapping("/{friendId}")
+    public ResponseEntity<?> getFriendship(@PathVariable Long friendId, HttpSession session) {
+        try {
+            Long userId = getUserId(session);
+            Friendship friendship = friendshipService.getFriendship(userId, friendId);
+            Map<String, Object> friendshipMap = new HashMap<>();
+            friendshipMap.put("id", friendship.getId());
+            friendshipMap.put("nickname", friendship.getNickname());
+            friendshipMap.put("blocked", friendship.getBlocked());
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "friendship", friendshipMap
             ));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of(

@@ -186,6 +186,55 @@ public class FriendshipService {
         // Xóa friendship (có thể xóa trực tiếp hoặc set status = DECLINED)
         friendshipRepository.delete(friendship);
     }
+
+    /**
+     * Cập nhật biệt danh cho bạn bè
+     */
+    @Transactional
+    public Friendship updateNickname(Long userId, Long friendId, String nickname) throws Exception {
+        User user = getUserOrThrow(userId);
+        User friend = userRepository.findById(friendId)
+            .orElseThrow(() -> new Exception("Không tìm thấy người bạn"));
+
+        Friendship friendship = friendshipRepository.findAcceptedFriendship(user, friend)
+            .orElseThrow(() -> new Exception("Hai người chưa là bạn bè"));
+
+        // Lưu nickname từ phía user (requester hoặc receiver)
+        friendship.setNickname(nickname != null && !nickname.trim().isEmpty() ? nickname.trim() : null);
+        return friendshipRepository.save(friendship);
+    }
+
+    /**
+     * Chặn/bỏ chặn tin nhắn từ bạn bè
+     */
+    @Transactional
+    public Friendship toggleBlock(Long userId, Long friendId, boolean blocked) throws Exception {
+        User user = getUserOrThrow(userId);
+        User friend = userRepository.findById(friendId)
+            .orElseThrow(() -> new Exception("Không tìm thấy người bạn"));
+
+        Friendship friendship = friendshipRepository.findAcceptedFriendship(user, friend)
+            .orElseThrow(() -> new Exception("Hai người chưa là bạn bè"));
+
+        friendship.setBlocked(blocked);
+        return friendshipRepository.save(friendship);
+    }
+
+    /**
+     * Lấy friendship giữa hai user
+     */
+    public Friendship getFriendship(Long userId, Long friendId) throws Exception {
+        User user = getUserOrThrow(userId);
+        User friend = userRepository.findById(friendId)
+            .orElseThrow(() -> new Exception("Không tìm thấy người bạn"));
+
+        return friendshipRepository.findAcceptedFriendship(user, friend)
+            .orElseThrow(() -> new Exception("Hai người chưa là bạn bè"));
+    }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
 }
 
 

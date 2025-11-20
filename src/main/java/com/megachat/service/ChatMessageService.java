@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatMessageService {
@@ -117,6 +122,96 @@ public class ChatMessageService {
         message.setContent("Tin nhắn đã bị xóa");
 
         return messageRepository.save(message);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> getMedia(Long userId, Long friendId) throws Exception {
+        User user = getUserOrThrow(userId);
+        User friend = getUserOrThrow(friendId);
+
+        if (!friendshipRepository.existsAcceptedFriendship(user, friend)) {
+            throw new Exception("Hai người chưa là bạn bè");
+        }
+
+        List<ChatMessage> messages = messageRepository.findConversation(userId, friendId, null);
+        
+        return messages.stream()
+            .filter(msg -> msg.getFileUrl() != null && isImageFile(msg.getFileType()))
+            .map(msg -> {
+                Map<String, Object> mediaMap = new HashMap<>();
+                mediaMap.put("id", msg.getId());
+                mediaMap.put("fileUrl", msg.getFileUrl());
+                mediaMap.put("fileName", msg.getFileName());
+                mediaMap.put("fileType", msg.getFileType());
+                mediaMap.put("createdAt", msg.getCreatedAt());
+                mediaMap.put("senderId", msg.getSender().getId());
+                return mediaMap;
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> getFiles(Long userId, Long friendId) throws Exception {
+        User user = getUserOrThrow(userId);
+        User friend = getUserOrThrow(friendId);
+
+        if (!friendshipRepository.existsAcceptedFriendship(user, friend)) {
+            throw new Exception("Hai người chưa là bạn bè");
+        }
+
+        List<ChatMessage> messages = messageRepository.findConversation(userId, friendId, null);
+        
+        return messages.stream()
+            .filter(msg -> msg.getFileUrl() != null && !isImageFile(msg.getFileType()))
+            .map(msg -> {
+                Map<String, Object> fileMap = new HashMap<>();
+                fileMap.put("id", msg.getId());
+                fileMap.put("fileUrl", msg.getFileUrl());
+                fileMap.put("fileName", msg.getFileName());
+                fileMap.put("fileType", msg.getFileType());
+                fileMap.put("fileSize", msg.getFileSize());
+                fileMap.put("createdAt", msg.getCreatedAt());
+                fileMap.put("senderId", msg.getSender().getId());
+                return fileMap;
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> getLinks(Long userId, Long friendId) throws Exception {
+        User user = getUserOrThrow(userId);
+        User friend = getUserOrThrow(friendId);
+
+        if (!friendshipRepository.existsAcceptedFriendship(user, friend)) {
+            throw new Exception("Hai người chưa là bạn bè");
+        }
+
+        List<ChatMessage> messages = messageRepository.findConversation(userId, friendId, null);
+        Pattern urlPattern = Pattern.compile(
+            "(?i)\\b((?:https?://|www\\.)[\\w\\-]+(?:\\.[\\w\\-]+)+[\\w\\-.,@?^=%&:/~+#]*[\\w\\-@?^=%&/~+#])",
+            Pattern.CASE_INSENSITIVE
+        );
+        
+        return messages.stream()
+            .filter(msg -> msg.getContent() != null)
+            .flatMap(msg -> {
+                Matcher matcher = urlPattern.matcher(msg.getContent());
+                return matcher.results()
+                    .map(matchResult -> {
+                        Map<String, Object> linkMap = new HashMap<>();
+                        linkMap.put("id", msg.getId());
+                        linkMap.put("url", matchResult.group(1));
+                        linkMap.put("createdAt", msg.getCreatedAt());
+                        linkMap.put("senderId", msg.getSender().getId());
+                        return linkMap;
+                    });
+            })
+            .collect(Collectors.toList());
+    }
+
+    private boolean isImageFile(String fileType) {
+        if (fileType == null) return false;
+        return fileType.startsWith("image/");
     }
 
     private User getUserOrThrow(Long id) throws Exception {
